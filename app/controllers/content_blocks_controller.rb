@@ -1,0 +1,2 @@
+class ContentBlocksController < ApplicationController
+end
