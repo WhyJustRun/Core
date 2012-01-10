@@ -63,7 +63,7 @@ if @version === '3.0' then
 							if result.status == :ok then
 								xml.Position i
 							end
-							xml.Status result.iof_status
+							# TODO-RWP Once the CakePHP site uses IOF Status xml.Status result.iof_status
 						end
 					end
 					
@@ -121,7 +121,7 @@ elsif @version == '2.0.3' then
 								end
 							end
 							
-							xml.CompetitorStatus(:value => result.iof_status)
+							# TODO-RWP Once the CakePHP site uses IOF Status xml.CompetitorStatus(:value => result.iof_status)
 							# TODO-RWP Splits
 						end
 					end

@@ -25,7 +25,7 @@ class EventsController < ApplicationController
 	# IOF XML 2.0 for now
 	def start_list
 		unless params[:version] == '2.0.3' then
-			raise "The only supported IOF Data version is 2.0.3"
+			raise ActionController::RoutingError.new('Not Found')
 		end
 		
 		@event = Event.find(params[:id])
@@ -37,7 +37,7 @@ class EventsController < ApplicationController
 	# IOF XML 3.0 for now
 	def entry_list
 		unless params[:version] == '3.0' then
-			raise "The only supported IOF Data version is 3.0"
+			raise ActionController::RoutingError.new('Not Found')
 		end
 		
 		@event = Event.find(params[:id])
@@ -50,7 +50,7 @@ class EventsController < ApplicationController
 	def result_list
 		supported = ['2.0.3', '3.0']
 		unless supported.include? params[:version] then
-			raise "The only supported IOF Data versions are " + supported.join(', ')
+			raise ActionController::RoutingError.new('Not Found')
 		end
 		
 		@version = params[:version]
