@@ -2,45 +2,121 @@
  <div id="header"></div>
 
  <div id="content">
-   <h1><img src="img/banner.jpg" width="761" /></h1>
+   <%= image_tag "banner.jpg" %>
 
    <table>
      <tr>
-       <th>&nbsp;</th>
-
-       <th>Navigation!</th>
-
-       <th>Terrain running!</th>
-
-       <th>Checkpoints!</th>
-     </tr>
-
-     <tr>
        <td width="161">
-         <div class="selected">
-           <a href="/">Orienteering<img src="img/button.jpg" /></a>
-         </div>
-
-         <div class="not_selected">
-           <a href="/map.php">The map<br />
-           <img src="img/button_map.jpg" /></a>
-         </div>
-
-         <div class="not_selected">
-           <a href="/course.php">The course<br />
-           <img src="img/button_course.jpg" /></a>
+         <div class="tabList">
+           <div class="tab-button">
+             <a href="#orienteering-basics">Orienteering<br/>
+             <%= image_tag "button.jpg" %></a>
+           </div>
+  
+           <div class="tab-button">
+             <a href="#orienteering-map">The map<br />
+             <%= image_tag "button_map.jpg" %></a>
+           </div>
+  
+           <div class="tab-button">
+             <a href="#orienteering-course">The course<br />
+             <%= image_tag "button_course.jpg" %></a>
+           </div>
          </div>
        </td>
-
-       <td width="200px"><img src="img/home2.gif" width="175" /> Orienteering involves
-       navigating between checkpoints using a detailed map and compass.</td>
-
-       <td width="200px"><img src="img/home1.jpg" width="175" /> Pick your own route
-       between the checkpoints: Along a path, over a hill, or straight through the
-       forest!<br /></td>
-
-       <td width="200px"><img src="img/home3.jpg" width="175" /> Checkpoints are
-       marked with red and white flags, and are indicated by a circle on the map.</td>
+       <td>
+       <div class="tabs">
+         <div id="orienteering-basics">
+           <table>
+           <tr>
+             <th>Navigation!</th>
+      
+             <th>Terrain running!</th>
+      
+             <th>Checkpoints!</th>
+           </tr>
+           <tr>
+           <td width="200px"><%= image_tag "home2.gif", :width => 175 %> Orienteering involves
+           navigating between checkpoints using a detailed map and compass.</td>
+    
+           <td width="200px"><%= image_tag "home1.jpg", :width => 175 %> Pick your own route
+           between the checkpoints: Along a path, over a hill, or straight through the
+           forest!<br /></td>
+    
+           <td width="200px"><%= image_tag "home3.jpg", :width => 175 %> Checkpoints are
+           marked with red and white flags, and are indicated by a circle on the map.</td>
+           </tr>
+           </table>
+         </div>
+         <div id="orienteering-map">
+           <table>
+           <tr>
+             <th>Map Sample</th>
+      
+             <th>Legend</th>
+             <th></th>
+           </tr>
+           <tr>
+             <td width="200px">
+                Orienteering uses a very detailed map, typically at a 1:4000 to 1:15 000 scale. Below is a sample map of a
+                forested area:
+                <%= image_tag "map1.gif", :width => 175 %>
+             </td>
+             <td width="200px">
+                <%= image_tag "map_legend_urban.gif", :width => 175 %>
+                A checkpoint next to a lone tree:
+                <%= image_tag "map2.jpg", :width => 175 %>
+             </td>
+             <td width="200px">
+                <%= image_tag "map_legend_forest.gif", :width => 175 %><br><br>
+                A checkpoint at the bottom of a small cliff:
+                <%= image_tag "map3.jpg", :width => 175 %>
+             </td>
+           </tr>
+           </table>
+         </div>
+         <div id="orienteering-course">
+           <table>
+           <tr>
+             <th>The start</th>
+      
+             <th>Checkpoints/finish</th>
+      
+             <th>Course types</th>
+           </tr>
+           <tr>
+           <td width="200px">
+              The orienteering course is designed to challenge the participant both in terms of navigation as well as route planning.
+              <br><br>
+              You must visit all checkpoints but the route between each is up to you!
+              <br><br>
+              The start of the course is indicated by a purple triangle on the map:
+              <%= image_tag "course1.gif", :width => 175 %>
+              <br><br>
+           </td>
+           <td width="200px">
+              Competitors go to each numbered checkpoint in order:
+              <%= image_tag "course3.gif", :width => 175 %>
+              <br><br>
+              The two concentric circles mark the end of the orienteering course:
+              <%= image_tag "course2.gif", :width => 175 %>
+           </td>
+           <td width="200px">
+              <span class="root_menu">Sprint:</span> short courses around 2-3km with winning times around 12-15 minutes. The course requires the participant to make quick decisions.
+              <br> <hr width=175px>
+              <span class="root_menu">Middle:</span> 25-35 minute winning time. Navigation skills are especially important.
+              <br> <hr width=175px>
+              <span class="root_menu">Long:</span> 60-90 minute winning time. Route planning skills are essential here.
+              <br> <hr width=175px>
+              <span class="root_menu">Night:</span> courses run at nighttime where participants use headlamps.
+              <br> <hr width=175px>
+              <span class="root_menu">Score:</span> participants can visit the checkpoints in any order.
+           </td>
+           </tr>
+           </table>
+         </div>
+       </div>
+       </td>
      </tr>
    </table>
 
@@ -57,3 +133,19 @@
    &copy; Greater Vancouver Orienteering Club 2011
  </div>
 </div>
+
+<script type="text/javascript">
+$(function () {
+
+  var tabContainers = $('div.tabs > div');
+  tabContainers.hide().filter(':first').show();
+  
+  $('.tabList a').click(function () {
+  	tabContainers.hide();
+  	tabContainers.filter(this.hash).show();
+  	$('.tabList div').removeClass('selected');
+  	$(this.parentNode).addClass('selected');
+  	return false;
+  }).filter(':first').click();
+});
+</script>
