@@ -60,9 +60,9 @@ if @version === '3.0' then
 								seconds = result.time.sec.to_i
 								xml.Time hours * 3600 + minutes * 60 + seconds
 							end
-							if result.status == :ok then
+							# TODO-RWP if result.status == :ok then
 								xml.Position i
-							end
+							# TODO-RWP end
 							# TODO-RWP Once the CakePHP site uses IOF Status xml.Status result.iof_status
 						end
 					end
@@ -116,9 +116,9 @@ elsif @version == '2.0.3' then
 							unless result.time.nil? then
 								xml.Time result.time.strftime('%H:%M:%S')
 								# TODO-RWP Should be a boolean
-								if result.status == :ok then
+								# TODO-RWP if result.status == :ok then
 									xml.ResultPosition i
-								end
+								#end
 							end
 							
 							# TODO-RWP Once the CakePHP site uses IOF Status xml.CompetitorStatus(:value => result.iof_status)
