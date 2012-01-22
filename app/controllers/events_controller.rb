@@ -121,6 +121,8 @@ class EventsController < ApplicationController
 		end
 		
 		event = Event.find(params[:id])
+		event.results_posted = 1
+		event.save
 		
 		event.courses.each { |course|
 			existing_results = course.results
@@ -147,9 +149,7 @@ class EventsController < ApplicationController
 				end
 			}
 		}
-		
-		@results = results
-		
+				
 		respond_to do |format|
 			format.xml  { render :layout => false }
 		end
