@@ -36,3 +36,4 @@ group :test do
 end
 
 gem "markdownizer", "~> 0.3.6"
+gem "nokogiri", "~> 1.5.0"

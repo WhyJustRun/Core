@@ -29,6 +29,10 @@ class Result < ActiveRecord::Base
   def iof_status
 	  @@iof_status[status]
 	end
+	
+	def iof_status= (value)
+	  self.status = @@iof_status.key(value)
+	end
   
   def status= (value)
   	write_attribute(:status, value.to_s)
