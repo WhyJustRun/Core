@@ -90,25 +90,28 @@ class EventsController < ApplicationController
 			
 		elsif(params[:version] == '3.0') then
 			doc.css('ClassResult').each do |course|
-				course_id = (course.at_css('Class'))['idref']
-				course.css('PersonResult').each do |result|
-					course_results = results[course_id];
+				course_results = []
+				course_id = (course.at_css('Class'))['idref'].to_i
+				course.xpath("*[name()='PersonResult']").each do |result|
 					start_time = result.at_css('Result > StartTime').content
 					end_time = result.at_css('Result > EndTime').content
 					time_node = result.at_css('Result > Time')
+					person_id_node = result.at_css('Person > Id')
+					user_id = nil
+					unless person_id_node.nil? then user_id = person_id_node.content.to_i end
 					unless time_node.nil? then time = time_node.content end
 					status_node = result.at_css('Result > Status')
 					unless status_node.nil? then status = status_node.content end
 					if status.blank? then
 						status = "OK"
 					end
-					unless(time.blank?) then time = time.seconds.since(Time.mktime(0)) end
+					unless(time.blank?) then time = time.seconds.since(Time.utc(0)) end
 					unless start_time.blank? or end_time.blank? then
-						time = (Time.parse(end_time) - Time.parse(start_time)).seconds.since(Time.mktime(0))
+						time = (Time.parse(end_time) - Time.parse(start_time)).seconds.since(Time.utc(0))
 					end
 					course_results << {
-						:name => result.at_css('Person > Name > Given').content + result.at_css('Person > Name > Family').content,
-						:id => result.at_css('Person > Id').content.to_i,
+						:name => result.at_css('Person > Name > Given').content + " " + result.at_css('Person > Name > Family').content,
+						:id => user_id,
 						:time => time,
 						:status => status
 					}
@@ -120,6 +123,8 @@ class EventsController < ApplicationController
 			raise ActionController::RoutingError.new('Not Found')
 		end
 		
+		logger.info results.inspect
+		
 		event = Event.find(params[:id])
 		event.results_posted = 1
 		event.save
@@ -130,6 +135,7 @@ class EventsController < ApplicationController
 				matched = false
 				# Try to match up results - could have a better algorithm that isn't O(n^2)
 				existing_results.each { |existing_result|
+					
 					if(existing_result.user.id == result[:id]) then
 						matched = true
 					elsif(result[:id].blank? and not result[:name].blank? and existing_result.user.name == result[:name]) then
@@ -146,6 +152,26 @@ class EventsController < ApplicationController
 				
 				unless matched then
 					# create a new result if it isn't already in the database..
+					if result[:id].blank? then
+						matches = User.where(:name => result[:name]).all
+						if(matches.length == 1) then
+							new_result = Result.create(:user_id => matches.first.id, :time => result[:time], :course_id => course.id)
+							new_result.save
+						elsif(matches.length > 1)
+							# don't insert if there are more than one possible people..
+							render :status => :bad_request
+							return
+						else
+							# create new user
+							new_result = Result.create(:time => result[:time], :course_id => course.id)
+							user = User.create(:name => result[:name])
+							new_result.user_id = user.id
+							new_result.save
+						end
+					else
+						new_result = Result.create(:user_id => result[:id], :time => result[:time], :course_id => course.id)
+						new_result.save
+					end
 				end
 			}
 		}
