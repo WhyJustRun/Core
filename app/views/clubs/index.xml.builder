@@ -20,6 +20,7 @@ xml.OrganisationList(
 			#end
 			xml.comment! "Tree structure ParentOrganization is coming soon"
 			xml.Contact(club.url, :type => "WebAddress")
+			xml.Position(:lat => club.lat, :lng => club.lng)
 		end
 	}
 end
