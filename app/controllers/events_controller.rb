@@ -105,7 +105,7 @@ class EventsController < ApplicationController
 					if status.blank? then
 						status = "OK"
 					end
-					unless(time.blank?) then time = time.seconds.since(Time.utc(0)) end
+					unless(time.blank?) then time = time.to_i.seconds.since(Time.utc(0)) end
 					unless start_time.blank? or end_time.blank? then
 						time = (Time.parse(end_time) - Time.parse(start_time)).seconds.since(Time.utc(0))
 					end
