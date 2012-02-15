@@ -122,7 +122,9 @@ class EventsController < ApplicationController
 		else 
 			raise ActionController::RoutingError.new('Not Found')
 		end
-				
+		
+		logger.info results.inspect
+		
 		event = Event.find(params[:id])
 		event.results_posted = 1
 		event.save
