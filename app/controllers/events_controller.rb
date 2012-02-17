@@ -6,7 +6,7 @@ class EventsController < ApplicationController
 		if params[:api_key].nil? then
 			@events = Event.limit(limit).all
 		else
-			@events = Event.limit(limit).joins(:organizers).order('date DESC').where('organizers.user.api_key = ?', params[:api_key])
+			@events = Event.limit(limit).joins({:organizers => :user}).order('date DESC').where('users.api_key = ?', params[:api_key])
 		end
 		
 		respond_to do |format|
