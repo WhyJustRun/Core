@@ -3,10 +3,10 @@ class EventsController < ApplicationController
 	def index
 		limit = params[:limit] || nil
 		
-		if params[:user_id].nil? then
-			@events = Event.all.limit(limit)
+		if params[:api_key].nil? then
+			@events = Event.limit(limit).all
 		else
-			@events = Event.joins(:organizers).order('date DESC').where('organizers.user_id = ?', params[:user_id]).limit(limit)
+			@events = Event.limit(limit).joins(:organizers).order('date DESC').where('organizers.user.api_key = ?', params[:api_key])
 		end
 		
 		respond_to do |format|
