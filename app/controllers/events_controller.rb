@@ -1,13 +1,10 @@
 class EventsController < ApplicationController
+	before_filter :basic_auth, :only => [:index, :process_result_list]
 	
 	def index
 		limit = params[:limit] || nil
 		
-		if params[:api_key].nil? then
-			@events = Event.limit(limit).all
-		else
-			@events = Event.limit(limit).joins({:organizers => :user}).order('date DESC').where('users.api_key = ?', params[:api_key])
-		end
+		@events = Event.limit(limit).joins({:organizers => :user}).order('date DESC').where('users.id = ?', @current_user.id)
 		
 		respond_to do |format|
 			format.xml  { render :layout => false }
@@ -65,7 +62,7 @@ class EventsController < ApplicationController
 	def process_result_list
 		require 'nokogiri'
 		
-		user = User.where(:api_key => params[:apiKey]).all.first
+		user = @current_user
 		if params[:apiKey].blank? or user.blank? then
 			render :status => :unauthorized
 			return

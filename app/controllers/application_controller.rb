@@ -7,4 +7,13 @@ class ApplicationController < ActionController::Base
     headers['Access-Control-Allow-Origin'] = '*'
     headers['Access-Control-Request-Method'] = '*'
   end
+  
+  def basic_auth
+    user = authenticate_with_http_basic { |u, p| User.check(u, p) }
+    if user != nil
+      @current_user = user
+    else
+      request_http_basic_authentication
+    end
+  end
 end

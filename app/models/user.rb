@@ -22,4 +22,11 @@ class User < ActiveRecord::Base
 			names.pop
 		end
 	end
+	
+	def self.check(username, password)
+		require 'digest/sha2'
+		
+		password = Digest::SHA512.hexdigest(Settings.salt + password)
+		return User.where(["username = ? AND password = ?", username, password]).first
+	end
 end
