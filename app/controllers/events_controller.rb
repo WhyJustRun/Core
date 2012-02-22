@@ -123,6 +123,7 @@ class EventsController < ApplicationController
 		
 		event.courses.each { |course|
 			existing_results = course.results
+			matched_existing_results = []
 			results[course.id].each { |result|
 				matched = false
 				# Try to match up results - could have a better algorithm that isn't O(n^2)
@@ -138,6 +139,7 @@ class EventsController < ApplicationController
 						existing_result.iof_status = result[:status]
 						existing_result.time = result[:time]
 						existing_result.save
+						matched_existing_results << existing_result
 						break
 					end
 				}
@@ -165,6 +167,12 @@ class EventsController < ApplicationController
 						new_result.save
 					end
 				end
+			}
+			
+			results_to_delete = existing_results - matched_existing_results
+			results_to_delete.each { |r|
+				logger.info "Deleted result: #{r.id}"
+				Result.destroy(r.id)
 			}
 		}
 				
