@@ -63,11 +63,6 @@ class EventsController < ApplicationController
 		require 'nokogiri'
 		
 		user = @current_user
-		if params[:apiKey].blank? or user.blank? then
-			render :status => :unauthorized
-			return
-		end
-		
 		if Organizer.where(:event_id => params[:id], :user_id => user.id).count == 0 then
 			render :status => :unauthorized
 			return
