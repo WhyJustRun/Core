@@ -35,6 +35,9 @@ group :test do
   gem 'turn', '~> 0.8.3', :require => false
 end
 
-gem "markdownizer", "~> 0.3.6"
 gem "nokogiri", "~> 1.5.0"
 gem "rails_config", "~> 0.2.5"
+
+gem "icalendar", "~> 1.1.6"
+gem 'bluecloth'
+gem 'geocoder'

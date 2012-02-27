@@ -6,4 +6,19 @@ class ClubsController < ApplicationController
 			format.xml  { render :layout => false }
 		end
 	end
+	
+	def events
+	  @events = Event.limit(50).where("club_id = ?", params[:id]).order('date DESC')
+	  
+	  respond_to do |wants|
+  	  wants.ics do
+            calendar = Icalendar::Calendar.new
+            @events.each { |event|
+              calendar.add_event(event.to_ics)
+            }
+            calendar.publish
+            render :text => calendar.to_ical
+      end
+    end
+	end
 end
