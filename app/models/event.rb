@@ -53,7 +53,7 @@ class Event < ActiveRecord::Base
     event.description = strip_tags(rendered_description)
     if has_location then
       event.geo = Icalendar::Geo.new(lat, lng)
-      event.location = address
+      event.location = "#{lat},#{lng}"
     end
     event.klass = "PUBLIC"
     # TODO-RWP event.created = self.created_at
