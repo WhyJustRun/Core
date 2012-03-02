@@ -13,8 +13,9 @@ xml.OrganisationList(
 			xml.Id club.id
 			xml.Name club.name
 			xml.ShortName club.acronym
-			xml.comment! "Type is hardcoded as Club for now"
-			xml.Type "Club" # TODO-RWP hardcoded for now
+			unless club.club_category.nil? then
+				xml.Type club.club_category.name
+			end
 			#unless club.parent_id.nil? then
 			# xml.ParentOrganization club.parent_id
 			#end

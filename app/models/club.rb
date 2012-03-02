@@ -8,7 +8,8 @@ class Club < ActiveRecord::Base
 	has_many :pages
 	has_many :roles
 	has_many :series
-
+	belongs_to :club_category
+	
   def domain
     if self.custom_domain != nil then
       self.custom_domain
