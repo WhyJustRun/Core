@@ -3,7 +3,6 @@ require 'action_view'
 class Event < ActiveRecord::Base
   include ActionView::Helpers::SanitizeHelper
   
-  after_validation :reverse_geocode
 	belongs_to :club
 	has_one :group
 	has_one :map
