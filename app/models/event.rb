@@ -7,6 +7,7 @@ class Event < ActiveRecord::Base
 	has_one :group
 	has_one :map
 	belongs_to :series
+  belongs_to :event_classification
 	has_many :organizers
 	has_many :courses 
 		
@@ -60,4 +61,16 @@ class Event < ActiveRecord::Base
     event.uid = event.url = url
     event
 	end
+  
+  def to_fullcalendar
+    out = {}
+    out[:id] = id
+    out[:title] = name
+    out[:start] = date.to_i
+    out[:allDay] = false
+    out[:url] = url
+    out[:textColor] = series.color if not series.nil?
+    out[:color] = '#ffffff'
+    out
+  end
 end

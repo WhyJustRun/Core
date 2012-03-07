@@ -1,7 +1,47 @@
 class EventsController < ApplicationController
-	before_filter :basic_auth, :only => [:index, :process_result_list]
+	before_filter :basic_auth, :only => [:event_list, :process_result_list]
 	
-	def index
+  def index
+    club_id = params[:club_id] || nil
+    logger.info params[:end]
+    start_time ||= params[:start].nil? ? nil : Time.at(params[:start].to_i)
+    end_time ||= params[:end].nil? ? nil : Time.at(params[:end].to_i)
+    
+    @events = (start_time.nil? and end_time.nil?) ? Event.limit(50) : Event;
+    
+    unless club_id.nil? then
+      @events = @events.where("club_id = ?", club_id)
+    end
+    unless start_time.nil? then
+      @events = @events.where("date >= ?", start_time)
+    end
+    unless end_time.nil? then
+      @events = @events.where("date <= ?", end_time)
+    end
+    @events = @events.order('date DESC')
+	  logger.info @events.inspect
+	  respond_to do |wants|
+  	  wants.ics do
+        calendar = Icalendar::Calendar.new
+        calendar.custom_property("X-WR-CALNAME", Club.find(params[:id]).name)
+        @events.each { |event|
+          calendar.add_event(event.to_ics)
+        }
+        calendar.publish
+        render :text => calendar.to_ical
+      end
+      wants.json do
+        output = []
+        @events.each { |event|
+          output << event.to_fullcalendar
+        }
+        render :text => output.to_json
+      end
+    end
+    
+  end
+  
+	def event_list
 		limit = params[:limit] || nil
 		
 		@events = Event.limit(limit).joins({:organizers => :user}).order('date DESC').where('users.id = ?', @current_user.id)
