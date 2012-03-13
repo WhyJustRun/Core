@@ -36,6 +36,8 @@ if @version === '3.0' then
 				end
 				
 				i = 1
+        tied_racers = 0
+        last_result = nil
 				course.sorted_results.each { |result|
 					xml.PersonResult do
 						user = result.user
@@ -45,6 +47,7 @@ if @version === '3.0' then
 								xml.Given user.first_name
 								xml.Family user.last_name
 							end
+              xml.Contact({:type => 'WebAddress'}, user.profile_url)
 						end
 						
 						unless user.club.nil? then
@@ -60,14 +63,24 @@ if @version === '3.0' then
 								seconds = result.time.sec.to_i
 								xml.Time hours * 3600 + minutes * 60 + seconds
 							end
-							# TODO-RWP if result.status == :ok then
-								xml.Position i
-							# TODO-RWP end
-							# TODO-RWP Once the CakePHP site uses IOF Status xml.Status result.iof_status
+							if result.status == :ok then
+                if not last_result.nil? and last_result.time == result.time then
+                  # tie
+                  tied_racers += 1
+                else
+                  tied_racers = 0
+                end
+								xml.Position({ :type => "Course" }, i - tied_racers)
+							end
+              xml.Status result.iof_status
+              unless result.points.nil? then
+                xml.Score({ :type => "WhyJustRun" }, result.points)
+              end
 						end
 					end
 					
 					i += 1
+          last_result = result
 				}
 			end
 		}
