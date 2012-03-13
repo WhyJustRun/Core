@@ -29,4 +29,14 @@ class User < ActiveRecord::Base
 		password = Digest::SHA512.hexdigest(Settings.salt + password)
 		return User.where(["username = ? AND password = ?", username, password]).first
 	end
+  
+  def profile_url
+    if(club.nil?) then
+      domain = "http://gvoc.whyjustrun.ca"
+    else
+      domain = "http://" + club.domain
+    end
+    
+    domain + "/users/view/" + id.to_s
+  end
 end
