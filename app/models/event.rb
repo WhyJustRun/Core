@@ -17,8 +17,7 @@ class Event < ActiveRecord::Base
 	end
 	
 	def local_date
-		Time.zone = club.timezone
-		date.in_time_zone
+		date.in_time_zone(club.timezone)
 	end
 	
 	def has_location
@@ -46,6 +45,7 @@ class Event < ActiveRecord::Base
 	end
 	
 	def to_ics
+    Time.zone = "UTC"
     event = Icalendar::Event.new
     event.start = date.strftime("%Y%m%dT%H%M%S") + "Z"
     event.end = (date + 1.hour).strftime("%Y%m%dT%H%M%S") + "Z"
@@ -63,6 +63,7 @@ class Event < ActiveRecord::Base
 	end
   
   def to_fullcalendar
+    Time.zone = "UTC"
     out = {}
     out[:id] = id
     out[:title] = name
