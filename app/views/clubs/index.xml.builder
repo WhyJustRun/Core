@@ -19,7 +19,8 @@ xml.OrganisationList(
 			#unless club.parent_id.nil? then
 			# xml.ParentOrganization club.parent_id
 			#end
-			xml.comment! "Tree structure ParentOrganization is coming soon"
+			#xml.comment! "Tree structure ParentOrganization is coming soon"
+			xml.Parent_Id (club.parent_id)
 			xml.Contact(club.url, :type => "WebAddress")
 			xml.Position(:lat => club.lat, :lng => club.lng)
 		end
