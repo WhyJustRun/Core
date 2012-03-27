@@ -70,7 +70,11 @@ class Event < ActiveRecord::Base
     out[:start] = date.to_i
     out[:allDay] = false
     out[:url] = url
-    out[:textColor] = series.color if not series.nil?
+    if series.nil? then
+        out[:textColor] = '#000000'
+    else
+        out[:textColor] = series.color
+    end
     out[:color] = '#ffffff'
     out
   end
