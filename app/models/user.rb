@@ -30,9 +30,10 @@ class User < ActiveRecord::Base
     return User.where(["username = ? AND password = ?", username, password]).first
   end
   
-  def profile_url
+  # default club specifies which club to link to if the user is not associated with a club
+  def profile_url(default_club)
     if(club.nil?) then
-      domain = "http://gvoc.whyjustrun.ca"
+      domain = "http://" + default_club.domain
     else
       domain = "http://" + club.domain
     end

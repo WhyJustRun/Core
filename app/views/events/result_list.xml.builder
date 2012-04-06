@@ -47,7 +47,7 @@ if @version === '3.0' then
                 xml.Given user.first_name
                 xml.Family user.last_name
               end
-              xml.Contact({:type => 'WebAddress'}, user.profile_url)
+              xml.Contact({:type => 'WebAddress'}, user.profile_url(@event.club))
             end
 						
             unless user.club.nil? then
