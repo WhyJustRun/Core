@@ -4,7 +4,6 @@ class Event < ActiveRecord::Base
   include ActionView::Helpers::SanitizeHelper
   
   belongs_to :club
-  has_one :group
   has_one :map
   belongs_to :series
   belongs_to :event_classification
