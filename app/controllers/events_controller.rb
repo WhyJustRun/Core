@@ -47,7 +47,11 @@ class EventsController < ApplicationController
     @events = Event.limit(limit).joins({:organizers => :user}).order('date DESC').where('users.id = ?', @current_user.id)
 		
     respond_to do |format|
-      format.xml  { render :layout => false }
+      if params[:version] == '2.0.3'
+        format.xml  { render :action => :event_list_2, :layout => false }
+      elsif params[:version] == '3.0'
+        format.xml  { render :action => :event_list_3, :layout => false }
+      end
     end
   end
 	
@@ -61,7 +65,7 @@ class EventsController < ApplicationController
 	
   # IOF XML 2.0 for now
   def start_list
-    unless params[:version] == '2.0.3' then
+    unless params[:version] == '2.0.3'
       raise ActionController::RoutingError.new('Not Found')
     end
 		
@@ -73,7 +77,7 @@ class EventsController < ApplicationController
 	
   # IOF XML 3.0 for now
   def entry_list
-    unless params[:version] == '3.0' then
+    unless params[:version] == '3.0'
       raise ActionController::RoutingError.new('Not Found')
     end
 		

@@ -18,6 +18,16 @@ class Event < ActiveRecord::Base
   def local_date
     date.in_time_zone(club.timezone)
   end
+  
+  def end_date
+    actual_end_date = read_attribute(:end_date)
+    actual_end_date ||= date + 1.hour
+    return actual_end_date
+  end
+  
+  def local_end_date
+    end_date.in_time_zone(club.timezone)
+  end
 	
   def has_location
     self.lat != nil and self.lng != nil
@@ -26,13 +36,13 @@ class Event < ActiveRecord::Base
   def address
     require "geocoder"
     geo = Geocoder.search("#{lat},#{lng}")
-    if(geo.first != nil) then
+    if(geo.first != nil)
       return geo.first.address
     end
   end
 	
   def url
-    if custom_url != nil then
+    if custom_url != nil
       custom_url 
     else
       "http://" + club.domain + "/events/view/" + id.to_s
@@ -50,7 +60,7 @@ class Event < ActiveRecord::Base
     event.end = (date + 1.hour).strftime("%Y%m%dT%H%M%S") + "Z"
     event.summary = name
     event.description = strip_tags(rendered_description)
-    if has_location then
+    if has_location
       event.geo = Icalendar::Geo.new(lat, lng)
       event.location = "#{lat},#{lng}"
     end
@@ -69,7 +79,7 @@ class Event < ActiveRecord::Base
     out[:start] = date.to_i
     out[:allDay] = false
     out[:url] = url
-    if series.nil? then
+    if series.nil?
         out[:textColor] = '#000000'
     else
         out[:textColor] = series.color
