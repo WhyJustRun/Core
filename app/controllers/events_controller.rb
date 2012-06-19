@@ -1,6 +1,16 @@
 class EventsController < ApplicationController
   before_filter :basic_auth, :only => [:event_list, :process_result_list]
-	
+
+  def respond_to_event_xml_version(wants)
+    wants.xml do
+      if params[:version] == '2.0.3'
+        render :action => :event_list_2, :layout => false
+      elsif params[:version] == '3.0'
+        render :action => :event_list_3, :layout => false
+      end
+    end
+  end
+  
   def index
     club_id = params[:club_id] || nil
     logger.info params[:end]
@@ -37,21 +47,17 @@ class EventsController < ApplicationController
         }
         render :text => output.to_json
       end
+      respond_to_event_xml_version(wants)
     end
     
   end
-  
-  def event_list
+
+  def event_list_for_user
     limit = params[:limit] || nil
-		
     @events = Event.limit(limit).joins({:organizers => :user}).order('date DESC').where('users.id = ?', @current_user.id)
-		
-    respond_to do |format|
-      if params[:version] == '2.0.3'
-        format.xml  { render :action => :event_list_2, :layout => false }
-      elsif params[:version] == '3.0'
-        format.xml  { render :action => :event_list_3, :layout => false }
-      end
+    
+    respond_to do |wants|
+      respond_to_event_xml_version(wants)
     end
   end
 	
