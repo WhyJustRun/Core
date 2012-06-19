@@ -8,7 +8,7 @@ WhyJustRun::Application.routes.draw do
 	match 'iof/:version/organization_list' => 'clubs#index', :constraints => version_constraint, :as => :event
 	match 'iof/:version/events/:id/entry_list' => 'events#entry_list', :constraints => version_constraint, :as => :event
 	
-	match 'iof/:version/users/event_list/limit/:limit' => 'events#event_list', :constraints => version_constraint, :as => :event
+	match 'iof/:version/users/event_list/limit/:limit' => 'events#event_list_for_user', :constraints => version_constraint, :as => :event
 	match 'iof/:version/users/event_list' => 'events#event_list_for_user', :constraints => version_constraint, :as => :event
 
 	match 'iof/:version/clubs/:club_id/event_list' => 'events#index', :constraints => version_constraint, :as => :event
