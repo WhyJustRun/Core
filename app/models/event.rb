@@ -57,7 +57,7 @@ class Event < ActiveRecord::Base
     Time.zone = "UTC"
     event = Icalendar::Event.new
     event.start = date.strftime("%Y%m%dT%H%M%S") + "Z"
-    event.end = (date + 1.hour).strftime("%Y%m%dT%H%M%S") + "Z"
+    event.end = end_date.strftime("%Y%m%dT%H%M%S") + "Z"
     event.summary = name
     event.description = strip_tags(rendered_description)
     if has_location
@@ -77,7 +77,13 @@ class Event < ActiveRecord::Base
     out[:id] = id
     out[:title] = name
     out[:start] = date.to_i
+    out[:end] = end_date.to_i
     out[:allDay] = false
+    if has_location
+      out[:lat] = lat
+      out[:lng] = lng
+    end
+    out[:description] = strip_tags(rendered_description)
     out[:url] = url
     if series.nil?
         out[:textColor] = '#000000'
