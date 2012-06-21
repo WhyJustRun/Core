@@ -78,6 +78,12 @@ class Event < ActiveRecord::Base
     out[:title] = name
     out[:start] = date.to_i
     out[:end] = end_date.to_i
+    if event_classification
+      out[:event_classification] = {
+        :id => event_classification.id,
+        :name => event_classification.name
+      }
+    end
     out[:allDay] = false
     if has_location
       out[:lat] = lat
