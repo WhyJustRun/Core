@@ -62,7 +62,7 @@ class Event < ActiveRecord::Base
     event.description = strip_tags(rendered_description)
     if has_location
       event.geo = Icalendar::Geo.new(lat, lng)
-      event.location = "#{lat},#{lng}"
+      event.location = "#{lat.round(4)},#{lng.round(4)}"
     end
     event.klass = "PUBLIC"
     # TODO-RWP event.created = self.created_at
@@ -89,7 +89,6 @@ class Event < ActiveRecord::Base
       out[:lat] = lat
       out[:lng] = lng
     end
-    out[:description] = strip_tags(rendered_description)
     out[:url] = url
     if series.nil?
         out[:textColor] = '#000000'
