@@ -52,6 +52,16 @@ class Event < ActiveRecord::Base
   def rendered_description
     BlueCloth.new(description).to_html
   end
+  
+  def number_of_participants
+  	actual_count = read_attribute(:number_of_participants)
+  	if (actual_count.nil?) then
+  		courses = Course.where(:event_id => self.id).select(:id)
+  		actual_count = Result.where(:course_id => courses).where('status != \'did_not_start\'').count
+  	end
+  	
+  	return actual_count
+  end
 	
   def to_ics
     Time.zone = "UTC"

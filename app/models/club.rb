@@ -17,4 +17,13 @@ class Club < ActiveRecord::Base
       "#{self.acronym.downcase}.whyjustrun.ca"
     end
   end
+  
+  def self.all_ancestors(id)
+    children = self.where(:parent_id => id).select(:id)
+    ancestors = [id]
+    children.each { |child|
+      ancestors += self.all_ancestors(child)
+    }
+    return ancestors
+  end
 end

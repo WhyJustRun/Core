@@ -17,6 +17,7 @@ WhyJustRun::Application.routes.draw do
 	match 'iof/:version/events/:id/result_list' => 'events#process_result_list', :constraints => version_constraint, :as => :event, :via => "post"
 	
 	match 'club/:club_id/events' => 'events#index', :as => :event
+	match 'club/:club_id/participation_report' => 'clubs#participant_counts', :as => :club
 	
   # The priority is based upon order of creation:
   # first created -> highest priority.

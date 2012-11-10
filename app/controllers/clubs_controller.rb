@@ -6,7 +6,14 @@ class ClubsController < ApplicationController
       format.xml  { render :layout => false }
     end
   end
-	
+  
+  # provides a CSV file with participant counts for the club events and any child club events
+  def participant_counts
+  	respond_to do |format|
+  		format.csv { render :layout => false }
+  	end
+  end
+  
   def events
     @events = Event.limit(50).where("club_id = ?", params[:id]).order('date DESC')
 	  
