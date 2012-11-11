@@ -3,6 +3,8 @@ require 'action_view'
 class Event < ActiveRecord::Base
   include ActionView::Helpers::SanitizeHelper
   
+  reverse_geocoded_by :lat, :lng
+  
   belongs_to :club
   has_one :map
   belongs_to :series

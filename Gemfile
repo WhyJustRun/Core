@@ -40,4 +40,4 @@ gem "rails_config", "~> 0.2.5"
 
 gem "icalendar", "~> 1.1.6"
 gem 'bluecloth'
-gem 'geocoder'
+gem "geocoder", "~> 1.1.5"

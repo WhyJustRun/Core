@@ -13,22 +13,39 @@ class EventsController < ApplicationController
   
   def index
     club_id = params[:club_id] || nil
+    club = Club.find(club_id)
     logger.info params[:end]
     start_time ||= params[:start].nil? ? nil : Time.at(params[:start].to_i)
     end_time ||= params[:end].nil? ? nil : Time.at(params[:end].to_i)
+    list_type = params[:list_type] || nil
     
     @events = (start_time.nil? and end_time.nil?) ? Event.limit(50) : Event;
-    
-    unless club_id.nil? then
-      @events = @events.where("club_id = ?", club_id)
-    end
     unless start_time.nil? then
       @events = @events.where("date >= ?", start_time)
     end
     unless end_time.nil? then
       @events = @events.where("date <= ?", end_time)
     end
-    @events = @events.order('date DESC')
+      
+    if (list_type == 'significant') then
+      center = [club.lat, club.lng]
+      significant_events = @events.where("club_id != ?", club_id)
+      club_significant_events = @events.where("club_id = ?", club_id).where('event_classification_id < ?', 5).order('date DESC')
+      local_events = significant_events.where(:event_classification_id => 4).near(center, 300).order('date DESC')
+      regional_events = significant_events.where(:event_classification_id => 3).near(center, 600).order('date DESC')
+      national_events = significant_events.where(:event_classification_id => 2).near(center, 2000).order('date DESC')
+      international_events = significant_events.where(:event_classification_id => 1).order('date DESC')
+      our_national_events = significant_events.where(:event_classification_id => 2).where(:club_id => club.national_clubs)
+      # this could be more efficient, since the above arrays are sorted already
+      significant_events_outside_club = (local_events + regional_events + (our_national_events | national_events) + international_events)
+      @events = (significant_events_outside_club + club_significant_events).sort! { |a, b| a.date <=> b.date }
+    else
+      # normal filter, for regular clubs
+      unless club_id.nil? then
+        @events = @events.where("club_id = ?", club_id).order('date DESC')
+      end
+    end
+
     logger.info @events.inspect
     respond_to do |wants|
       wants.ics do
@@ -49,7 +66,6 @@ class EventsController < ApplicationController
       end
       respond_to_event_xml_version(wants)
     end
-    
   end
 
   def event_list_for_user
