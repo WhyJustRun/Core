@@ -20,7 +20,7 @@ class Course < ActiveRecord::Base
             elsif b.score_points.nil? then
               -1
             else
-              a.score_points <=> b.score_points
+              -(a.score_points <=> b.score_points)
             end
           elsif a.status == :ok
             -1
