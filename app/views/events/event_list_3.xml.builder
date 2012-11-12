@@ -15,11 +15,13 @@ xml.EventList(
       xml.StartTime do
         xml.Date event.local_date.strftime('%F')
         xml.Time event.local_date.strftime('%T') + event.local_date.formatted_offset
+        xml.ISODate event.date.strftime('%FT%T.000Z')
       end
       
       xml.EndTime do
         xml.Date event.local_finish_date.strftime('%F')
         xml.Time event.local_finish_date.strftime('%T') + event.local_finish_date.formatted_offset
+        xml.ISODate event.finish_date.strftime('%FT%T.000Z')
       end
 	  
 	  classification = event.event_classification
