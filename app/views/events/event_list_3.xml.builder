@@ -18,8 +18,8 @@ xml.EventList(
       end
       
       xml.EndTime do
-        xml.Date event.local_end_date.strftime('%F')
-        xml.Time event.local_end_date.strftime('%T') + event.local_end_date.formatted_offset
+        xml.Date event.local_finish_date.strftime('%F')
+        xml.Time event.local_finish_date.strftime('%T') + event.local_finish_date.formatted_offset
       end
 	  
 	  classification = event.event_classification

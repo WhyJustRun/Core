@@ -9,8 +9,8 @@ xml.EventList do
         xml.Clock event.local_date.strftime('%T')
       end
       xml.FinishDate do
-        xml.Date event.local_end_date.strftime('%F')
-        xml.Clock event.local_end_date.strftime('%T')
+        xml.Date event.local_finish_date.strftime('%F')
+        xml.Clock event.local_finish_date.strftime('%T')
       end
       event.organizers.each { |organizer|
         xml.EventOfficial do

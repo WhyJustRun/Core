@@ -21,14 +21,14 @@ class Event < ActiveRecord::Base
     date.in_time_zone(club.timezone)
   end
   
-  def end_date
-    actual_end_date = read_attribute(:end_date)
-    actual_end_date ||= date + 1.hour
-    return actual_end_date
+  def finish_date
+    actual_finish_date = read_attribute(:finish_date)
+    actual_finish_date ||= date + 1.hour
+    return actual_finish_date
   end
   
-  def local_end_date
-    end_date.in_time_zone(club.timezone)
+  def local_finish_date
+    finish_date.in_time_zone(club.timezone)
   end
 	
   def has_location
@@ -69,7 +69,7 @@ class Event < ActiveRecord::Base
     Time.zone = "UTC"
     event = Icalendar::Event.new
     event.start = date.strftime("%Y%m%dT%H%M%S") + "Z"
-    event.end = end_date.strftime("%Y%m%dT%H%M%S") + "Z"
+    event.end = finish_date.strftime("%Y%m%dT%H%M%S") + "Z"
     event.summary = name
     event.description = strip_tags(rendered_description)
     if has_location
@@ -89,7 +89,7 @@ class Event < ActiveRecord::Base
     out[:id] = id
     out[:title] = name
     out[:start] = date.to_i
-    out[:end] = end_date.to_i
+    out[:end] = finish_date.to_i
     if event_classification
       out[:event_classification] = {
         :id => event_classification.id,
