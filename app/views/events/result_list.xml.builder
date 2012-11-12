@@ -33,6 +33,9 @@ if @version === '3.0' then
         xml.Course do
           xml.Length course.distance unless course.distance.nil?
           xml.Climb course.climb unless course.climb.nil?
+          xml.Extensions do
+            xml.ScoringType course.is_score_o ? 'Points' : 'Timed'
+          end
         end
 				
         i = 1
@@ -62,20 +65,39 @@ if @version === '3.0' then
                 minutes = result.time.min.to_i
                 seconds = result.time.sec.to_i
                 xml.Time hours * 3600 + minutes * 60 + seconds
-                if result.status == :ok then
-                  if not last_result.nil? and last_result.time == result.time then
-                    # tie
-                    tied_racers += 1
-                  else
-                    tied_racers = 0
+              end
+              if course.is_score_o then
+                unless result.score_points.nil? then
+                  if result.status == :ok then
+                    if not last_result.nil? and last_result.time == result.time and last_result.score_points == result.score_points then
+                      # tie
+                      tied_racers += 1
+                    else
+                      tied_racers = 0
+                    end
+                    xml.Position({ :type => "Course" }, i - tied_racers)
                   end
-                  xml.Position({ :type => "Course" }, i - tied_racers)
+                end
+              else
+                unless result.time.nil? then
+                  if result.status == :ok then
+                    if not last_result.nil? and last_result.time == result.time then
+                      # tie
+                      tied_racers += 1
+                    else
+                      tied_racers = 0
+                    end
+                    xml.Position({ :type => "Course" }, i - tied_racers)
+                  end
                 end
               end
 						  
               xml.Status result.iof_status
               unless result.points.nil? then
                 xml.Score({ :type => "WhyJustRun" }, result.points)
+              end
+              unless result.score_points.nil? then
+                xml.Score({ :type => "Points" }, result.score_points)
               end
             end
           end
