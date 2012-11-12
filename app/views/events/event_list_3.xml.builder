@@ -27,6 +27,16 @@ xml.EventList(
 	    xml.Classification classification.iof_3_0_name
 	  end
 	  
+	  club = event.club
+	  xml.Organiser do
+    	  xml.Id club.id
+    	  xml.Name club.name
+    	  if (not club.parent_id.nil?) then
+    	    xml.ParentOrganisationId club.parent_id
+    	  end
+    	  xml.ShortName club.acronym
+	  end
+	  
 	  if (not event.url.nil?) then
 	    xml.URL({:type => 'Website'}, event.url)
 	  end
