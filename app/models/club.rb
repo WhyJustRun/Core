@@ -10,14 +10,6 @@ class Club < ActiveRecord::Base
 	has_many :series
 	belongs_to :club_category
 	
-  def domain
-    if self.custom_domain != nil then
-      self.custom_domain
-    else
-      "#{self.acronym.downcase}.whyjustrun.ca"
-    end
-  end
-  
   def children
     Club.where(:parent_id => id)
   end
