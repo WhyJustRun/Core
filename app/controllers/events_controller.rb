@@ -163,14 +163,14 @@ class EventsController < ApplicationController
                 if status.blank? then
                   status = "OK"
                 end
-                unless(time.blank?) then time = time.to_i.seconds.since(Time.utc(0)) end
+                unless(time.blank?) then time_seconds = time.to_i.seconds end
                   unless start_time.blank? or end_time.blank? then
-                    time = (Time.parse(end_time) - Time.parse(start_time)).seconds.since(Time.utc(0))
+                    time_seconds = (Time.parse(end_time) - Time.parse(start_time)).seconds
                   end
                   course_results << {
                     :name => result.at_css('Person > Name > Given').content + " " + result.at_css('Person > Name > Family').content,
                     :id => user_id,
-                    :time => time,
+                    :time_seconds => time_seconds,
                     :status => status
                   }
                   results[course_id] = course_results
@@ -203,7 +203,7 @@ class EventsController < ApplicationController
 					
                   if matched then 
                     existing_result.iof_status = result[:status]
-                    existing_result.time = result[:time]
+                    existing_result.time_seconds = result[:time_seconds]
                     existing_result.save
                     matched_existing_results << existing_result
                     break
@@ -215,7 +215,7 @@ class EventsController < ApplicationController
                   if result[:id].blank? then
                     matches = User.where(:name => result[:name]).all
                     if(matches.length == 1) then
-                      new_result = Result.create(:user_id => matches.first.id, :time => result[:time], :course_id => course.id)
+                      new_result = Result.create(:user_id => matches.first.id, :time_seconds => result[:time_seconds], :course_id => course.id)
                       new_result.save
                     elsif(matches.length > 1)
                       # don't insert if there are more than one possible people..
@@ -223,13 +223,13 @@ class EventsController < ApplicationController
                       return
                     else
                       # create new user
-                      new_result = Result.create(:time => result[:time], :course_id => course.id)
+                      new_result = Result.create(:time_seconds => result[:time_seconds], :course_id => course.id)
                       user = User.create(:name => result[:name])
                       new_result.user_id = user.id
                       new_result.save
                     end
                   else
-                    new_result = Result.create(:user_id => result[:id], :time => result[:time], :course_id => course.id)
+                    new_result = Result.create(:user_id => result[:id], :time_seconds => result[:time_seconds], :course_id => course.id)
                     new_result.save
                   end
                 end

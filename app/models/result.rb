@@ -37,4 +37,10 @@ class Result < ActiveRecord::Base
   def status= (value)
     write_attribute(:status, value.to_s)
   end
+  
+  def time
+    if not time_seconds.nil? then
+      time_seconds.since(Time.utc(0))
+    end
+  end
 end

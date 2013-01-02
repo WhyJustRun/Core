@@ -59,12 +59,8 @@ if @version === '3.0' then
             end
 						
             xml.Result do
-              unless result.time.nil? then
-                # Can't say the start time or end time cause we don't know :(
-                hours = result.time.hour.to_i
-                minutes = result.time.min.to_i
-                seconds = result.time.sec.to_i
-                xml.Time hours * 3600 + minutes * 60 + seconds
+              unless result.time_seconds.nil? then
+                xml.Time result.time_seconds
               end
               if course.is_score_o then
                 unless result.score_points.nil? then
