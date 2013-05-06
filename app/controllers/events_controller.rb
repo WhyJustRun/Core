@@ -18,7 +18,6 @@ class EventsController < ApplicationController
     club_id = params[:club_id] || nil
     multiple_clubs = club_id.nil?
     club = Club.find(club_id) unless multiple_clubs
-    logger.info params[:end]
     start_time ||= params[:start].nil? ? nil : Time.at(params[:start].to_i)
     end_time ||= params[:end].nil? ? nil : Time.at(params[:end].to_i)
     list_type = params[:list_type] || nil
@@ -50,7 +49,6 @@ class EventsController < ApplicationController
       end
     end
 
-    logger.info @events.inspect
     respond_to do |wants|
       wants.ics do
         calendar = Icalendar::Calendar.new
@@ -182,8 +180,6 @@ class EventsController < ApplicationController
             else 
               raise ActionController::RoutingError.new('Not Found')
             end
-		
-            logger.info results.inspect
 		
             event = Event.find(params[:id])
             event.results_posted = 1
