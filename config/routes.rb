@@ -1,25 +1,36 @@
 WhyJustRun::Application.routes.draw do
+  devise_for :users, :controllers => { :registrations => 'users/registrations', :omniauth_callbacks => "users/omniauth_callbacks" }
+
   root :to => "home#index"
-	resources :events
-	
-	# :version => /[^\/]*/ is needed to allow dots in the IOF XML version #
-	version_constraint = { :version => /[^\/]*/ }
-	match 'iof/:version/events/:id/start_list' => 'events#start_list', :constraints => version_constraint, :as => :event
-	match 'iof/:version/organization_list' => 'clubs#index', :constraints => version_constraint, :as => :event
-	match 'iof/:version/events/:id/entry_list' => 'events#entry_list', :constraints => version_constraint, :as => :event
-	
-	match 'iof/:version/users/event_list/limit/:limit' => 'events#event_list_for_user', :constraints => version_constraint, :as => :event
-	match 'iof/:version/users/event_list' => 'events#event_list_for_user', :constraints => version_constraint, :as => :event
+  match 'events/calendar' => 'events#calendar'
+  match 'clubs/map' => 'clubs#map'
+  match 'users/sign_in_clubsite' => 'users#sign_in_clubsite'
+  match 'users/sign_out_clubsite' => 'users#sign_out_clubsite'
+  # must be an integer
+  user_id_constraint = { :user_id => /\b\d+\b/ }
+  match 'users/:user_id' => 'users#show', :constraints => user_id_constraint, :via => [:get], :as => :user
+  match 'users/:user_id' => 'users#send_message', :constraints => user_id_constraint, :via => [:put]
 
-	match 'iof/:version/clubs/:club_id/event_list' => 'events#index', :constraints => version_constraint, :as => :event
-	match 'iof/:version/clubs/:club_id/event_list/:list_type' => 'events#index', :constraints => version_constraint, :as => :event
+  # :version => /[^\/]*/ is needed to allow dots in the IOF XML version #
+  version_constraint = { :version => /[^\/]*/ }
+  match 'iof/:version/events/:id/start_list' => 'events#start_list', :constraints => version_constraint, :as => :event
+  match 'iof/:version/organization_list' => 'clubs#index', :constraints => version_constraint, :as => :event
+  match 'iof/:version/events/:id/entry_list' => 'events#entry_list', :constraints => version_constraint, :as => :event
 
-	match 'iof/:version/events/:id/result_list' => 'events#result_list', :constraints => version_constraint, :as => :event, :via => "get"
-	match 'iof/:version/events/:id/result_list' => 'events#process_result_list', :constraints => version_constraint, :as => :event, :via => "post"
-	
-	match 'club/:club_id/events' => 'events#index', :as => :event
-	match 'club/:club_id/participation_report' => 'clubs#participant_counts', :as => :club
-	
+  match 'iof/:version/users/event_list/limit/:limit' => 'events#event_list_for_user', :constraints => version_constraint, :as => :event
+  match 'iof/:version/users/event_list' => 'events#event_list_for_user', :constraints => version_constraint, :as => :event
+
+  match 'iof/:version/clubs/:club_id/event_list' => 'events#index', :constraints => version_constraint, :as => :event
+  match 'iof/:version/clubs/:club_id/event_list/:list_type' => 'events#index', :constraints => version_constraint, :as => :event
+
+  match 'iof/:version/events/:id/result_list' => 'events#result_list', :constraints => version_constraint, :as => :event, :via => "get"
+  match 'iof/:version/events/:id/result_list' => 'events#process_result_list', :constraints => version_constraint, :as => :event, :via => "post"
+
+  match 'events' => 'events#index', :as => :event
+  match 'club/:club_id/events' => 'events#index', :as => :event
+  match 'club/:club_id/participation_report' => 'clubs#participant_counts', :as => :club
+
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

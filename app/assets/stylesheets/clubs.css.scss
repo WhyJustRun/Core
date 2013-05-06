@@ -1,3 +1,23 @@
 // Place all the styles related to the clubs controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+//= require leaflet.css.erb
+
+/* This hack allows us to get a responsive resizing div with fixed aspect ratio*/
+.leaflet-container {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+}
+
+.leaflet-dummy {
+    margin-top: 60%;
+}
+
+.leaflet-map {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}

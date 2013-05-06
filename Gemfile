@@ -5,9 +5,21 @@ gem 'rails', '3.2.13'
 gem "mysql2", "~> 0.3.11"
 gem 'sqlite3'
 
-#Authentication
+# Authentication
 gem "bcrypt-ruby"
 gem "devise", "~> 2.2.3"
+gem "devise-encryptable", "~> 0.1.1"
+
+gem "omniauth", "~> 1.1.4"
+gem "omniauth-facebook", "~> 1.4.1"
+gem "omniauth-google-oauth2", "~> 0.1.17"
+
+# Maps
+
+gem "leaflet-rails", "~> 0.5.0"
+
+# Spam prevention
+gem "recaptcha", "~> 0.3.5", :require => "recaptcha/rails"
 
 # Bootstrap
 gem "therubyracer"
@@ -42,7 +54,7 @@ group :test do
 end
 
 gem "nokogiri", "~> 1.5.0"
-gem "rails_config", "~> 0.2.5"
+gem "rails_config", "~> 0.3.3"
 
 gem "icalendar", "~> 1.1.6"
 gem 'bluecloth'

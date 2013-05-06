@@ -1,5 +1,5 @@
 class EventsController < ApplicationController
-  before_filter :basic_auth, :only => [:event_list_for_user, :process_result_list]
+  before_filter :authenticate_user!, :only => [:event_list_for_user, :process_result_list]
 
   def respond_to_event_xml_version(wants)
     wants.xml do
@@ -11,9 +11,18 @@ class EventsController < ApplicationController
     end
   end
   
+  def calendar
+    
+  end
+
+  def ical_feed
+
+  end
+
   def index
     club_id = params[:club_id] || nil
-    club = Club.find(club_id)
+    multiple_clubs = club_id.nil?
+    club = Club.find(club_id) unless multiple_clubs
     logger.info params[:end]
     start_time ||= params[:start].nil? ? nil : Time.at(params[:start].to_i)
     end_time ||= params[:end].nil? ? nil : Time.at(params[:end].to_i)
@@ -60,7 +69,7 @@ class EventsController < ApplicationController
       wants.json do
         output = []
         @events.each { |event|
-          output << event.to_fullcalendar
+          output << event.to_fullcalendar(multiple_clubs)
         }
         render :text => output.to_json
       end
@@ -70,7 +79,7 @@ class EventsController < ApplicationController
 
   def event_list_for_user
     limit = params[:limit] || nil
-    @events = Event.limit(limit).joins({:organizers => :user}).order('date DESC').where('users.id = ?', @current_user.id)
+    @events = Event.limit(limit).joins({:organizers => :user}).order('date DESC').where('users.id = ?', current_user.id)
     
     respond_to do |wants|
       respond_to_event_xml_version(wants)
@@ -123,12 +132,10 @@ class EventsController < ApplicationController
     end
   end
 	
-  # TODO-RWP This could use a refactor.
-  # TODO-RWP Need to switch to Devise
   def process_result_list
     require 'nokogiri'
 		
-    user = @current_user
+    user = current_user
     if Organizer.where(:event_id => params[:id], :user_id => user.id).count == 0 then
       render :status => :unauthorized
       return

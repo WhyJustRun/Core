@@ -1,3 +1,111 @@
 // Place all the styles related to the users controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+// Source: http://jsfiddle.net/derekpcollins/vyLuw/
+.wjr-sign-in-btn {
+    background: #f3f3f3;
+    border-radius: 4px;
+    box-shadow: 0 1px 1px rgba(0,0,0,.2);
+    color: #5b5b5b;
+    display: inline-block;
+    font: 300 14px/normal 'Helvetica Neue', Helvetica, sans-serif;
+    position: relative;
+    text-decoration: none;
+    text-shadow: 0 1px 1px #fff;
+    width: 221px;
+    /* Optional: Provides background transition on hover */
+    -webkit-transition: background .15s linear;
+    -moz-transition: background .15s linear;
+    -ms-transition: background .15s linear;
+    -o-transition: background .15s linear;
+    transition: background .15s linear;
+}
+
+.wjr-sign-up-btn {
+    width: 226px;
+}
+
+.wjr-sign-in-header {
+    text-align: center;
+}
+
+.wjr-sign-up-column {
+    width: 226px;
+    margin: 0 auto;
+}
+
+.wjr-sign-in-column {
+    width: 221px;
+    margin: 0 auto;
+}
+
+.wjr-sign-in-btn-email {
+    border-top: 6px solid orange;
+}
+
+.wjr-sign-in-btn-google {
+    border-top: 6px solid #F90101; /* Red */
+}
+
+.wjr-sign-in-btn-facebook {
+    border-top: 6px solid rgba(76, 102, 164, 1); /* Facebook blue */
+}
+
+/* Add a highlight to the top of the button */
+.wjr-sign-in-btn:after {
+    border-top: 1px solid rgba(255,255,255,.3);
+    border-top-right-radius: 4px;
+    border-top-left-radius: 4px;
+    content: '';
+    display: block;
+    height: 100%;
+    position: absolute;
+    top: -6px;
+    width: 100%;
+}
+.wjr-sign-in-btn-google:before {
+    background: #F2B50F; /* Yellow */
+    border-top-right-radius: 4px;
+    content: '';
+    display: block;
+    height: 6px;
+    position: absolute;
+    right: 0;
+    top: -6px;
+    width: 50%;
+}
+.wjr-sign-in-btn span {
+    display: inline-block;
+    padding: 12px 40px;
+}
+.wjr-sign-in-btn-google span:before {
+    background: #0266C8; /* Blue */
+    content: '';
+    display: block;
+    height: 6px;
+    position: absolute;
+    right: 50%;
+    top: -6px;
+    width: 25%;
+}
+.wjr-sign-in-btn-google span:after {
+    background: #00933B; /* Green */
+    content: '';
+    display: block;
+    height: 6px;
+    left: 50%;
+    position: absolute;
+    top: -6px;
+    width: 25%;
+}
+.wjr-sign-in-btn strong {
+    font-weight: 500;
+}
+.wjr-sign-in-btn:hover {
+    background: #dbdbdb;
+}
+.wjr-sign-in-btn:active {
+    background: #f3f3f3;
+}
+

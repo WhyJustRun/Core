@@ -13,7 +13,11 @@ class ClubsController < ApplicationController
   		format.csv { render :layout => false }
   	end
   end
-  
+
+  def map
+    @clubs = Club.all_leaves
+  end
+
   def events
     @events = Event.limit(50).where("club_id = ?", params[:id]).order('date DESC')
 	  

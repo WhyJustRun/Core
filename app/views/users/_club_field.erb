@@ -1,0 +1,6 @@
+<div class="control-group">
+  <%= f.label :club_id, :class => 'control-label' %>
+  <div class="controls">
+    <%= f.collection_select(:club_id, Club.all_ordered, :id, :name, :include_blank => 'Choose your home club') %>
+  </div>
+</div>

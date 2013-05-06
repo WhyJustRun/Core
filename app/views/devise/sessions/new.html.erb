@@ -1,0 +1,42 @@
+<% title 'Sign in' %>
+<div class="row">
+  <div class="span4 offset2">
+    <h3 class="wjr-sign-in-header">Sign in</h3>
+    <div class="wjr-sign-in-column">
+      <%= link_to "<span>Sign in with <strong>Facebook</strong></span>".html_safe, user_omniauth_authorize_path(:facebook), :class => "wjr-sign-in-btn wjr-sign-in-btn-facebook" %>
+      <br/><br/>
+      <%= link_to "<span>Sign in with <strong>Google</strong></span>".html_safe, user_omniauth_authorize_path(:google_oauth2), :class => "wjr-sign-in-btn wjr-sign-in-btn-google" %>
+      <hr/>
+      <p>Sign in with your email address (existing WhyJustRun users)</h4>
+      <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
+        <%= f.email_field :email, :required => true, :autofocus => true, :placeholder => "Email" %>
+        <br/>
+        <%= f.password_field :password, :required => true, :placeholder => "Password" %>
+        <br/>
+        <% if devise_mapping.rememberable? -%>
+          <span>
+            <%= f.label :remember_me, f.check_box(:remember_me) + " Remember Me", :class => "checkbox" %>
+          </span>
+        <% end -%>
+
+        <div><%= f.submit "Sign in", :class => "btn btn-primary" %></div>
+      <% end %>
+
+      <hr/>
+      <h3>Forgot password?</h3> 
+      <%= render "devise/passwords/new" %> 
+    </div>
+  </div>
+
+  <div class="span4">
+    <h3 class="wjr-sign-in-header">Need an account?</h3>
+    <div class="wjr-sign-up-column">
+      <%= link_to "<span>Sign up with <strong>Facebook</strong></span>".html_safe, user_omniauth_authorize_path(:facebook), :class => "wjr-sign-in-btn wjr-sign-up-btn wjr-sign-in-btn-facebook" %>
+      <br/><br/>
+      <%= link_to "<span>Sign up with <strong>Google</strong></span>".html_safe, user_omniauth_authorize_path(:google_oauth2), :class => "wjr-sign-in-btn wjr-sign-up-btn wjr-sign-in-btn-google" %>
+      <br/><br/>
+      <%= link_to "<span>Sign up with <strong>Email</strong></span>".html_safe, new_registration_path(resource_name), :class => "wjr-sign-in-btn wjr-sign-up-btn wjr-sign-in-btn-email" %>
+    </div>
+  </div>
+</div>
+

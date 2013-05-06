@@ -83,11 +83,11 @@ class Event < ActiveRecord::Base
     event
   end
   
-  def to_fullcalendar
+  def to_fullcalendar(style_for_multiple_clubs)
     Time.zone = "UTC"
     out = {}
     out[:id] = id
-    out[:title] = name
+    out[:title] = style_for_multiple_clubs ? club.acronym + ' - ' + name : name
     out[:start] = date.to_i
     out[:end] = finish_date.to_i
     if event_classification

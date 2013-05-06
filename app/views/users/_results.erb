@@ -1,0 +1,29 @@
+<h2>Results and Registrations (<%= user.results.count %>)</h2>
+<% if user.results.count == 0 then %>
+  <p>No event participation yet!</p>
+<% else %>
+  <table class="table table-striped table-bordered table-condensed">
+    <thead>
+      <th>Date</th>
+      <th>Event</th>
+      <th>Time</th>
+      <th>Points</th>
+    </thead>
+    <tbody>
+      <% user.results.each { |result| 
+        event = result.course.event
+      %>
+      <tr>
+        <td><%= event.date.strftime("%b #{event.date.day.ordinalize}, %Y") %></td>
+        <td><%= link_to event.name, event.url %></td>
+        <td>
+          <% if result.time or result.status != :ok then %>
+            <%= (result.status == :ok and result.time) ? result.time.strftime("%T") : result.readable_status  %>
+          <% end %>
+        </td>
+        <td><%= result.points %></td>
+      </tr>
+      <% } %>
+    </tbody>
+  </table>
+<% end %>

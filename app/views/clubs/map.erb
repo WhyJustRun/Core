@@ -1,0 +1,21 @@
+<%= title 'Club Map' %>
+<% content_for :javascript do %>
+  $(window).load(function() {
+  var map = L.map('leaflet-map');
+  L.tileLayer('http://{s}.tiles.mapbox.com/v3/russell.map-8bk5s5sh/{z}/{x}/{y}.png', { detectRetina: true }).addTo(map);
+  var point = new L.LatLng(<%= @clubs[0].lat %>, <%= @clubs[0].lng %>);
+  var bounds = new L.LatLngBounds(point, point);
+  <% @clubs.each { |club| %>
+    point = new L.LatLng(<%= club.lat %>, <%= club.lng %>);
+    bounds.extend(point);
+    L.marker(point).addTo(map)
+    .bindPopup("<%= escape_javascript(link_to club.name, club.url) %>");
+  <% } %>
+  map.fitBounds(bounds);
+  });
+<% end %>
+
+<div class="leaflet-container">
+  <div class="leaflet-dummy"></div>
+  <div id='leaflet-map' class="leaflet-map"></div>
+</div>

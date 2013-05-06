@@ -1,151 +1,116 @@
-<div id="container">
- <div id="header"></div>
+<h2>About Orienteering</h2>
+<ul id="about-orienteering-nav" class="nav nav-tabs">
+  <li><a href="#orienteering-basics">Orienteering</a></li>
+  <li><a href="#orienteering-map">The map</a></li>
+  <li><a href="#orienteering-course">The course</a></li>
+</ul>
+<div class="tabs">
+  <div id="orienteering-basics">
+    <table>
+      <tr>
+        <th><h4>Navigation!</h4></th>
 
- <div id="content">
-   <%= image_tag "banner.jpg" %>
+        <th><h4>Terrain running!</h4></th>
 
-   <table>
-     <tr>
-       <td width="161">
-         <div class="tabList">
-           <div class="tab-button">
-             <a href="#orienteering-basics">Orienteering<br/>
-             <%= image_tag "button.jpg" %></a>
-           </div>
-  
-           <div class="tab-button">
-             <a href="#orienteering-map">The map<br />
-             <%= image_tag "button_map.jpg" %></a>
-           </div>
-  
-           <div class="tab-button">
-             <a href="#orienteering-course">The course<br />
-             <%= image_tag "button_course.jpg" %></a>
-           </div>
-         </div>
-       </td>
-       <td>
-       <div class="tabs">
-         <div id="orienteering-basics">
-           <table>
-           <tr>
-             <th>Navigation!</th>
-      
-             <th>Terrain running!</th>
-      
-             <th>Checkpoints!</th>
-           </tr>
-           <tr>
-           <td width="200px"><%= image_tag "home2.gif", :width => 175 %> Orienteering involves
-           navigating between checkpoints using a detailed map and compass.</td>
-    
-           <td width="200px"><%= image_tag "home1.jpg", :width => 175 %> Pick your own route
-           between the checkpoints: Along a path, over a hill, or straight through the
-           forest!<br /></td>
-    
-           <td width="200px"><%= image_tag "home3.jpg", :width => 175 %> Checkpoints are
-           marked with red and white flags, and are indicated by a circle on the map.</td>
-           </tr>
-           </table>
-         </div>
-         <div id="orienteering-map">
-           <table>
-           <tr>
-             <th>Map Sample</th>
-      
-             <th>Legend</th>
-             <th></th>
-           </tr>
-           <tr>
-             <td width="200px">
-                Orienteering uses a very detailed map, typically at a 1:4000 to 1:15 000 scale. Below is a sample map of a
-                forested area:
-                <%= image_tag "map1.gif", :width => 175 %>
-             </td>
-             <td width="200px">
-                <%= image_tag "map_legend_urban.gif", :width => 175 %>
-                A checkpoint next to a lone tree:
-                <%= image_tag "map2.jpg", :width => 175 %>
-             </td>
-             <td width="200px">
-                <%= image_tag "map_legend_forest.gif", :width => 175 %><br><br>
-                A checkpoint at the bottom of a small cliff:
-                <%= image_tag "map3.jpg", :width => 175 %>
-             </td>
-           </tr>
-           </table>
-         </div>
-         <div id="orienteering-course">
-           <table>
-           <tr>
-             <th>The start</th>
-      
-             <th>Checkpoints/finish</th>
-      
-             <th>Course types</th>
-           </tr>
-           <tr>
-           <td width="200px">
-              The orienteering course is designed to challenge the participant both in terms of navigation as well as route planning.
-              <br><br>
-              You must visit all checkpoints but the route between each is up to you!
-              <br><br>
-              The start of the course is indicated by a purple triangle on the map:
-              <%= image_tag "course1.gif", :width => 175 %>
-              <br><br>
-           </td>
-           <td width="200px">
-              Competitors go to each numbered checkpoint in order:
-              <%= image_tag "course3.gif", :width => 175 %>
-              <br><br>
-              The two concentric circles mark the end of the orienteering course:
-              <%= image_tag "course2.gif", :width => 175 %>
-           </td>
-           <td width="200px">
-              <span class="root_menu">Sprint:</span> short courses around 2-3km with winning times around 12-15 minutes. The course requires the participant to make quick decisions.
-              <br> <hr width=175px>
-              <span class="root_menu">Middle:</span> 25-35 minute winning time. Navigation skills are especially important.
-              <br> <hr width=175px>
-              <span class="root_menu">Long:</span> 60-90 minute winning time. Route planning skills are essential here.
-              <br> <hr width=175px>
-              <span class="root_menu">Night:</span> courses run at nighttime where participants use headlamps.
-              <br> <hr width=175px>
-              <span class="root_menu">Score:</span> participants can visit the checkpoints in any order.
-           </td>
-           </tr>
-           </table>
-         </div>
-       </div>
-       </td>
-     </tr>
-   </table>
+        <th><h4>Checkpoints!</h4></th>
+      </tr>
+      <tr>
+        <td class="about-orienteering-column"><%= image_tag "home2.gif", :width => 175 %> Orienteering involves
+          navigating between checkpoints using a detailed map and compass.</td>
 
-   <h2>Try orienteering today!</h2><a href=
-   "http://orienteeringbc.ca/vico">Victoria</a> - <a href=
-   "http://gvoc.whyjustrun.ca">Vancouver</a> - <a href=
-   "http://orienteeringbc.ca/sage">Kamloops</a> - <a href=
-   "http://orienteeringbc.ca/williamslake">Williams Lake</a> - <a href=
-   "http://kootenayorienteering.com">Kootenay</a><br />
-   <br />
- </div>
+        <td class="about-orienteering-column"><%= image_tag "home1.jpg", :width => 175 %> Pick your own route
+          between the checkpoints: Along a path, over a hill, or straight through the
+          forest!<br /></td>
 
- <div id="footer">
-   &copy; Greater Vancouver Orienteering Club 2011
- </div>
+        <td class="about-orienteering-column"><%= image_tag "home3.jpg", :width => 175 %> Checkpoints are
+          marked with red and white flags, and are indicated by a circle on the map.</td>
+      </tr>
+    </table>
+  </div>
+  <div id="orienteering-map">
+    <table>
+      <tr>
+        <th><h4>Map Sample</h4></th>
+
+        <th><h4>Legend</h4></th>
+        <th></th>
+      </tr>
+      <tr>
+        <td class="about-orienteering-column">
+          Orienteering uses a very detailed map, typically at a 1:4000 to 1:15 000 scale. Below is a sample map of a
+          forested area:
+          <%= image_tag "map1.gif", :width => 175 %>
+        </td>
+        <td class="about-orienteering-column">
+          <%= image_tag "map_legend_urban.gif", :width => 175 %>
+          A checkpoint next to a lone tree:
+          <%= image_tag "map2.jpg", :width => 175 %>
+        </td>
+        <td class="about-orienteering-column">
+          <%= image_tag "map_legend_forest.gif", :width => 175 %><br><br>
+          A checkpoint at the bottom of a small cliff:
+          <%= image_tag "map3.jpg", :width => 175 %>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div id="orienteering-course">
+    <table>
+      <tr>
+        <th><h4>The start</h4></th>
+
+        <th><h4>Checkpoints/finish</h4></th>
+
+        <th><h4>Course types</h4></th>
+      </tr>
+      <tr>
+        <td class="about-orienteering-column">
+          The orienteering course is designed to challenge the participant both in terms of navigation as well as route planning.
+          <br><br>
+          You must visit all checkpoints but the route between each is up to you!
+          <br><br>
+          The start of the course is indicated by a purple triangle on the map:
+          <%= image_tag "course1.gif", :width => 175 %>
+          <br><br>
+        </td>
+        <td class="about-orienteering-column">
+          Competitors go to each numbered checkpoint in order:
+          <%= image_tag "course3.gif", :width => 175 %>
+          <br><br>
+          The two concentric circles mark the end of the orienteering course:
+          <%= image_tag "course2.gif", :width => 175 %>
+        </td>
+        <td class="about-orienteering-column">
+          <span class="root_menu">Sprint:</span> short courses around 2-3km with winning times around 12-15 minutes. The course requires the participant to make quick decisions.
+          <hr/>
+          <span class="root_menu">Middle:</span> 25-35 minute winning time. Navigation skills are especially important.
+          <hr/>
+          <span class="root_menu">Long:</span> 60-90 minute winning time. Route planning skills are essential here.
+          <hr/>
+          <span class="root_menu">Night:</span> courses run at nighttime where participants use headlamps.
+          <hr/>
+          <span class="root_menu">Score:</span> participants can visit the checkpoints in any order.
+        </td>
+      </tr>
+    </table>
+  </div>
 </div>
 
-<script type="text/javascript">
-$(function () {
+<h2>Try Orienteering Today!</h2>
+<%= render_club_tree(@top_level_clubs) =%>
+
+<% content_for :javascript do %>
+  $(function () {
 
   var tabContainers = $('div.tabs > div');
   tabContainers.hide().filter(':first').show();
-  
-  $('.tabList a').click(function () {
-  	tabContainers.hide();
-  	tabContainers.filter(this.hash).show();
-  	$('.tabList div').removeClass('selected');
-  	$(this.parentNode).addClass('selected');
-  	return false;
+
+  $('#about-orienteering-nav a').click(function () {
+  tabContainers.hide();
+  tabContainers.filter(this.hash).show();
+  $('#about-orienteering-nav li').removeClass('active');
+  $(this.parentNode).addClass('active');
+  return false;
   }).filter(':first').click();
-});
-</script>
+  });
+<% end %>
