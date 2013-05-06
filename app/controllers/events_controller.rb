@@ -12,11 +12,6 @@ class EventsController < ApplicationController
   end
   
   def calendar
-    
-  end
-
-  def ical_feed
-
   end
 
   def index

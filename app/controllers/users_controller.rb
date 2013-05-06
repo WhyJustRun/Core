@@ -14,7 +14,7 @@ class UsersController < ApplicationController
       flash.now[:notice] = 'Message sent!'
       message = nil
     else
-      flash.now[:alert] = 'The captcha you entered was incorrect. Please try again';
+      flash.now[:alert] = 'The captcha you entered was incorrect. Please try again'
     end 
 
     self.show
@@ -41,7 +41,7 @@ class UsersController < ApplicationController
     end
 
     club = Club.find_by_id(params[:redirect_club_id])
-    redirect_to("http://" + club.domain + "/users/logoutComplete");
+    redirect_to("http://" + club.domain + "/users/logoutComplete")
   end
 end
 
