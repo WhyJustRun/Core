@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
 
   def store_location
     # store last url as long as it isn't a /users path, except if it is a profile page
-    if (not (request.fullpath =~ /\/users/) or request.fullpath =~ /\/users\/\b\d+\b/) then
+    if not request.xhr? and (not (request.fullpath =~ /\/users/) or request.fullpath =~ /\/users\/\b\d+\b/) then
       session[:previous_url] = request.fullpath
     end 
     
