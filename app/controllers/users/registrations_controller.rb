@@ -8,6 +8,8 @@ class Users::RegistrationsController < Devise::RegistrationsController
       build_resource
       clean_up_passwords(resource)
       flash.now[:alert] = 'The captcha entered was incorrect. Please re-enter the code.'
+      flash.delete :recaptcha_error
+      render :new
     end
   end
 
