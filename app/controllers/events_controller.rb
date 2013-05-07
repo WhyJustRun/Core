@@ -18,7 +18,7 @@ class EventsController < ApplicationController
     club_id = params[:club_id] || nil
     multiple_clubs = club_id.nil? || (params[:prefix_club_acronym])
     only_non_club_events = (params[:only_non_club])
-    club = Club.find(club_id)
+    club = Club.find(club_id) unless club_id.nil?
     start_time ||= params[:start].nil? ? nil : Time.at(params[:start].to_i)
     end_time ||= params[:end].nil? ? nil : Time.at(params[:end].to_i)
     list_type = params[:list_type] || nil
@@ -31,6 +31,7 @@ class EventsController < ApplicationController
       @events = @events.where("date <= ?", end_time)
     end
       
+    @events = @events.includes(:series, :club, :event_classification)
     if (list_type == 'significant')
       center = [club.lat, club.lng]
       significant_events = @events.where("club_id != ?", club_id)
