@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130503230210) do
+ActiveRecord::Schema.define(:version => 20130507173155) do
 
   create_table "club_categories", :force => true do |t|
     t.string "name"
@@ -36,14 +36,6 @@ ActiveRecord::Schema.define(:version => 20130503230210) do
   end
 
   add_index "clubs", ["club_category_id"], :name => "club_category_id"
-
-  create_table "configuration", :force => true do |t|
-    t.string  "key"
-    t.string  "value"
-    t.integer "club_id"
-  end
-
-  add_index "configuration", ["club_id"], :name => "club_id"
 
   create_table "content_blocks", :force => true do |t|
     t.string  "key"
@@ -226,11 +218,6 @@ ActiveRecord::Schema.define(:version => 20130503230210) do
     t.text "description"
   end
 
-  create_table "schema", :force => true do |t|
-    t.string "key"
-    t.string "value"
-  end
-
   create_table "series", :force => true do |t|
     t.text    "acronym",     :limit => 255
     t.text    "name",        :limit => 255
@@ -252,13 +239,6 @@ ActiveRecord::Schema.define(:version => 20130503230210) do
 
   add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
-
-  create_table "tokens", :force => true do |t|
-    t.datetime "created"
-    t.datetime "modified"
-    t.string   "token",    :limit => 32
-    t.text     "data"
-  end
 
   create_table "users", :force => true do |t|
     t.integer  "club_id"
