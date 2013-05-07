@@ -9,7 +9,7 @@ class UsersController < ApplicationController
     message = params[:message]
     authenticate_user!
     logger.debug params
-    if verify_recaptcha then
+    if verify_recaptcha
       UserMailer.send_message_email(current_user, User.find_by_id(params[:user_id]), message).deliver
       flash.now[:notice] = 'Message sent!'
       message = nil
@@ -23,7 +23,7 @@ class UsersController < ApplicationController
   end
 
   def sign_in_clubsite
-    if user_signed_in? then
+    if user_signed_in?
       club = Club.find_by_id(params[:redirect_club_id])
       redirect_to(current_user.post_sign_in_clubsite_redirect_for_club(club))
       session[:redirect_club_id] = nil
@@ -36,7 +36,7 @@ class UsersController < ApplicationController
   end
 
   def sign_out_clubsite
-    if user_signed_in? then
+    if user_signed_in?
       sign_out
     end
 
