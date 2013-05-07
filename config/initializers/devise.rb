@@ -7,7 +7,7 @@ Devise.setup do |config|
   end
 
   Warden::Manager.before_logout do |user, auth, opts|  
-    user.sign_out
+    user.sign_out unless user.nil?
   end
   
   # Facebook Configuration
