@@ -16,24 +16,29 @@ class EventsController < ApplicationController
 
   def index
     club_id = params[:club_id] || nil
-    multiple_clubs = club_id.nil?
-    club = Club.find(club_id) unless multiple_clubs
+    multiple_clubs = club_id.nil? || (params[:prefix_club_acronym])
+    only_non_club_events = (params[:only_non_club])
+    club = Club.find(club_id)
     start_time ||= params[:start].nil? ? nil : Time.at(params[:start].to_i)
     end_time ||= params[:end].nil? ? nil : Time.at(params[:end].to_i)
     list_type = params[:list_type] || nil
     
     @events = (start_time.nil? and end_time.nil?) ? Event.limit(50) : Event;
-    unless start_time.nil? then
+    unless start_time.nil?
       @events = @events.where("date >= ?", start_time)
     end
-    unless end_time.nil? then
+    unless end_time.nil?
       @events = @events.where("date <= ?", end_time)
     end
       
-    if (list_type == 'significant') then
+    if (list_type == 'significant')
       center = [club.lat, club.lng]
       significant_events = @events.where("club_id != ?", club_id)
-      club_significant_events = @events.where("club_id = ?", club_id).where('event_classification_id < ?', 5).order('date DESC')
+      if only_non_club_events
+        club_significant_events = []
+      else
+        club_significant_events = @events.where("club_id = ?", club_id).where('event_classification_id < ?', 5).order('date DESC')
+      end
       local_events = significant_events.where(:event_classification_id => 4).near(center, 300).order('date DESC')
       regional_events = significant_events.where(:event_classification_id => 3).near(center, 600).order('date DESC')
       national_events = significant_events.where(:event_classification_id => 2).near(center, 2000).order('date DESC')
@@ -44,7 +49,7 @@ class EventsController < ApplicationController
       @events = (significant_events_outside_club + club_significant_events).sort! { |a, b| a.date <=> b.date }
     else
       # normal filter, for regular clubs
-      unless club_id.nil? then
+      unless club_id.nil?
         @events = @events.where("club_id = ?", club_id).order('date DESC')
       end
     end
