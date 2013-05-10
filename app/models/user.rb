@@ -56,24 +56,28 @@ class User < ActiveRecord::Base
     end
   end
 
-  # Facebook
-  def self.find_for_facebook_oauth(auth, signed_in_resource=nil)
-    user = User.where(:provider => auth.provider, :uid => auth.uid).first
-    if user.nil? and not auth.info.email.nil?
-      user = User.where(:email => auth.info.email).first
-    end
-
-    unless user
-      user = User.new
+  def self.find_for_provider_and_uid(provider, uid)
+    user = nil
+    unless provider.nil? or uid.nil?
+      user = User.where(:provider => provider, :uid => uid).first
     end
     user
   end
 
-  # Google
-  def self.find_for_google_oauth2(access_token, signed_in_resource=nil)
-    data = access_token.info
-    email = data["email"]
-    user = User.where(:email => email).first unless email.nil?
+  def self.find_for_omniauth(auth, signed_in_resource=nil)
+    data = auth.info
+    email = data['email']
+    provider = auth.provider
+    uid = auth.uid
+    user = User.find_for_provider_and_uid(provider, uid) 
+    if user.nil? and not email.nil?
+      user = User.where(:email => email).first
+      unless user.nil?
+        user.provider = provider
+        user.uid = uid
+        user.save
+      end
+    end
 
     unless user
       user = User.new
