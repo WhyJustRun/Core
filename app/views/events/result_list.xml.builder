@@ -23,8 +23,6 @@ if @version === '3.0' then
       }
     end
 		
-    involved_clubs = Set.new
-		
     @event.courses.each { |course|
       xml.comment! course.name + " entries"
       xml.ClassResult do
@@ -52,10 +50,18 @@ if @version === '3.0' then
               end
               xml.Contact({:type => 'WebAddress'}, user_url(user.id))
             end
-						
-            unless user.club.nil? then
-              xml.Organization(:idref => user.club.id)
-              involved_clubs << user.club
+	    
+            club = user.club            
+            unless club.nil?
+              xml.Organization do
+                xml.Id club.id
+                xml.Name club.name
+              end
+            end
+
+            xml.Class do
+              xml.Id course.id
+              xml.Name course.name
             end
 						
             xml.Result do
@@ -103,22 +109,6 @@ if @version === '3.0' then
         }
       end
     }
-		
-    xml.References do
-      @event.courses.each { |course|
-        xml.Class do
-          xml.Id course.id
-          xml.Name course.name
-        end
-      }
-			
-      involved_clubs.each { |club|
-        xml.Organization do
-          xml.Id club.id
-          xml.Name club.name
-        end
-      }
-    end
   end
 
 elsif @version == '2.0.3' then

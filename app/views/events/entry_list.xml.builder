@@ -21,8 +21,6 @@ xml.EntryList(
     }
   end
 	
-  involved_clubs = Set.new
-	
   @event.courses.each { |course|
     xml.comment! course.name + " entries"
     course.results.each { |result|
@@ -36,32 +34,22 @@ xml.EntryList(
             xml.Family user.last_name
           end
         end
-				
-        unless user.club.nil? then
-          xml.Organization(:idref => user.club.id)
-          involved_clubs << user.club
+	
+        club = user.club        
+        unless club.nil?
+          xml.Organization do
+            xml.Id club.id
+            xml.Name club.name
+          end
         end
 				
         xml.ControlCard user.si_number unless user.si_number.nil?
-        xml.Class(:idref => course.id)
+        xml.Class do
+          xml.Id course.id
+          xml.Name course.name
+        end
         # TODO-RWP Add registration time to database <EntryTime>2011-07-14T18:20:05+01:00</EntryTime>
       end
     }
   }
-	
-  xml.References do
-    @event.courses.each { |course|
-      xml.Class do
-        xml.Id course.id
-        xml.Name course.name
-      end
-    }
-		
-    involved_clubs.each { |club|
-      xml.Organization do
-        xml.Id club.id
-        xml.Name club.name
-      end
-    }
-  end
 end
