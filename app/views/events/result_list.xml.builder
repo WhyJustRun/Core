@@ -3,11 +3,11 @@ if @version === '3.0' then
 
   # TODO-RWP Indicate whether complete or not
   xml.ResultList(
-  :xmlns => "http://www.orienteering.org/datastandard/3.0",
-  :'xmlns:xsi' => "http://www.w3.org/2001/XMLSchema-instance",
-  :iofVersion => "3.0",
-  :createTime => Time.zone.now.iso8601,
-  :creator => "WhyJustRun"
+    :xmlns => "http://www.orienteering.org/datastandard/3.0",
+    :'xmlns:xsi' => "http://www.w3.org/2001/XMLSchema-instance",
+    :iofVersion => "3.0",
+    :createTime => Time.zone.now.iso8601,
+    :creator => "WhyJustRun"
   ) do
     # TODO-RWP Event classification list
     # TODO-RWP How to do Event Races?
@@ -17,17 +17,15 @@ if @version === '3.0' then
         xml.Date @event.local_date.strftime('%F')
         xml.Time @event.local_date.strftime('%T') + @event.local_date.formatted_offset
       end
-	    
+
       @event.courses.each { |course|
         xml.Class(:idref => course.id)
       }
     end
-		
+
     @event.courses.each { |course|
       xml.comment! course.name + " entries"
       xml.ClassResult do
-        xml.Class(:idref => course.id)
-				
         xml.Course do
           xml.Length course.distance unless course.distance.nil?
           xml.Climb course.climb unless course.climb.nil?
@@ -35,7 +33,12 @@ if @version === '3.0' then
             xml.ScoringType course.is_score_o ? 'Points' : 'Timed'
           end
         end
-				
+
+        xml.Class do
+          xml.Id course.id
+          xml.Name course.name
+        end
+
         i = 1
         tied_racers = 0
         last_result = nil
@@ -50,7 +53,7 @@ if @version === '3.0' then
               end
               xml.Contact({:type => 'WebAddress'}, user_url(user.id))
             end
-	    
+
             club = user.club            
             unless club.nil?
               xml.Organization do
@@ -59,11 +62,6 @@ if @version === '3.0' then
               end
             end
 
-            xml.Class do
-              xml.Id course.id
-              xml.Name course.name
-            end
-						
             xml.Result do
               unless result.time_seconds.nil? then
                 xml.Time result.time_seconds
@@ -93,7 +91,7 @@ if @version === '3.0' then
                   end
                 end
               end
-						  
+
               xml.Status result.iof_status
               unless result.points.nil? then
                 xml.Score({ :type => "WhyJustRun" }, result.points)
@@ -103,7 +101,7 @@ if @version === '3.0' then
               end
             end
           end
-					
+
           i += 1
           last_result = result
         }
@@ -130,10 +128,10 @@ elsif @version == '2.0.3' then
                 xml.Given result.user.first_name
                 xml.Family result.user.last_name
               end
-							
+
               xml.PersonId result.user.id
             end
-						
+
             xml.Result do
               unless result.time.nil? then
                 xml.Time result.time.strftime('%H:%M:%S')
@@ -142,7 +140,7 @@ elsif @version == '2.0.3' then
                 xml.ResultPosition i
                 #end
               end
-							
+
               # TODO-RWP (need to use the IOF 2.0.3 status names) xml.CompetitorStatus(:value => result.iof_status)
               # TODO-RWP Splits
             end
