@@ -107,7 +107,7 @@ class Event < ActiveRecord::Base
     else
         out[:textColor] = series.color
     end
-    out[:color] = '#ffffff'
+    out[:color] = '#fafafa'
     out
   end
 end
