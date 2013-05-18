@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130507173155) do
+ActiveRecord::Schema.define(:version => 20130515175921) do
 
   create_table "club_categories", :force => true do |t|
     t.string "name"
@@ -91,6 +91,9 @@ ActiveRecord::Schema.define(:version => 20130507173155) do
     t.integer  "event_classification_id"
     t.datetime "finish_date"
     t.integer  "number_of_participants"
+    t.string   "results_url"
+    t.string   "registration_url"
+    t.string   "routegadget_url"
   end
 
   add_index "events", ["club_id"], :name => "club_id"
@@ -268,6 +271,7 @@ ActiveRecord::Schema.define(:version => 20130507173155) do
   end
 
   add_index "users", ["club_id"], :name => "club_id"
+  add_index "users", ["email"], :name => "email", :unique => true
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
 
