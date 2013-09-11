@@ -1,4 +1,4 @@
-every 10.minutes do
+every 1.day do
   rake "sessions:cleanup"
 end
 
