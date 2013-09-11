@@ -21,6 +21,9 @@ gem "leaflet-rails", "~> 0.5.0"
 # Spam prevention
 gem "recaptcha", "~> 0.3.5", :require => "recaptcha/rails"
 
+# Jobs
+gem "whenever", "~> 0.8.4"
+
 # Bootstrap
 gem "therubyracer"
 gem "less-rails" #Sprockets (what Rails 3.1 uses for its asset pipeline) supports LESS
