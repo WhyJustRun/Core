@@ -102,7 +102,8 @@ class User < ActiveRecord::Base
     session = CrossAppSession.find_by_user_id(self.id)
     # this might be the case if the user is already signed in on this computer but signed out on another computer so the cross app session was deleted..
     if (session.nil?) then
-      session = CrossAppSession.new_for_user(self).save
+      session = CrossAppSession.new_for_user(self)
+      session.save
     end
     "http://" + club.domain + "/users/localLogin?cross_app_session_id=" + session.cross_app_session_id
   end
