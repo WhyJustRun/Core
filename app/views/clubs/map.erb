@@ -2,7 +2,7 @@
 <% content_for :javascript do %>
   $(window).load(function() {
   var map = L.map('leaflet-map');
-  L.tileLayer('http://{s}.tiles.mapbox.com/v3/russell.map-8bk5s5sh/{z}/{x}/{y}.png', { detectRetina: true }).addTo(map);
+  L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
   var point = new L.LatLng(<%= @clubs[0].lat %>, <%= @clubs[0].lng %>);
   var bounds = new L.LatLngBounds(point, point);
   <% @clubs.each { |club| %>
