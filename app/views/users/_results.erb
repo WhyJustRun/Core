@@ -10,7 +10,12 @@
       <th>Points</th>
     </thead>
     <tbody>
-      <% user.results.each { |result| 
+      <%
+        results = user.results.sort_by { |result|
+          result.course.event.date
+        }.reverse!
+
+        results.each { |result|
         event = result.course.event
       %>
       <tr>

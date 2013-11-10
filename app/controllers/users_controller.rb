@@ -2,7 +2,7 @@ class UsersController < ApplicationController
 
   def show
     @message ||= ""
-    @user = User.find_by_id(params[:user_id])
+    @user = User.includes(results: {course: :event}).find_by_id(params[:user_id])
   end
 
   def send_message
