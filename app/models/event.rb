@@ -6,7 +6,7 @@ class Event < ActiveRecord::Base
   reverse_geocoded_by :lat, :lng
   
   belongs_to :club
-  has_one :map
+  belongs_to :map
   belongs_to :series
   belongs_to :event_classification
   has_many :organizers
