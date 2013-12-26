@@ -14,19 +14,21 @@
     <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
   <% end %>
 
-  <div class="control-group">
-    <%= f.label :password, :class => 'control-label' %>
-    <div class="controls">
-      <%= f.password_field :password, :autocomplete => "off" %> <i>(leave blank if you don't want to change it)</i>
+  <div class="form-group">
+    <%= f.label :password, :class => 'control-label col-sm-2' %>
+    <div class="col-sm-10">
+      <%= f.password_field :password, :autocomplete => "off", :class => 'form-control' %>
+      <p class="help-block">(leave blank if you don't want to change it)</p>
     </div>
   </div>
 
-  <div class="control-group">
-    <%= f.label :current_password, :class => 'control-label' %>
-    <div class="controls">
-      <%= f.password_field :current_password, :required => true %> <i>(we need your current password to confirm your changes)</i>
+  <div class="form-group">
+    <%= f.label :current_password, :class => 'control-label col-sm-2' %>
+    <div class="col-sm-10">
+      <%= f.password_field :current_password, :required => true, :class => 'form-control' %>
+      <p class="help-block">(we need your current password to confirm your changes)</p>
     </div>
   </div>
 
-  <div class="form-actions"><%= f.submit "Update", :class => "btn btn-primary" %></div>
+  <div class="col-sm-offset-2 col-sm-10"><%= f.submit "Update", :class => "btn btn-primary" %></div>
 <% end %>

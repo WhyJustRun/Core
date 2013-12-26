@@ -1,6 +1,6 @@
-<div class="control-group">
-  <%= f.label :club_id, :class => 'control-label' %>
-  <div class="controls">
-    <%= f.collection_select(:club_id, Club.all_ordered, :id, :name, :include_blank => 'Choose your home club') %>
+<div class="form-group">
+  <%= f.label :club_id, :class => 'control-label col-sm-2' %>
+  <div class="col-sm-10">
+    <%= f.collection_select(:club_id, Club.all_ordered, :id, :name, {:include_blank => 'Choose your home club'}, {:class => 'form-control'}) %>
   </div>
 </div>

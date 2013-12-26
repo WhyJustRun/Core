@@ -1,11 +1,11 @@
 <h2>About Orienteering</h2>
 <ul id="about-orienteering-nav" class="nav nav-tabs">
-  <li><a href="#orienteering-basics">Orienteering</a></li>
-  <li><a href="#orienteering-map">The map</a></li>
-  <li><a href="#orienteering-course">The course</a></li>
+  <li class="active"><a href="#orienteering-basics" data-toggle="tab">Orienteering</a></li>
+  <li><a href="#orienteering-map" data-toggle="tab">The map</a></li>
+  <li><a href="#orienteering-course" data-toggle="tab">The course</a></li>
 </ul>
-<div class="tabs">
-  <div id="orienteering-basics">
+<div class="tab-content">
+  <div class="tab-pane active" id="orienteering-basics">
     <table>
       <tr>
         <th><h4>Navigation!</h4></th>
@@ -27,7 +27,7 @@
       </tr>
     </table>
   </div>
-  <div id="orienteering-map">
+  <div class="tab-pane" id="orienteering-map">
     <table>
       <tr>
         <th><h4>Map Sample</h4></th>
@@ -54,7 +54,7 @@
       </tr>
     </table>
   </div>
-  <div id="orienteering-course">
+  <div class="tab-pane" id="orienteering-course">
     <table>
       <tr>
         <th><h4>The start</h4></th>
@@ -98,19 +98,3 @@
 
 <h2>Try Orienteering Today!</h2>
 <%= render_club_tree(@top_level_clubs) =%>
-
-<% content_for :javascript do %>
-  $(function () {
-
-  var tabContainers = $('div.tabs > div');
-  tabContainers.hide().filter(':first').show();
-
-  $('#about-orienteering-nav a').click(function () {
-  tabContainers.hide();
-  tabContainers.filter(this.hash).show();
-  $('#about-orienteering-nav li').removeClass('active');
-  $(this.parentNode).addClass('active');
-  return false;
-  }).filter(':first').click();
-  });
-<% end %>

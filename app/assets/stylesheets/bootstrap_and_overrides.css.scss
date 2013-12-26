@@ -1,0 +1,12 @@
+@import "bootstrap";
+@import "bootstrap/theme";
+
+/* Add padding to the body for the fixed navbar*/
+body {
+  padding-top: 60px;
+}
+
+/* Fix for recaptcha form text alignment bug related to bootstrap 3 reset */
+#recaptcha_area, #recaptcha_table {
+    line-height: normal!important;
+}

@@ -11,30 +11,32 @@
   <%= render 'users/club_field', :f => f %>
   <%= render 'users/sport_ident_field', :f => f %>
 
-  <div class="control-group">
-    <%= f.label :referred_from, "Referred by", :class => "control-label" %>
-    <div class="controls">
-      <%= f.text_field :referred_from, :placeholder => "Optional" %>
+  <div class="form-group">
+    <%= f.label :referred_from, "Referred by", :class => "control-label col-sm-2" %>
+    <div class="col-sm-10">
+      <%= f.text_field :referred_from, :placeholder => "Optional", :class => 'form-control' %>
     </div>
   </div>
 
-  <div class="control-group">
-    <%= f.label :password, :class => "control-label" %>
-    <div class="controls">
-      <%= f.password_field :password, :required => true %>
+  <div class="form-group">
+    <%= f.label :password, :class => "control-label col-sm-2" %>
+    <div class="col-sm-10">
+      <%= f.password_field :password, :required => true, :class => 'form-control' %>
     </div>
   </div>
 
   <% if show_registration_recaptcha %>
-  <div class="control-group">
-    <div class="controls">
+  <div class="form-group">
+    <div class="col-sm-10 col-sm-offset-2">
       <%= recaptcha_tags %>
     </div>
   </div>
   <% end %>
 
-  <div class="form-actions">
-    <%= f.submit "Sign up", :class => "btn btn-primary" %>
+  <div class="form-group">
+    <div class="col-sm-10 col-sm-offset-2">
+      <%= f.submit "Sign up", :class => "btn btn-primary" %>
+    </div>
   </div>
 <% end %>
 

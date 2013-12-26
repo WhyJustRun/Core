@@ -1,6 +1,6 @@
 <% title 'Sign in' %>
 <div class="row">
-  <div class="span4 offset2">
+  <div class="col-sm-4 col-sm-offset-2">
     <h3 class="wjr-sign-in-header">Sign in</h3>
     <div class="wjr-sign-in-column">
       <%= link_to "<span>Sign in with <strong>Facebook</strong></span>".html_safe, user_omniauth_authorize_path(:facebook), :class => "wjr-sign-in-btn wjr-sign-in-btn-facebook" %>
@@ -9,14 +9,16 @@
       <hr/>
       <p>Sign in with your email address (existing WhyJustRun users)</h4>
       <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
-        <%= f.email_field :email, :required => true, :autofocus => true, :placeholder => "Email" %>
-        <br/>
-        <%= f.password_field :password, :required => true, :placeholder => "Password" %>
-        <br/>
+        <div class="form-group">
+          <%= f.email_field :email, :required => true, :autofocus => true, :class => 'form-control', :placeholder => "Email" %>
+        </div>
+        <div class="form-group">
+          <%= f.password_field :password, :required => true, :placeholder => "Password", :class => 'form-control' %>
+        </div>
         <% if devise_mapping.rememberable? -%>
-          <span>
-            <%= f.label :remember_me, f.check_box(:remember_me) + " Remember Me", :class => "checkbox" %>
-          </span>
+          <div class="checkbox">
+            <%= f.label :remember_me, f.check_box(:remember_me) + " Remember Me" %>
+          </div>
         <% end -%>
 
         <div><%= f.submit "Sign in", :class => "btn btn-primary" %></div>
@@ -28,7 +30,7 @@
     </div>
   </div>
 
-  <div class="span4">
+  <div class="col-sm-4">
     <h3 class="wjr-sign-in-header">Need an account?</h3>
     <div class="wjr-sign-up-column">
       <%= link_to "<span>Sign up with <strong>Facebook</strong></span>".html_safe, user_omniauth_authorize_path(:facebook), :class => "wjr-sign-in-btn wjr-sign-up-btn wjr-sign-in-btn-facebook" %>

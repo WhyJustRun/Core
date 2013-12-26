@@ -4,7 +4,7 @@
 
 <%= form_tag("", :method => 'put') do %>
   <%= hidden_field_tag(:user_id, user.id) %>
-  <%= text_area_tag(:message, @message, :rows => "6", :required => 'required', :class => 'input-xlarge', :placeholder => 'Message') %><br />
+  <%= text_area_tag(:message, @message, :rows => "6", :required => 'required', :class => 'form-control', :placeholder => 'Message') %><br />
   <%= recaptcha_tags %>
   <%= submit_tag("Send", :class => 'btn btn-primary'); %>
 <% end %>
