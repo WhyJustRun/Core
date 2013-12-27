@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130515175921) do
+ActiveRecord::Schema.define(:version => 20131227012354) do
 
   create_table "club_categories", :force => true do |t|
     t.string "name"
@@ -29,10 +29,12 @@ ActiveRecord::Schema.define(:version => 20130515175921) do
     t.text    "timezone",         :limit => 255
     t.boolean "visible",                         :default => false,     :null => false
     t.string  "domain"
+    t.string  "redirect_domain"
     t.integer "parent_id"
     t.integer "club_category_id"
     t.string  "layout",                          :default => "default", :null => false
     t.text    "facebook_page_id", :limit => 255
+    t.boolean "use_map_urls",                    :default => true,      :null => false
   end
 
   add_index "clubs", ["club_category_id"], :name => "club_category_id"
@@ -125,6 +127,7 @@ ActiveRecord::Schema.define(:version => 20130515175921) do
     t.float    "lng"
     t.text     "repository_path", :limit => 255
     t.integer  "club_id"
+    t.string   "file_url"
   end
 
   add_index "maps", ["club_id"], :name => "club_id"
@@ -224,7 +227,6 @@ ActiveRecord::Schema.define(:version => 20130515175921) do
   create_table "series", :force => true do |t|
     t.text    "acronym",     :limit => 255
     t.text    "name",        :limit => 255
-    t.text    "description"
     t.text    "color",       :limit => 255
     t.text    "information"
     t.boolean "is_current",                 :default => true
@@ -271,7 +273,6 @@ ActiveRecord::Schema.define(:version => 20130515175921) do
   end
 
   add_index "users", ["club_id"], :name => "club_id"
-  add_index "users", ["email"], :name => "email", :unique => true
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
 
