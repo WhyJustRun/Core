@@ -21,8 +21,6 @@ WhyJustRun::Application.configure do
   # Generate digests for assets URLs
   config.assets.digest = true
 
-  config.time_zone = 'UTC'
-  config.active_record.default_timezone = 'UTC'
   # Defaults to Rails.root.join("public/assets")
   # config.assets.manifest = YOUR_PATH
 
