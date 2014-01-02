@@ -46,5 +46,8 @@ module WhyJustRun
     config.assets.version = '1.0'
 
     config.action_mailer.default_url_options = { :host => 'whyjustrun.ca' }
+
+    # Specify timezone for active record
+    config.active_record.default_timezone = :utc
   end
 end
