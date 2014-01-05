@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131227012354) do
+ActiveRecord::Schema.define(:version => 20140105044031) do
 
   create_table "club_categories", :force => true do |t|
     t.string "name"
@@ -207,12 +207,11 @@ ActiveRecord::Schema.define(:version => 20131227012354) do
     t.integer "user_id"
     t.integer "course_id"
     t.integer "points"
-    t.boolean "needs_ride",                  :default => false, :null => false
-    t.boolean "offering_ride",               :default => false, :null => false
     t.string  "status",        :limit => 50, :default => "ok",  :null => false
     t.integer "registrant_id"
     t.integer "score_points"
     t.float   "time_seconds"
+    t.string  "comment"
   end
 
   add_index "results", ["course_id"], :name => "course_id"
