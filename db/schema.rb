@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140105044031) do
+ActiveRecord::Schema.define(:version => 20140115235812) do
 
   create_table "club_categories", :force => true do |t|
     t.string "name"
@@ -128,6 +128,7 @@ ActiveRecord::Schema.define(:version => 20140105044031) do
     t.text     "repository_path", :limit => 255
     t.integer  "club_id"
     t.string   "file_url"
+    t.text     "notes"
   end
 
   add_index "maps", ["club_id"], :name => "club_id"
@@ -207,7 +208,7 @@ ActiveRecord::Schema.define(:version => 20140105044031) do
     t.integer "user_id"
     t.integer "course_id"
     t.integer "points"
-    t.string  "status",        :limit => 50, :default => "ok",  :null => false
+    t.string  "status",        :limit => 50, :default => "ok", :null => false
     t.integer "registrant_id"
     t.integer "score_points"
     t.float   "time_seconds"
