@@ -1,6 +1,6 @@
 class ClubsController < ApplicationController
   def index
-    @clubs = Club.all
+    @clubs = Club.all.where(:visible => true)
 		
     respond_to do |format|
       format.xml  { render :layout => false }
@@ -15,7 +15,7 @@ class ClubsController < ApplicationController
   end
 
   def map
-    @clubs = Club.all_leaves
+    @clubs = Club.all_leaves.where(:visible => true)
   end
 
   def events
