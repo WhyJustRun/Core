@@ -1,6 +1,6 @@
 class ClubsController < ApplicationController
   def index
-    @clubs = Club.all.where(:visible => true)
+    @clubs = Club.where(:visible => true)
 		
     respond_to do |format|
       format.xml  { render :layout => false }
