@@ -1,0 +1,26 @@
+<% if user.organizers.count != 0 then %>
+<h2>Organizing (<%= user.organizers.count %> events)</h2>
+  <table class="table table-striped table-bordered table-condensed">
+    <thead>
+      <th>Date</th>
+      <th>Event</th>
+      <th>Role</th>
+    </thead>
+    <tbody>
+      <%
+        organizers = user.organizers.sort_by { |organizer|
+          organizer.event.date
+        }.reverse!
+
+        organizers.each { |organizer|
+        event = organizer.event
+      %>
+      <tr>
+        <td><%= event.date.strftime("%b #{event.date.day.ordinalize}, %Y") %></td>
+        <td><%= link_to event.name, event.url %></td>
+        <td><%= organizer.role.name %></td>
+      </tr>
+      <% } %>
+    </tbody>
+  </table>
+<% end %>

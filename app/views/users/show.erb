@@ -9,15 +9,14 @@
 <%
   show_send_message = (@user.can_message and current_user != @user and user_signed_in?)
 %>
-<% if show_send_message %>
-  <div class="row">
-    <div class="col-sm-6">
-      <%= render "users/results", :user => @user %> 
-    </div>
-    <div class="col-sm-6">
-      <%= render "users/send_message", :user => @user %>
-    </div>
+<div class="row">
+  <div class="col-sm-6">
+    <%= render "users/results", :user => @user %> 
   </div>
-<% else %>
-  <%= render "users/results", :user => @user %>
+  <div class="col-sm-6">
+<% if show_send_message %>
+    <%= render "users/send_message", :user => @user %>
 <% end %>
+    <%= render "users/organizing", :user => @user %> 
+  </div>
+</div>
