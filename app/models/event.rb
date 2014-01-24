@@ -44,11 +44,7 @@ class Event < ActiveRecord::Base
   end
 	
   def url
-    if custom_url != nil
-      custom_url 
-    else
-      "http://" + club.domain + "/events/view/" + id.to_s
-    end
+    "http://" + club.domain + "/events/view/" + id.to_s
   end
 	
   def rendered_description
