@@ -83,7 +83,7 @@ class Event < ActiveRecord::Base
     Time.zone = "UTC"
     out = {}
     out[:id] = id
-    out[:title] = (style_for_multiple_clubs && id != club_id) ? club.acronym + ' - ' + name : name
+    out[:title] = (style_for_multiple_clubs && club.id != club_id) ? (club.acronym + ' - ' + name) : name
     out[:start] = date.to_i
     out[:end] = finish_date.to_i
     if event_classification

@@ -15,7 +15,7 @@ class EventsController < ApplicationController
   end
 
   def index
-    club_id = params[:club_id] || nil
+    club_id = params[:club_id].to_i || nil
     multiple_clubs = club_id.nil? || (params[:prefix_club_acronym])
     only_non_club_events = (params[:only_non_club])
     club = Club.find(club_id) unless club_id.nil?
