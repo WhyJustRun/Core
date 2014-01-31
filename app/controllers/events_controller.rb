@@ -41,23 +41,23 @@ class EventsController < ApplicationController
         club_events = []
       elsif (all_club_events)
         # all club events + significant other events
-        club_events = @events.where("club_id = ?", club_id).order('date DESC')
+        club_events = @events.where("club_id = ?", club_id).order('date ASC')
       else
         # only significant club events
-        club_events = @events.where("club_id = ?", club_id).where('event_classification_id < ?', 5).order('date DESC')
+        club_events = @events.where("club_id = ?", club_id).where('event_classification_id < ?', 5).order('date ASC')
       end 
-      local_events = significant_events.where(:event_classification_id => 4).near(center, 300).order('date DESC')
-      regional_events = significant_events.where(:event_classification_id => 3).near(center, 600).order('date DESC')
-      national_events = significant_events.where(:event_classification_id => 2).near(center, 2000).order('date DESC')
-      international_events = significant_events.where(:event_classification_id => 1).order('date DESC')
+      local_events = significant_events.where(:event_classification_id => 4).near(center, 300).order('date ASC')
+      regional_events = significant_events.where(:event_classification_id => 3).near(center, 600).order('date ASC')
+      national_events = significant_events.where(:event_classification_id => 2).near(center, 2000).order('date ASC')
+      international_events = significant_events.where(:event_classification_id => 1).order('date ASC')
       our_national_events = significant_events.where(:event_classification_id => 2).where(:club_id => club.national_clubs)
       # this could be more efficient, since the above arrays are sorted already
       significant_events_outside_club = (local_events + regional_events + (our_national_events | national_events) + international_events)
-      @events = (significant_events_outside_club + club_events).sort! { |a, b| b.date <=> a.date }
+      @events = (significant_events_outside_club + club_events).sort! { |a, b| a.date <=> b.date }
     else
       # normal filter, for regular clubs
       unless club_id.nil?
-        @events = @events.where("club_id = ?", club_id).order('date DESC')
+        @events = @events.where("club_id = ?", club_id).order('date ASC')
       end
     end
 
