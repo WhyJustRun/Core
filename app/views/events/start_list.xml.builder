@@ -6,7 +6,7 @@ xml.Wrapper do
     # TODO-RWP Event classification list
     # TODO-RWP How to do Event Races?
     xml.IOFVersion(:version => "2.0.3")
-    xml.EventId({ :type => "int", :idManager => "OrienteerApp" }, @event.id)
+    xml.EventId({ :type => "int", :idManager => "WhyJustRun" }, @event.id)
     @event.courses.each { |course|
       xml.ClassStart do
         xml.comment! 'Courses on the website map to Classes in IOF XML.'
