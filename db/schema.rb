@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140115235812) do
+ActiveRecord::Schema.define(:version => 20140131040018) do
 
   create_table "club_categories", :force => true do |t|
     t.string "name"
@@ -96,6 +96,8 @@ ActiveRecord::Schema.define(:version => 20140115235812) do
     t.string   "results_url"
     t.string   "registration_url"
     t.string   "routegadget_url"
+    t.string   "facebook_url"
+    t.string   "attackpoint_url"
   end
 
   add_index "events", ["club_id"], :name => "club_id"
