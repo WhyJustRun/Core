@@ -19,7 +19,7 @@
         event = result.course.event
       %>
       <tr>
-        <td><%= event.date.strftime("%b #{event.date.day.ordinalize}, %Y") %></td>
+        <td><%= event.local_date.strftime("%b #{event.local_date.day.ordinalize}, %Y") %></td>
         <td><%= link_to (event.name + " (" + result.course.name + ")"), event.url %></td>
         <td>
           <% if result.time or result.status != :ok then %>
