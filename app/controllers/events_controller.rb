@@ -23,8 +23,9 @@ class EventsController < ApplicationController
     end_time ||= params[:end].nil? ? nil : Time.at(params[:end].to_i)
     list_type = params[:list_type] || nil
     all_club_events = (params[:all_club_events])
-    
-    @events = (start_time.nil? and end_time.nil?) ? Event.limit(50) : Event;
+
+    # limit the number of events except for ical
+    @events = (start_time.nil? and end_time.nil? and request.format != :ics) ? Event.limit(50) : Event;
     unless start_time.nil?
       @events = @events.where("date >= ?", start_time)
     end
