@@ -22,6 +22,7 @@ class EventsController < ApplicationController
     start_time ||= params[:start].nil? ? nil : Time.at(params[:start].to_i)
     end_time ||= params[:end].nil? ? nil : Time.at(params[:end].to_i)
     list_type = params[:list_type] || nil
+    all_club_events = (params[:all_club_events])
     
     @events = (start_time.nil? and end_time.nil?) ? Event.limit(50) : Event;
     unless start_time.nil?
@@ -36,10 +37,15 @@ class EventsController < ApplicationController
       center = [club.lat, club.lng]
       significant_events = @events.where("club_id != ?", club_id)
       if only_non_club_events
-        club_significant_events = []
+        # no club events
+        club_events = []
+      elsif (all_club_events)
+        # all club events + significant other events
+        club_events = @events.where("club_id = ?", club_id).order('date DESC')
       else
-        club_significant_events = @events.where("club_id = ?", club_id).where('event_classification_id < ?', 5).order('date DESC')
-      end
+        # only significant club events
+        club_events = @events.where("club_id = ?", club_id).where('event_classification_id < ?', 5).order('date DESC')
+      end 
       local_events = significant_events.where(:event_classification_id => 4).near(center, 300).order('date DESC')
       regional_events = significant_events.where(:event_classification_id => 3).near(center, 600).order('date DESC')
       national_events = significant_events.where(:event_classification_id => 2).near(center, 2000).order('date DESC')
@@ -47,7 +53,7 @@ class EventsController < ApplicationController
       our_national_events = significant_events.where(:event_classification_id => 2).where(:club_id => club.national_clubs)
       # this could be more efficient, since the above arrays are sorted already
       significant_events_outside_club = (local_events + regional_events + (our_national_events | national_events) + international_events)
-      @events = (significant_events_outside_club + club_significant_events).sort! { |a, b| a.date <=> b.date }
+      @events = (significant_events_outside_club + club_events).sort! { |a, b| b.date <=> a.date }
     else
       # normal filter, for regular clubs
       unless club_id.nil?
@@ -68,7 +74,7 @@ class EventsController < ApplicationController
       wants.json do
         output = []
         @events.each { |event|
-          output << event.to_fullcalendar(multiple_clubs)
+          output << event.to_fullcalendar(multiple_clubs, club_id)
         }
         render :text => output.to_json
       end

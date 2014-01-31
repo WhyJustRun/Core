@@ -79,11 +79,11 @@ class Event < ActiveRecord::Base
     event
   end
   
-  def to_fullcalendar(style_for_multiple_clubs)
+  def to_fullcalendar(style_for_multiple_clubs, club_id)
     Time.zone = "UTC"
     out = {}
     out[:id] = id
-    out[:title] = style_for_multiple_clubs ? club.acronym + ' - ' + name : name
+    out[:title] = (style_for_multiple_clubs && id != club_id) ? club.acronym + ' - ' + name : name
     out[:start] = date.to_i
     out[:end] = finish_date.to_i
     if event_classification
@@ -97,6 +97,10 @@ class Event < ActiveRecord::Base
       out[:lat] = lat
       out[:lng] = lng
     end
+    out[:club] = {
+      :id => club.id,
+      :acronym => club.acronym
+    }
     out[:url] = url
     if series.nil?
         out[:textColor] = '#000000'
