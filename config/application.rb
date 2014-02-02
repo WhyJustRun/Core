@@ -46,5 +46,8 @@ module WhyJustRun
     # Specify timezone for active record
     config.active_record.default_timezone = :utc
     config.time_zone = 'UTC'
+
+    # Enable gzip
+    config.middleware.use Rack::Deflater
   end
 end
