@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140131040018) do
+ActiveRecord::Schema.define(:version => 20140203192827) do
 
   create_table "club_categories", :force => true do |t|
     t.string "name"
@@ -101,8 +101,14 @@ ActiveRecord::Schema.define(:version => 20140131040018) do
   end
 
   add_index "events", ["club_id"], :name => "club_id"
+  add_index "events", ["date"], :name => "index_events_on_date"
   add_index "events", ["event_classification_id"], :name => "event_classification_id"
+  add_index "events", ["finish_date"], :name => "index_events_on_finish_date"
+  add_index "events", ["lat", "lng"], :name => "index_events_on_lat_and_lng"
+  add_index "events", ["lat"], :name => "index_events_on_lat"
+  add_index "events", ["lng"], :name => "index_events_on_lng"
   add_index "events", ["map_id"], :name => "map_id"
+  add_index "events", ["results_posted", "results_url"], :name => "index_events_on_results_posted_and_results_url"
   add_index "events", ["series_id"], :name => "series_id"
 
   create_table "groups", :force => true do |t|

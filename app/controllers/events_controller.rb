@@ -33,7 +33,7 @@ class EventsController < ApplicationController
       @events = @events.where("date <= ?", end_time)
     end
       
-    @events = @events.includes(:series, :club, :event_classification)
+    @events = @events.includes(:series, :club, :event_classification, :courses)
     if (list_type == 'significant')
       center = [club.lat, club.lng]
       significant_events = @events.where("club_id != ?", club_id)
