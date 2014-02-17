@@ -2,89 +2,32 @@ WhyJustRun::Application.routes.draw do
   devise_for :users, :controllers => { :registrations => 'users/registrations', :omniauth_callbacks => "users/omniauth_callbacks" }
 
   root :to => "home#index"
-  match 'events/calendar' => 'events#calendar'
-  match 'clubs/map' => 'clubs#map'
-  match 'users/sign_in_clubsite' => 'users#sign_in_clubsite'
-  match 'users/sign_out_clubsite' => 'users#sign_out_clubsite'
+  get 'events/calendar', to: 'events#calendar'
+  get 'clubs/map', to: 'clubs#map'
+  get 'users/sign_in_clubsite', to: 'users#sign_in_clubsite'
+  get 'users/sign_out_clubsite', to: 'users#sign_out_clubsite'
   # must be an integer
   user_id_constraint = { :user_id => /\b\d+\b/ }
-  match 'users/:user_id' => 'users#show', :constraints => user_id_constraint, :via => [:get], :as => :user
-  match 'users/:user_id' => 'users#send_message', :constraints => user_id_constraint, :via => [:put]
+  get 'users/:user_id', to: 'users#show', :constraints => user_id_constraint, :as => :user
+  put 'users/:user_id', to: 'users#send_message', :constraints => user_id_constraint
 
   # :version => /[^\/]*/ is needed to allow dots in the IOF XML version #
   version_constraint = { :version => /[^\/]*/ }
-  match 'iof/:version/events/:id/start_list' => 'events#start_list', :constraints => version_constraint, :as => :event
-  match 'iof/:version/organization_list' => 'clubs#index', :constraints => version_constraint, :as => :event
-  match 'iof/:version/events/:id/entry_list' => 'events#entry_list', :constraints => version_constraint, :as => :event
+  get 'iof/:version/events/:id/start_list', to: 'events#start_list', :constraints => version_constraint
+  get 'iof/:version/organization_list', to: 'clubs#index', :constraints => version_constraint
+  get 'iof/:version/events/:id/entry_list', to: 'events#entry_list', :constraints => version_constraint
 
-  match 'iof/:version/users/event_list/limit/:limit' => 'events#event_list_for_user', :constraints => version_constraint, :as => :event
-  match 'iof/:version/users/event_list' => 'events#event_list_for_user', :constraints => version_constraint, :as => :event
+  get 'iof/:version/users/event_list/limit/:limit', to: 'events#event_list_for_user', :constraints => version_constraint
+  get 'iof/:version/users/event_list', to: 'events#event_list_for_user', :constraints => version_constraint
 
-  match 'iof/:version/clubs/:club_id/event_list' => 'events#index', :constraints => version_constraint, :as => :event
-  match 'iof/:version/clubs/:club_id/event_list/:list_type' => 'events#index', :constraints => version_constraint, :as => :event
+  get 'iof/:version/clubs/:club_id/event_list', to: 'events#index', :constraints => version_constraint
+  get 'iof/:version/clubs/:club_id/event_list/:list_type', to: 'events#index', :constraints => version_constraint
 
-  match 'iof/:version/events/:id/result_list' => 'events#result_list', :constraints => version_constraint, :as => :event, :via => "get"
-  match 'iof/:version/events/:id/result_list' => 'events#process_result_list', :constraints => version_constraint, :as => :event, :via => "post"
+  get 'iof/:version/events/:id/result_list', to: 'events#result_list', :constraints => version_constraint
+  post 'iof/:version/events/:id/result_list', to: 'events#process_result_list', :constraints => version_constraint
 
-  match 'events' => 'events#index', :as => :event
-  match 'club/:club_id/events' => 'events#index', :as => :event
-  match 'club/:club_id/participation_report' => 'clubs#participant_counts', :as => :club
+  get 'events', to: 'events#index'
+  get 'club/:club_id/events', to: 'events#index'
+  get 'club/:club_id/participation_report', to: 'clubs#participant_counts'
 
-
-  # The priority is based upon order of creation:
-  # first created -> highest priority.
-
-  # Sample of regular route:
-  #   match 'products/:id' => 'catalog#view'
-  # Keep in mind you can assign values other than :controller and :action
-
-  # Sample of named route:
-  #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase
-  # This route can be invoked with purchase_url(:id => product.id)
-
-  # Sample resource route (maps HTTP verbs to controller actions automatically):
-  #   resources :products
-
-  # Sample resource route with options:
-  #   resources :products do
-  #     member do
-  #       get 'short'
-  #       post 'toggle'
-  #     end
-  #
-  #     collection do
-  #       get 'sold'
-  #     end
-  #   end
-
-  # Sample resource route with sub-resources:
-  #   resources :products do
-  #     resources :comments, :sales
-  #     resource :seller
-  #   end
-
-  # Sample resource route with more complex sub-resources
-  #   resources :products do
-  #     resources :comments
-  #     resources :sales do
-  #       get 'recent', :on => :collection
-  #     end
-  #   end
-
-  # Sample resource route within a namespace:
-  #   namespace :admin do
-  #     # Directs /admin/products/* to Admin::ProductsController
-  #     # (app/controllers/admin/products_controller.rb)
-  #     resources :products
-  #   end
-
-  # You can have the root of your site routed with "root"
-  # just remember to delete public/index.html.
-  # root :to => 'welcome#index'
-
-  # See how all your routes lay out with "rake routes"
-
-  # This is a legacy wild controller route that's not recommended for RESTful applications.
-  # Note: This route will make all actions in every controller accessible via GET requests.
-  # match ':controller(/:action(/:id(.:format)))'
 end

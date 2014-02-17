@@ -2,11 +2,25 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   before_filter :clear_redirect_club_if_necessary
+  before_filter :configure_permitted_parameters, if: :devise_controller?
   after_filter :store_location
+  after_filter :set_access_control_headers
+
+  protected
 
   def clear_redirect_club_if_necessary
     # if the user gets distracted while logging in and does something else and then goes back later to log in, we don't want to redirect them to the source club in that case
     session.delete(:redirect_club_id) unless request.fullpath =~ /\/users/
+  end
+
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.for(:sign_up) { |u|
+      u.permit(:club_id, :name, :si_number, :referred_from, :password, :email)
+    }
+    
+    devise_parameter_sanitizer.for(:account_update) { |u|
+      u.permit(:club_id, :name, :si_number, :email, :password, :current_password)
+    }
   end
 
   def store_location
@@ -28,8 +42,6 @@ class ApplicationController < ActionController::Base
       session[:previous_url] || root_path
     end
   end
-
-  after_filter :set_access_control_headers
 
   def set_access_control_headers
     headers['Access-Control-Allow-Origin'] = '*'

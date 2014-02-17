@@ -6,8 +6,6 @@ class User < ActiveRecord::Base
     :recoverable, :rememberable, :trackable, :validatable,
     :omniauthable, :omniauth_providers => [:facebook, :google_oauth2]
 
-  # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :provider, :uid, :name, :club_id, :si_number, :referred_from
   has_many :results
   has_many :organizers
   has_many :privileges

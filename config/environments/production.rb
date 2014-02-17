@@ -58,6 +58,15 @@ WhyJustRun::Application.configure do
 
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
-  config.action_mailer.smtp_settings = Settings.smtpSettings
+  config.action_mailer.smtp_settings = Settings.smtpSettings.to_hash
   config.action_mailer.delivery_method = :smtp
+
+  config.eager_load = true
 end
+
+WhyJustRun::Application.config.middleware.use ExceptionNotification::Rack,
+  :email => {
+    :email_prefix => "[WhyJustRun Core] ",
+    :sender_address => %{"WhyJustRun Core" <noreply@whyjustrun.ca>},
+    :exception_recipients => %w{contact@russellporter.com}
+  }

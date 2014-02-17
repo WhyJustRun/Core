@@ -5,8 +5,8 @@ class UserMailer < ActionMailer::Base
     @sender = sender
     @receiver = receiver
     @message = message
-    mail(:to => receiver.email,
-         :reply_to => sender.email,
-         :subject => "Message from #{sender.name}")
+    mail(to: receiver.email,
+         reply_to: sender.email,
+         subject: "Message from #{sender.name}")
   end
 end

@@ -1,22 +1,28 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.2.13'
+gem 'rails', '~> 4.0.0'
+gem "mysql2", "~> 0.3.13"
 
-gem "mysql2", "~> 0.3.11"
-gem 'sqlite3'
+# MySQL Session store
+gem "activerecord-session_store", "~> 0.1.0"
+
+# Asset pipeline
+gem "sass-rails", "~> 4.0.1"
+gem "coffee-script", "~> 2.2.0"
+gem "coffee-rails", "~> 4.0.1"
+gem "uglifier", "~> 2.4.0"
 
 # Authentication
-gem "bcrypt-ruby"
-gem "devise", "~> 2.2.3"
-gem "devise-encryptable", "~> 0.1.1"
+gem "bcrypt-ruby", "~> 3.1.2"
+gem "devise", "~> 3.1.1"
+gem "devise-encryptable", "~> 0.1.2"
 
 gem "omniauth", "~> 1.1.4"
 gem "omniauth-facebook", "~> 1.4.1"
-gem "omniauth-google-oauth2", "~> 0.1.17"
+gem "omniauth-google-oauth2", "~> 0.2.1"
 
 # Maps
-
-gem "leaflet-rails", "~> 0.5.0"
+gem "leaflet-rails", "~> 0.6.2"
 
 # Spam prevention
 gem "recaptcha", "~> 0.3.5", :require => "recaptcha/rails"
@@ -27,36 +33,21 @@ gem "whenever", "~> 0.8.4"
 # Bootstrap
 gem 'bootstrap-sass', '~> 3.0.3.0'
 
-# Gems used only for assets and not required
-# in production environments by default.
-group :assets do
-  gem "sass-rails", "~> 3.2.4"
-  gem "coffee-rails", "~> 3.2.2"
-  gem "uglifier", "~> 2.0.1"
-end
-
-gem 'jquery-rails'
-
-# To use ActiveModel has_secure_password
-# gem 'bcrypt-ruby', '~> 3.0.0'
-
-# Use unicorn as the web server
-# gem 'unicorn'
-
-# Deploy with Capistrano
-# gem 'capistrano'
-
-# To use debugger
-# gem 'ruby-debug19', :require => 'ruby-debug'
+gem 'jquery-rails', "~> 3.0.4"
 
 group :test do
   # Pretty printed test output
   gem 'turn', '~> 0.8.3', :require => false
 end
 
-gem "nokogiri", "~> 1.5.0"
+# XML Parsing
+gem "nokogiri", "~> 1.6.0"
+
 gem "rails_config", "~> 0.3.3"
 
-gem "icalendar", "~> 1.1.6"
-gem 'bluecloth'
-gem "geocoder", "~> 1.1.5"
+gem "icalendar", "~> 1.4.3"
+gem 'bluecloth', "~> 2.2.0"
+gem "geocoder", "~> 1.1.8"
+
+# Logging (email)
+gem "exception_notification", "~> 4.0.1"

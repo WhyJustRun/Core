@@ -1,6 +1,4 @@
 class CrossAppSession < ActiveRecord::Base
-  attr_accessible :cross_app_session_id, :user_id
-
   def self.new_for_user(user)
     session = self.new
     session.cross_app_session_id = Devise.friendly_token[0, 100]
