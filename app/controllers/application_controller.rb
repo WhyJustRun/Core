@@ -47,4 +47,8 @@ class ApplicationController < ActionController::Base
     headers['Access-Control-Allow-Origin'] = '*'
     headers['Access-Control-Request-Method'] = '*'
   end
+
+  def not_found(message)
+    redirect_to '/', alert: message
+  end
 end
