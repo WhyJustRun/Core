@@ -1,6 +1,11 @@
 require 'action_view'
 
 class Event < ActiveRecord::Base
+  # Thresholds (in km) for distances to events. We will show events at clubs within the given distance
+  LOCAL_DISTANCE = 300
+  REGIONAL_DISTANCE = 600
+  NATIONAL_DISTANCE = 2000
+
   include ActionView::Helpers::SanitizeHelper
   
   reverse_geocoded_by :lat, :lng

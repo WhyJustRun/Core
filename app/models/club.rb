@@ -10,6 +10,8 @@ class Club < ActiveRecord::Base
   has_many :series
   belongs_to :club_category
 
+  reverse_geocoded_by :lat, :lng
+
   def children
     Club.where(:parent_id => id)
   end

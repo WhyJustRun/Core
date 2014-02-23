@@ -15,6 +15,7 @@ class EventsController < ApplicationController
   end
 
   def index
+    # Crap this whole thing needs refactoring badly.
     club_id = (params[:club_id].nil?) ? nil : params[:club_id].to_i
     multiple_clubs = club_id.nil? || (params[:prefix_club_acronym])
     only_non_club_events = (params[:only_non_club])
@@ -45,15 +46,37 @@ class EventsController < ApplicationController
         club_events = @events.where("club_id = ?", club_id).order('date ASC')
       else
         # only significant club events
-        club_events = @events.where("club_id = ?", club_id).where('event_classification_id < ?', 5).order('date ASC')
-      end 
-      local_events = significant_events.where(:event_classification_id => 4).near(center, 300).order('date ASC')
-      regional_events = significant_events.where(:event_classification_id => 3).near(center, 600).order('date ASC')
-      national_events = significant_events.where(:event_classification_id => 2).near(center, 2000).order('date ASC')
-      international_events = significant_events.where(:event_classification_id => 1).order('date ASC')
-      our_national_events = significant_events.where(:event_classification_id => 2).where(:club_id => club.national_clubs)
-      # this could be more efficient, since the above arrays are sorted already
-      significant_events_outside_club = (local_events + regional_events + (our_national_events | national_events) + international_events)
+        club_events = @events.where("club_id = ?", club_id).where('event_classification_id < ?', EventClassification::CLUB_ID).order('date ASC')
+      end
+      
+      # Find events at other clubs that aren't geotagged but meet the distance criteria
+      local_clubs = club.nearbys(Event::LOCAL_DISTANCE).map { |club| club.id }
+      regional_clubs = club.nearbys(Event::REGIONAL_DISTANCE).map { |club| club.id }
+      national_clubs = club.nearbys(Event::NATIONAL_DISTANCE).map { |club| club.id }
+      
+      arel_events = Event.arel_table
+      non_geotagged_event_query = 
+        arel_events[:lat].eq(nil).
+        and(arel_events[:club_id].in(local_clubs)
+            .and(arel_events[:event_classification_id].eq(EventClassification::LOCAL_ID))
+          .or(arel_events[:club_id].in(regional_clubs)
+            .and(arel_events[:event_classification_id].eq(EventClassification::REGIONAL_ID)))
+          .or(arel_events[:club_id].in(national_clubs)
+            .and(arel_events[:event_classification_id].eq(EventClassification::NATIONAL_ID)))
+        )
+      non_geotagged_events = significant_events.where(non_geotagged_event_query).order('date ASC')
+      
+      # Find events at other clubs that are geotagged
+      local_events = significant_events.where(:event_classification_id => EventClassification::LOCAL_ID).near(center, Event::LOCAL_DISTANCE).order('date ASC')
+      regional_events = significant_events.where(:event_classification_id => EventClassification::REGIONAL_ID).near(center, Event::REGIONAL_DISTANCE).order('date ASC')
+      national_events = significant_events.where(:event_classification_id => EventClassification::NATIONAL_ID).near(center, Event::NATIONAL_DISTANCE).order('date ASC')
+
+      # Find all international and national events
+      international_events = significant_events.where(:event_classification_id => EventClassification::INTERNATIONAL_ID).order('date ASC')
+      our_national_events = significant_events.where(:event_classification_id => EventClassification::NATIONAL_ID).where(:club_id => club.national_clubs)
+
+      # Combine results
+      significant_events_outside_club = (non_geotagged_events + local_events + regional_events + (our_national_events | national_events) + international_events)
       @events = (significant_events_outside_club + club_events).sort! { |a, b| a.date <=> b.date }
     else
       # normal filter, for regular clubs

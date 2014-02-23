@@ -169,7 +169,7 @@ DEPENDENCIES
   devise (~> 3.1.1)
   devise-encryptable (~> 0.1.2)
   exception_notification (~> 4.0.1)
-  geocoder (~> 1.1.8)
+  geocoder (~> 1.1.9)
   icalendar (~> 1.4.3)
   jquery-rails (~> 3.0.4)
   leaflet-rails (~> 0.6.2)
