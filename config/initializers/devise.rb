@@ -10,7 +10,7 @@ Devise.setup do |config|
     user.sign_out unless user.nil?
   end
 
-  config.secret_key = '20d834ee15e457992f81042feec45854c27475d834d01429f254f9822ea96268f006893bc057eae22c5c4611ab1921428027dc2086b6dbae7ae2ba3720d26d7f' 
+  config.secret_key = Settings.deviseSecretKey
   
   # Facebook Configuration
   require "omniauth-facebook"
