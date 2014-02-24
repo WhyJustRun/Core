@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140223031044) do
+ActiveRecord::Schema.define(version: 20140223222511) do
 
   create_table "club_categories", force: true do |t|
     t.string "name"
@@ -119,6 +119,17 @@ ActiveRecord::Schema.define(version: 20140223031044) do
   end
 
   add_index "groups", ["club_id"], name: "club_id", using: :btree
+
+  create_table "live_results", force: true do |t|
+    t.text     "data",        limit: 16777215
+    t.integer  "event_id"
+    t.integer  "user_id"
+    t.datetime "upload_time"
+  end
+
+  add_index "live_results", ["event_id"], name: "index_live_results_on_event_id", using: :btree
+  add_index "live_results", ["upload_time"], name: "index_live_results_on_upload_time", using: :btree
+  add_index "live_results", ["user_id"], name: "index_live_results_on_user_id", using: :btree
 
   create_table "map_standards", force: true do |t|
     t.text "name",        limit: 255
