@@ -17,7 +17,11 @@ class EventsController < ApplicationController
   def index
     # Crap this whole thing needs refactoring badly.
     club_id = (params[:club_id].nil?) ? nil : params[:club_id].to_i
-    multiple_clubs = club_id.nil? || (params[:prefix_club_acronym])
+    prefix_club_acronym = club_id.nil?
+    unless params[:prefix_club_acronym].nil?
+      puts params[:prefix_club_acronym]
+      prefix_club_acronym = (params[:prefix_club_acronym] == "true")
+    end
     only_non_club_events = (params[:only_non_club])
     club = Club.find(club_id) unless club_id.nil?
     start_time ||= params[:start].nil? ? nil : Time.at(params[:start].to_i)
@@ -25,8 +29,9 @@ class EventsController < ApplicationController
     list_type = params[:list_type] || nil
     all_club_events = (params[:all_club_events])
 
+    # TODO add limits on largest date range requests
     # limit the number of events except for ical
-    @events = (start_time.nil? and end_time.nil? and request.format != :ics) ? Event.limit(50) : Event;
+    @events = Event
     unless start_time.nil?
       @events = @events.where("date >= ?", start_time)
     end
@@ -98,7 +103,7 @@ class EventsController < ApplicationController
       wants.json do
         output = []
         @events.each { |event|
-          output << event.to_fullcalendar(multiple_clubs, club_id)
+          output << event.to_fullcalendar(prefix_club_acronym, club_id)
         }
         render :text => output.to_json
       end
