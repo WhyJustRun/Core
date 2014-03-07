@@ -81,7 +81,7 @@ class EventsController < ApplicationController
       our_national_events = significant_events.where(:event_classification_id => EventClassification::NATIONAL_ID).where(:club_id => club.national_clubs)
 
       # Combine results
-      significant_events_outside_club = (non_geotagged_events + local_events + regional_events + (our_national_events | national_events) + international_events)
+      significant_events_outside_club = (local_events + regional_events + (non_geotagged_events | our_national_events | national_events) + international_events)
       @events = (significant_events_outside_club + club_events).sort! { |a, b| a.date <=> b.date }
     else
       # normal filter, for regular clubs
