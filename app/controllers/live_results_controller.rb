@@ -4,7 +4,7 @@ class LiveResultsController < ApplicationController
   def process_live_result_list
     result = LiveResult.find_or_create_by event_id: params[:id]
     result.user_id = current_user.id
-    result.data = request.body.read.force_encoding('UTF-8')
+    result.data = request.body.read
     result.upload_time = Time.now
     result.save  
   end
