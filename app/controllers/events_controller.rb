@@ -3,9 +3,9 @@ class EventsController < ApplicationController
 
   def respond_to_event_xml_version(wants)
     wants.xml do
-      if params[:version] == '2.0.3'
+      if params[:iof_version] == '2.0.3'
         render :action => :event_list_2, :layout => false
-      elsif params[:version] == '3.0'
+      elsif params[:iof_version] == '3.0'
         render :action => :event_list_3, :layout => false
       end
     end
@@ -14,24 +14,33 @@ class EventsController < ApplicationController
   def calendar
   end
 
+  # This beast of a method finds events based on a number of GET parameters. There are multiple API routes into this method to make the API calls cleaner.
+  # 
+  # Supported output formats: IOF XML 2.0.3, IOF XML 3.0, FullCalendar compatible JSON, iCal
+  #
+  # Parameters:
+  # start - find all events after this timestamp (optional)
+  # end - find all events before this timestamp (optional)
+  # club_id - find events within this club - can also find external significant events by passing the parameter specified below (optional)
+  # external_significant_events - default: none (options: none, all) (optional, only valid with a specified club_id)
+  # club_events - default: all (options: none, significant, all) (optional, only valid with a specified club_id)
+  # prefix_club_acronym - default: false (options: true, false, external_only) (optional)
+  #
   def index
-    # Crap this whole thing needs refactoring badly.
+    # Parse the params
     club_id = (params[:club_id].nil?) ? nil : params[:club_id].to_i
-    prefix_club_acronym = club_id.nil?
-    unless params[:prefix_club_acronym].nil?
-      puts params[:prefix_club_acronym]
-      prefix_club_acronym = (params[:prefix_club_acronym] == "true")
-    end
-    only_non_club_events = (params[:only_non_club])
     club = Club.find(club_id) unless club_id.nil?
-    start_time ||= params[:start].nil? ? nil : Time.at(params[:start].to_i)
-    end_time ||= params[:end].nil? ? nil : Time.at(params[:end].to_i)
-    list_type = params[:list_type] || nil
-    all_club_events = (params[:all_club_events])
+    prefix_club_acronym = (params[:prefix_club_acronym].nil?) ? "false" : params[:prefix_club_acronym]
+    start_time = params[:start].nil? ? nil : Time.at(params[:start].to_i)
+    end_time = params[:end].nil? ? nil : Time.at(params[:end].to_i)
+    
+    # These params are only used if a club is specified
+    club_events = (params[:club_events].nil?) ? 'all' : params[:club_events]
+    external_significant_events = (params[:external_significant_events].nil?) ? 'none' : params[:external_significant_events]
 
-    # TODO add limits on largest date range requests
-    # limit the number of events except for ical
-    @events = Event
+    # Start building the query
+    @events = Event.includes(:series, :club, :event_classification, :courses).order('date ASC')
+
     unless start_time.nil?
       @events = @events.where("date >= ?", start_time)
     end
@@ -39,57 +48,40 @@ class EventsController < ApplicationController
       @events = @events.where("date <= ?", end_time)
     end
       
-    @events = @events.includes(:series, :club, :event_classification, :courses)
-    if (list_type == 'significant')
-      center = [club.lat, club.lng]
-      significant_events = @events.where("club_id != ?", club_id)
-      if only_non_club_events
-        # no club events
-        club_events = []
-      elsif (all_club_events)
-        # all club events + significant other events
-        club_events = @events.where("club_id = ?", club_id).order('date ASC')
-      else
-        # only significant club events
-        club_events = @events.where("club_id = ?", club_id).where('event_classification_id < ?', EventClassification::CLUB_ID).order('date ASC')
+    unless club.nil?
+      # Build the conditions to find events associated with a club
+      expr = nil
+
+      if club_events == "all"
+        expr = Event.arel_club_expr(club)
+      elsif club_events == "significant"
+        expr = Event.arel_club_significant_expr(club)
+      end
+
+      if external_significant_events == "all"
+        sig_expr = Event.arel_nonclub_significant_expr(club)
+        if expr.nil?
+          expr = sig_expr
+        else 
+          expr = expr.or(sig_expr)
+        end
       end
       
-      # Find events at other clubs that aren't geotagged but meet the distance criteria
-      local_clubs = club.nearbys(Event::LOCAL_DISTANCE).map { |club| club.id }
-      regional_clubs = club.nearbys(Event::REGIONAL_DISTANCE).map { |club| club.id }
-      national_clubs = club.nearbys(Event::NATIONAL_DISTANCE).map { |club| club.id }
-      
-      arel_events = Event.arel_table
-      non_geotagged_event_query = 
-        arel_events[:lat].eq(nil).
-        and(arel_events[:club_id].in(local_clubs)
-            .and(arel_events[:event_classification_id].eq(EventClassification::LOCAL_ID))
-          .or(arel_events[:club_id].in(regional_clubs)
-            .and(arel_events[:event_classification_id].eq(EventClassification::REGIONAL_ID)))
-          .or(arel_events[:club_id].in(national_clubs)
-            .and(arel_events[:event_classification_id].eq(EventClassification::NATIONAL_ID)))
-        )
-      non_geotagged_events = significant_events.where(non_geotagged_event_query).order('date ASC')
-      
-      # Find events at other clubs that are geotagged
-      local_events = significant_events.where(:event_classification_id => EventClassification::LOCAL_ID).near(center, Event::LOCAL_DISTANCE).order('date ASC')
-      regional_events = significant_events.where(:event_classification_id => EventClassification::REGIONAL_ID).near(center, Event::REGIONAL_DISTANCE).order('date ASC')
-      national_events = significant_events.where(:event_classification_id => EventClassification::NATIONAL_ID).near(center, Event::NATIONAL_DISTANCE).order('date ASC')
-
-      # Find all international and national events
-      international_events = significant_events.where(:event_classification_id => EventClassification::INTERNATIONAL_ID).order('date ASC')
-      our_national_events = significant_events.where(:event_classification_id => EventClassification::NATIONAL_ID).where(:club_id => club.national_clubs)
-
-      # Combine results
-      significant_events_outside_club = (local_events + regional_events + (non_geotagged_events | our_national_events | national_events) + international_events)
-      @events = (significant_events_outside_club + club_events).sort! { |a, b| a.date <=> b.date }
-    else
-      # normal filter, for regular clubs
-      unless club_id.nil?
-        @events = @events.where("club_id = ?", club_id).order('date ASC')
+      if expr.nil?
+        @events = []
+      else
+        @events = @events.where(expr)
       end
     end
 
+    # Helper function to determine if an event's name should be prefixed with the club name
+    should_prefix = lambda { |event, club|
+      if prefix_club_acronym == 'external_only'
+        club.nil? or (event.club != club)
+      else
+        (prefix_club_acronym == 'true')
+      end
+    }
     respond_to do |wants|
       wants.ics do
         calendar = Icalendar::Calendar.new
@@ -103,7 +95,7 @@ class EventsController < ApplicationController
       wants.json do
         output = []
         @events.each { |event|
-          output << event.to_fullcalendar(prefix_club_acronym, club_id)
+          output << event.to_fullcalendar(should_prefix.call(event, club), club_id)
         }
         render :text => output.to_json
       end
@@ -130,7 +122,7 @@ class EventsController < ApplicationController
 	
   # IOF XML 2.0 for now
   def start_list
-    unless params[:version] == '2.0.3'
+    unless params[:iof_version] == '2.0.3'
       raise ActionController::RoutingError.new('Not Found')
     end
 		
@@ -142,7 +134,7 @@ class EventsController < ApplicationController
 	
   # IOF XML 3.0 for now
   def entry_list
-    unless params[:version] == '3.0'
+    unless params[:iof_version] == '3.0'
       raise ActionController::RoutingError.new('Not Found')
     end
 		
@@ -155,11 +147,11 @@ class EventsController < ApplicationController
   # IOF XML 2.0 for now
   def result_list
     supported = ['2.0.3', '3.0']
-    unless supported.include? params[:version] then
+    unless supported.include? params[:iof_version] then
       raise ActionController::RoutingError.new('Not Found')
     end
 		
-    @version = params[:version]
+    @version = params[:iof_version]
     @event = Event.find(params[:id])
     respond_to do |format|
       format.xml  { render :layout => false }
@@ -185,9 +177,9 @@ class EventsController < ApplicationController
     results = {}
     results.default = []
 		
-    if(params[:version] == '2.0.3') then
+    if(params[:iof_version] == '2.0.3') then
 			
-    elsif(params[:version] == '3.0') then
+    elsif(params[:iof_version] == '3.0') then
       doc.css('ClassResult').each do |course|
         course_results = []
         course_id = (course.at_css('Class'))['idref'].to_i

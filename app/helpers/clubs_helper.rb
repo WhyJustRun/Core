@@ -5,7 +5,7 @@ module ClubsHelper
 	def participant_counts_helper
 	  CSV.generate do |csv|
 	    csv << ['ID', 'Date', 'Name', 'Series Name', 'Number of Participants', 'Club', "Organizers", 'Map']
-	    events = Event.where(:club_id => Club.find(params[:club_id]).all_ancestors)
+	    events = Event.where(:club_id => Club.find(params[:club_id]).all_siblings)
             events = events.order(:date).includes(:club, :series, :map, :organizers => [:user, :role])
             events.each do |event|
               organizers = event.organizers.map { |organizer|

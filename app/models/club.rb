@@ -12,6 +12,8 @@ class Club < ActiveRecord::Base
 
   reverse_geocoded_by :lat, :lng
 
+  scope :visible, -> { where(visible: 1) }
+
   def children
     Club.where(:parent_id => id)
   end
@@ -25,17 +27,22 @@ class Club < ActiveRecord::Base
     self.where(:parent_id => nil)
   end
 
+  # Returns all clubs that are using WhyJustRun as their primary site
+  def self.primary_whyjustrun_clubs
+    self.visible.where("url LIKE CONCAT('%', domain, '%')")
+  end
+
   # only the clubs with no child clubs.. Ideal for a map that allows people to find nearby clubs since a few organizations (Yukon) may not have any clubs beneath them, but we don't want to show COF, IOF, etc
   def self.all_leaves
     self.joins("LEFT JOIN clubs AS child_clubs ON clubs.id = child_clubs.parent_id").where("child_clubs.id IS NULL")
   end
 
-  def all_ancestors
-    ancestors = [self.id]
+  def all_siblings
+    siblings = [self.id]
     self.children.each { |child|
-      ancestors += child.all_ancestors
+      siblings += child.all_siblings
     }
-    return ancestors
+    return siblings
   end
 
   # finds the parent organization of the club, or returns nil
@@ -53,7 +60,7 @@ class Club < ActiveRecord::Base
     if (federation.nil?) then
       return []
     else
-      return federation.all_ancestors
+      return federation.all_siblings
     end
   end
 
