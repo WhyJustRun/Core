@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140223222511) do
+ActiveRecord::Schema.define(version: 20140308215514) do
 
   create_table "club_categories", force: true do |t|
     t.string "name"
@@ -125,6 +125,7 @@ ActiveRecord::Schema.define(version: 20140223222511) do
     t.integer  "event_id"
     t.integer  "user_id"
     t.datetime "upload_time"
+    t.boolean  "visible",                      default: false, null: false
   end
 
   add_index "live_results", ["event_id"], name: "index_live_results_on_event_id", using: :btree
