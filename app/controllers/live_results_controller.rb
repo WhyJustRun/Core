@@ -11,8 +11,11 @@ class LiveResultsController < ApplicationController
 
   def live_result_list
     result = LiveResult.find_by event_id: params[:id]
-    respond_to do |format|
-      format.xml { render :xml => result.data }
+    expires_in 5.seconds, :public => true
+    if stale?(last_modified: result.updated_at.utc, etag: result.cache_key)
+      respond_to do |format|
+        format.xml { render :xml => result.data }
+      end
     end
   end
 end

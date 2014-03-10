@@ -6,6 +6,12 @@ class ApplicationController < ActionController::Base
   after_filter :store_location
   after_filter :set_access_control_headers
 
+  def cors
+    # Cache the OPTIONS response for 1 day
+    headers['Access-Control-Max-Age'] = '86400'
+    render text: nil
+  end
+
   protected
 
   def clear_redirect_club_if_necessary
@@ -43,9 +49,14 @@ class ApplicationController < ActionController::Base
     end
   end
 
+
   def set_access_control_headers
     headers['Access-Control-Allow-Origin'] = '*'
-    headers['Access-Control-Request-Method'] = '*'
+    headers['Access-Control-Expose-Headers'] = 'ETag'
+    headers['Access-Control-Allow-Headers'] = '*,x-requested-with,Content-Type,If-Modified-Since,If-None-Match,Accept'
+    headers['Access-Control-Request-Method'] = 'GET, POST, PATCH, PUT, DELETE, OPTIONS, HEAD'
+
+    head(:ok) if request.request_method == "OPTIONS"
   end
 
   def not_found(message)
