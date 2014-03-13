@@ -2,7 +2,7 @@
 xml.EventList do
   events.each { |event|
     xml.Event do
-      xml.EventId({ :type => "int", :idManager => "WhyJustRun" }, event.id)
+      xml.EventId({ type: "int", idManager: "WhyJustRun" }, event.id)
       xml.Name event.name
       xml.StartDate do
         xml.Date event.local_date.strftime('%F')
@@ -20,15 +20,15 @@ xml.EventList do
           end
         end
       }
-      
+
       xml.Organizer do
         xml.Club do
-          xml.ClubId({:type => "int", :idManager => "WhyJustRun"}, event.club.id)
+          xml.ClubId({ type: "int", idManager: "WhyJustRun" }, event.club.id)
           xml.ShortName event.club.acronym
           xml.WebURL event.club.url
         end
       end
-      
+
       xml.WebURL event.url
       xml.SpecialInfo do
         xml.SI_Title "Information"
