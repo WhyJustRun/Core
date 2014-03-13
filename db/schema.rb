@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140310040301) do
+ActiveRecord::Schema.define(version: 20140313200029) do
 
   create_table "club_categories", force: true do |t|
     t.string "name"
@@ -229,11 +229,12 @@ ActiveRecord::Schema.define(version: 20140310040301) do
     t.integer "user_id"
     t.integer "course_id"
     t.integer "points"
-    t.string  "status",        limit: 50, default: "ok", null: false
+    t.string  "status",             limit: 50, default: "ok", null: false
     t.integer "registrant_id"
     t.integer "score_points"
     t.float   "time_seconds"
-    t.string  "comment"
+    t.string  "registrant_comment"
+    t.string  "official_comment"
   end
 
   add_index "results", ["course_id"], name: "course_id", using: :btree
