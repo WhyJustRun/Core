@@ -76,6 +76,12 @@ xml.ResultList(
             unless result.score_points.nil? then
               xml.Score({ :type => "Points" }, result.score_points)
             end
+
+            unless result.official_comment.nil?
+              xml.Extensions do
+                xml.OfficialComment result.official_comment
+              end
+            end
           end
         end
 
