@@ -1,43 +1,27 @@
 xml.instruct!
 xml.declare! :DOCTYPE, :StartList, :SYSTEM, "IOFdata.dtd"
 xml.Wrapper do
-  xml << render(:partial => "events/list_2", :locals => { :events => [@event] })
+  xml << render(partial: "events/list_2", locals: { events: [@event] })
   xml.StartList do
     # TODO-RWP Event classification list
     # TODO-RWP How to do Event Races?
-    xml.IOFVersion(:version => "2.0.3")
-    xml.EventId({ :type => "int", :idManager => "WhyJustRun" }, @event.id)
+    xml.IOFVersion version: "2.0.3"
+    xml.EventId({ type: "int", idManager: "WhyJustRun" }, @event.id)
     @event.courses.each { |course|
       xml.ClassStart do
-        xml.comment! 'Courses on the website map to Classes in IOF XML.'
         xml.ClassShortName course.name
         course.results.each { |participant|
+          user = participant.user
           xml.PersonStart do
-            xml.Person do
-              xml.PersonName do
-                xml.Given participant.user.first_name
-                xml.Family participant.user.last_name
-              end
-						
-              xml.PersonId participant.user.id
-            end
-					
-            unless participant.user.club.nil?
-              xml.Club do
-                xml.ClubId participant.user.club.id
-                xml.ShortName participant.user.club.acronym
-                xml.Name participant.user.club.name
-              end
-            end
-					
+            render partial: 'users/person_2', locals: { builder: xml, user: user }
+            render partial: 'clubs/club_2', locals: { builder: xml, club: user.club } unless user.club.nil?
+
             xml.RaceStart do
               xml.Start do
-                unless participant.user.si_number.nil?
-                  xml.CCardId participant.user.si_number
-                end
+                xml.CCardId user.si_number unless user.si_number.nil?
                 xml.CourseLength course.distance
               end
-						
+
               # TODO-RWP Change when actual event race support is added.
               xml.EventRaceId @event.id
             end

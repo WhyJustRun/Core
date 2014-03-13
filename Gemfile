@@ -46,7 +46,6 @@ gem "nokogiri", "~> 1.6.0"
 gem "rails_config", "~> 0.3.3"
 
 gem "icalendar", "~> 1.4.3"
-gem 'bluecloth', "~> 2.2.0"
 gem "geocoder", "~> 1.1.9"
 
 # Logging (email)

@@ -14,19 +14,12 @@ xml.EventList do
       end
       event.organizers.each { |organizer|
         xml.EventOfficial do
-          xml.Person do
-            xml.PersonName organizer.user.name
-            xml.PersonId organizer.user.id
-          end
+          render partial: 'users/person_2', locals: { builder: xml, user: organizer.user }
         end
       }
 
       xml.Organizer do
-        xml.Club do
-          xml.ClubId({ type: "int", idManager: "WhyJustRun" }, event.club.id)
-          xml.ShortName event.club.acronym
-          xml.WebURL event.club.url
-        end
+        render partial: 'clubs/club_2', locals: { builder: xml, club: event.club }
       end
 
       xml.WebURL event.url

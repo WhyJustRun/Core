@@ -7,26 +7,23 @@ class Event < ActiveRecord::Base
   NATIONAL_DISTANCE = 2000
 
   include ActionView::Helpers::SanitizeHelper
-  
+
   reverse_geocoded_by :lat, :lng
-  
+
   belongs_to :club
   belongs_to :map
   belongs_to :series
   belongs_to :event_classification
   has_many :organizers
-  has_many :courses 
-		
-  # eager loads courses, results, users, organizers
-  def self.find_cascaded(id)
-    @event = self.includes(:courses => [{:results => :user}], :organizers => [:user]).find(id)
-  end
+  has_many :courses
+
+  scope :list_includes, -> { includes(:series, :club, :event_classification, :courses) }
 
   def self.arel_ungeotagged_significant_expr(club)
       local_clubs = club.nearbys(Event::LOCAL_DISTANCE).map { |club| club.id }
       regional_clubs = club.nearbys(Event::REGIONAL_DISTANCE).map { |club| club.id }
       national_clubs = club.nearbys(Event::NATIONAL_DISTANCE).map { |club| club.id }
-      
+
       arel_table[:lat].eq(nil).
       and(arel_table[:club_id].in(local_clubs)
           .and(arel_table[:event_classification_id].eq(EventClassification::LOCAL_ID))
@@ -90,7 +87,7 @@ class Event < ActiveRecord::Base
     local_events = arel_events_of_class_within(EventClassification::LOCAL_ID, Event::LOCAL_DISTANCE, club)
     regional_events = arel_events_of_class_within(EventClassification::REGIONAL_ID, Event::REGIONAL_DISTANCE, club)
     national_events = arel_events_of_class_within(EventClassification::NATIONAL_ID, Event::NATIONAL_DISTANCE, club)
-    
+
     local_events.or(regional_events.or(national_events))
   end
 
@@ -122,21 +119,21 @@ class Event < ActiveRecord::Base
   def local_date
     date.in_time_zone(club.timezone)
   end
-  
+
   def finish_date
     actual_finish_date = read_attribute(:finish_date)
     actual_finish_date ||= date + 1.hour
     return actual_finish_date
   end
-  
+
   def local_finish_date
     finish_date.in_time_zone(club.timezone)
   end
-	
+
   def has_location
     self.lat != nil and self.lng != nil
   end
-	
+
   def address
     require "geocoder"
     geo = Geocoder.search("#{lat},#{lng}")
@@ -144,32 +141,28 @@ class Event < ActiveRecord::Base
       return geo.first.address
     end
   end
-	
+
   def url
     "http://" + club.domain + "/events/view/" + id.to_s
   end
-	
-  def rendered_description
-    BlueCloth.new(description).to_html
-  end
-  
+
   def number_of_participants
   	actual_count = read_attribute(:number_of_participants)
   	if (actual_count.nil?) then
   		courses = Course.where(:event_id => self.id).select(:id)
   		actual_count = Result.where(:course_id => courses).where('status != \'did_not_start\'').count
   	end
-  	
+
   	return actual_count
   end
-	
+
   def to_ics
     Time.zone = "UTC"
     event = Icalendar::Event.new
     event.start = date.strftime("%Y%m%dT%H%M%S") + "Z"
     event.end = finish_date.strftime("%Y%m%dT%H%M%S") + "Z"
     event.summary = name
-    event.description = strip_tags(rendered_description)
+    event.description = strip_tags(description)
     if has_location
       event.geo = Icalendar::Geo.new(lat, lng)
       event.location = "#{lat.round(4)},#{lng.round(4)}"
@@ -180,7 +173,7 @@ class Event < ActiveRecord::Base
     event.uid = event.url = url
     event
   end
-  
+
   def to_fullcalendar(prefix_acronym, club_id)
     Time.zone = "UTC"
     out = {}

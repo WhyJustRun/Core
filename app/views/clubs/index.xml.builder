@@ -8,19 +8,9 @@ xml.OrganisationList(
 ) do
   # TODO-RWP Event classification list
   # TODO-RWP How to do Event Races?
-  @clubs.each { |club|
+  @clubs.each do |club|
     xml.Organisation do
-      xml.Id club.id
-      xml.Name club.name
-      xml.ShortName club.acronym
-      unless club.parent_id.nil? then
-        xml.ParentOrganisation(:idref => club.parent_id)
-      end
-      unless club.club_category.nil? then
-        xml.Type club.club_category.name
-      end
-      xml.Contact(club.url, :type => "WebAddress")
-      xml.Position(:lat => club.lat, :lng => club.lng)
+      render partial: 'clubs/organisation_inner', locals: { builder: xml, club: club }
     end
-  }
+  end
 end
