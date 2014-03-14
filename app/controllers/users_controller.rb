@@ -2,7 +2,8 @@ class UsersController < ApplicationController
 
   def show
     @message ||= ""
-    @user = User.includes(results: {course: :event}, organizers: [:event, :role]).find_by_id(params[:user_id]) || not_found("Couldn't find that user");
+    includes = { results: { course: { event: :club } }, organizers: { event: [:club], role: nil } };
+    @user = User.includes(includes).find_by_id(params[:user_id]) || not_found("Couldn't find that user");
   end
 
   def send_message
@@ -15,7 +16,7 @@ class UsersController < ApplicationController
       message = nil
     else
       flash.now[:alert] = 'The captcha you entered was incorrect. Please try again'
-    end 
+    end
 
     self.show
     @message = message
@@ -44,4 +45,3 @@ class UsersController < ApplicationController
     redirect_to("http://" + club.domain + "/users/logoutComplete")
   end
 end
-
