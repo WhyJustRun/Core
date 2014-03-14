@@ -50,3 +50,6 @@ gem "geocoder", "~> 1.1.9"
 
 # Logging (email)
 gem "exception_notification", "~> 4.0.1"
+
+# Authorization
+gem "pundit", "~> 0.2.2"
