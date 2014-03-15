@@ -9,6 +9,7 @@ class User < ActiveRecord::Base
   has_many :results
   has_many :organizers
   has_many :privileges
+  has_many :resources
   belongs_to :club
 
   # Migrate to the Devise password scheme
