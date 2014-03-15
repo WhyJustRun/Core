@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140313200029) do
+ActiveRecord::Schema.define(version: 20140315202140) do
 
   create_table "club_categories", force: true do |t|
     t.string "name"
@@ -207,23 +207,13 @@ ActiveRecord::Schema.define(version: 20140313200029) do
 
   create_table "resources", force: true do |t|
     t.string  "caption"
-    t.string  "url"
     t.string  "key"
     t.integer "club_id"
-    t.integer "course_id"
-    t.integer "map_id"
-    t.string  "thumbnail_50_url"
-    t.string  "thumbnail_100_url"
-    t.string  "thumbnail_500_url"
-    t.string  "thumbnail_1000_url"
-    t.string  "thumbnail_1300_url"
-    t.string  "thumbnail_2600_url"
+    t.string  "extension"
   end
 
   add_index "resources", ["club_id"], name: "club_id", using: :btree
-  add_index "resources", ["course_id"], name: "course_id", using: :btree
   add_index "resources", ["key"], name: "key", using: :btree
-  add_index "resources", ["map_id"], name: "map_id", using: :btree
 
   create_table "results", force: true do |t|
     t.integer "user_id"
@@ -284,11 +274,11 @@ ActiveRecord::Schema.define(version: 20140313200029) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.string   "provider"
-    t.string   "uid"
     t.integer  "failed_attempts",                    default: 0
     t.string   "unlock_token"
     t.datetime "locked_at"
+    t.string   "google_id"
+    t.string   "facebook_id"
   end
 
   add_index "users", ["club_id"], name: "club_id", using: :btree
