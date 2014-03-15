@@ -2,7 +2,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   include UsersHelper
 
   def create
-    if verify_recaptcha or not show_registration_recaptcha 
+    if verify_recaptcha or not show_registration_recaptcha
       super
     else
       build_resource
@@ -21,13 +21,11 @@ class Users::RegistrationsController < Devise::RegistrationsController
     super
     user = self.resource
     if data = session['devise.facebook_data'] then
-      user.provider = data['provider'] if user.provider.blank?
-      user.uid = data['uid'] if user.uid.blank?
+      user.facebook_id = data['uid'] if user.facebook_id.blank?
     end
 
     if data = session['devise.google_data'] then
-      user.provider = data['provider'] if user.provider.blank?
-      user.uid = data['uid'] if user.uid.blank?
+      user.google_id = data['uid'] if user.google_id.blank?
     end
   end
 end

@@ -56,8 +56,12 @@ class User < ActiveRecord::Base
 
   def self.find_for_provider_and_uid(provider, uid)
     user = nil
-    unless provider.nil? or uid.nil?
-      user = User.where(:provider => provider, :uid => uid).first
+    unless uid.nil?
+      if provider == 'google_oauth2'
+        user = User.find_by google_id: uid
+      elsif provider == 'facebook'
+        user = User.find_by facebook_id: uid
+      end
     end
     user
   end
@@ -69,10 +73,13 @@ class User < ActiveRecord::Base
     uid = auth.uid
     user = User.find_for_provider_and_uid(provider, uid)
     if user.nil? and not email.nil?
-      user = User.where(:email => email).first
-      unless user.nil?
-        user.provider = provider
-        user.uid = uid
+      user = User.find_by email: email
+      unless user.nil? or uid.nil? or provider.nil?
+        if provider == 'google_oauth2' then
+          user.google_id = uid
+        elsif provider == 'facebook' then
+          user.facebook_id = uid
+        end
         user.save
       end
     end
