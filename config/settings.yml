@@ -1,0 +1,42 @@
+# IMPORTANT: If you add/change any privilege, make sure you update the CakePHP config too (app/Config/app.php)
+privileges:
+  admin:
+    page: 90
+  club:
+    edit: 90
+  contentBlock:
+    edit: 80
+  event:
+    delete: 90
+    edit: 80
+    planning: 80
+  map:
+    delete: 90
+    edit: 80
+    viewOCAD: 0
+  mapStandard:
+    edit: 100
+    delete: 100
+  membership:
+    delete: 80
+    edit: 80
+  official:
+    delete: 90
+    edit: 90
+  page:
+    edit: 80
+    delete: 80
+  privilege:
+    edit: 90
+    delete: 90
+  resource:
+    edit: 80
+    index: 80
+    delete: 90
+  role:
+    delete: 100
+    edit: 100
+  series:
+    edit: 90
+  user:
+    edit: 100

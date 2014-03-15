@@ -2,12 +2,12 @@ class Club < ActiveRecord::Base
   has_many :users
   has_many :events
   has_many :maps
-  has_many :groups
   has_many :content_blocks
   has_many :memberships
   has_many :pages
   has_many :roles
   has_many :series
+  has_many :user_groups, class_name: 'Group', foreign_key: 'group_id'
   belongs_to :club_category
 
   reverse_geocoded_by :lat, :lng

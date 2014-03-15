@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  include Pundit
   protect_from_forgery
 
   before_filter :clear_redirect_club_if_necessary
@@ -23,7 +24,7 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.for(:sign_up) { |u|
       u.permit(:club_id, :name, :si_number, :referred_from, :password, :email)
     }
-    
+
     devise_parameter_sanitizer.for(:account_update) { |u|
       u.permit(:club_id, :name, :si_number, :email, :password, :current_password)
     }
@@ -33,12 +34,12 @@ class ApplicationController < ActionController::Base
     # store last url as long as it isn't a /users path, except if it is a profile page
     if not request.xhr? and (not (request.fullpath =~ /\/users/) or request.fullpath =~ /\/users\/\b\d+\b/) then
       session[:previous_url] = request.fullpath
-    end 
-    
+    end
+
   end
 
   def after_sign_in_path_for(resource)
-    current_user.sign_in 
+    current_user.sign_in
     redirect_club_id = session[:redirect_club_id]
     unless redirect_club_id.nil? then
       club = Club.find_by_id(redirect_club_id)

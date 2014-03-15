@@ -67,7 +67,7 @@ class User < ActiveRecord::Base
     email = data['email']
     provider = auth.provider
     uid = auth.uid
-    user = User.find_for_provider_and_uid(provider, uid) 
+    user = User.find_for_provider_and_uid(provider, uid)
     if user.nil? and not email.nil?
       user = User.where(:email => email).first
       unless user.nil?
@@ -136,5 +136,21 @@ class User < ActiveRecord::Base
 
   def password_required?
     super if not email.nil?
+  end
+
+  def has_privilege?(desired_privilege, club)
+    raise ArgumentError, "desired_privilege must not be nil" if desired_privilege.nil?
+    (privilege_level(club) >= desired_privilege)
+  end
+
+  # Find the maximum privilege level the user has for a given club
+  def privilege_level(club)
+    privilege = Privilege.includes(:user_group)
+                         .joins('LEFT JOIN groups ON groups.id = group_id')
+                         .where(user_id: self.id)
+                         .where('groups.club_id = ? OR groups.club_id IS NULL', club.id)
+                         .order('access_level DESC')
+                         .limit(1).take
+    privilege.user_group.access_level
   end
 end

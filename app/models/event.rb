@@ -16,6 +16,7 @@ class Event < ActiveRecord::Base
   belongs_to :event_classification
   has_many :organizers
   has_many :courses
+  has_one :live_result
 
   scope :list_includes, -> { includes(:series, :club, :event_classification, :courses) }
 
@@ -204,5 +205,9 @@ class Event < ActiveRecord::Base
     end
     out[:color] = '#fafafa'
     out
+  end
+
+  def has_organizer?(user)
+    Organizer.where(user_id: user.id, event_id: self.id).exists?
   end
 end
