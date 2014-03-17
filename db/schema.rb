@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140315202140) do
+ActiveRecord::Schema.define(version: 20140317201435) do
 
   create_table "club_categories", force: true do |t|
     t.string "name"
@@ -66,10 +66,12 @@ ActiveRecord::Schema.define(version: 20140315202140) do
     t.string   "cross_app_session_id", null: false
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
+    t.integer  "session_id"
   end
 
   add_index "cross_app_sessions", ["cross_app_session_id"], name: "index_cross_app_sessions_on_cross_app_session_id", unique: true, using: :btree
-  add_index "cross_app_sessions", ["user_id"], name: "index_cross_app_sessions_on_user_id", unique: true, using: :btree
+  add_index "cross_app_sessions", ["session_id"], name: "index_cross_app_sessions_on_session_id", unique: true, using: :btree
+  add_index "cross_app_sessions", ["user_id"], name: "index_cross_app_sessions_on_user_id", using: :btree
 
   create_table "event_classifications", force: true do |t|
     t.string "name",           limit: 50
