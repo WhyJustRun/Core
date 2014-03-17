@@ -6,7 +6,7 @@ class CrossAppSession < ActiveRecord::Base
     session
   end
 
-  def self.clear_sessions_for_user(user)
-    self.where(:user_id => user.id).destroy_all
+  def self.clear_sessions_for_session_id(session_id)
+    self.where(:session_id => session_id).destroy_all
   end
 end
