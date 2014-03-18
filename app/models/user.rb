@@ -76,9 +76,9 @@ class User < ActiveRecord::Base
     if user.nil? and not email.nil?
       user = User.find_by email: email
       unless user.nil? or uid.nil? or provider.nil?
-        if provider == 'google_oauth2' then
+        if provider == 'google_oauth2'
           user.google_id = uid
-        elsif provider == 'facebook' then
+        elsif provider == 'facebook'
           user.facebook_id = uid
         end
         user.save
@@ -91,32 +91,21 @@ class User < ActiveRecord::Base
     user
   end
 
-  # Handle sign in/out by updating the cross app session for the user
-  # These methods are called by warden hooks defined in config/initializers/devise.rb
-  # These should be idempotent, as they are also called by app controller after_sign_in_path_for because it seems like the warden hooks don't get called in time after sign up
-  def sign_in
-    CrossAppSession.clear_sessions_for_user(self)
-    CrossAppSession.new_for_user(self).save
-  end
-
-  def sign_out
-    CrossAppSession.clear_sessions_for_user(self)
-  end
-
   # Helpers
-  def post_sign_in_clubsite_redirect_for_club(club)
-    session = CrossAppSession.find_by_user_id(self.id)
-    # this might be the case if the user is already signed in on this computer but signed out on another computer so the cross app session was deleted..
-    if (session.nil?) then
-      session = CrossAppSession.new_for_user(self)
-      session.save
+  def post_sign_in_clubsite_redirect_for_club(club, session)
+    cross_session = CrossAppSession.find_by cross_app_session_id: session[:cross_app_session_id]
+    # If we don't have a cross app session yet, create it.
+    if cross_session.nil?
+      cross_session = CrossAppSession.new_for_user(self)
+      session[:cross_app_session_id] = cross_session.cross_app_session_id
+      cross_session.save
     end
-    "http://" + club.domain + "/users/localLogin?cross_app_session_id=" + session.cross_app_session_id
+    "http://" + club.domain + "/users/localLogin?cross_app_session_id=" + cross_session.cross_app_session_id
   end
 
   def first_name
     names = name.split
-    if(names.length == 1) then
+    if names.length == 1
       name
     else
       names.pop
@@ -126,7 +115,7 @@ class User < ActiveRecord::Base
 
   def last_name
     names = name.split
-    if(names.length == 1) then
+    if names.length == 1
       nil
     else
       names.pop

@@ -1,17 +1,14 @@
 # Use this hook to configure devise mailer, warden hooks and so forth.
 # Many of these configuration options can be set straight in your model.
 Devise.setup do |config|
-  # Warden hooks
-  Warden::Manager.after_authentication do |user, auth, opts|
-    user.sign_in
-  end
 
-  Warden::Manager.before_logout do |user, auth, opts|  
-    user.sign_out unless user.nil?
+  Warden::Manager.before_logout do |user, auth, opts|
+    id = auth.env['rack.session'][:cross_app_session_id]
+    CrossAppSession.delete_with_id(id) unless id.nil?
   end
 
   config.secret_key = Settings.deviseSecretKey
-  
+
   # Facebook Configuration
   require "omniauth-facebook"
   config.omniauth :facebook, Settings.facebookAppID, Settings.facebookAppSecret
@@ -130,7 +127,7 @@ Devise.setup do |config|
 
   # ==> Configuration for :rememberable
   # The time the user will be remembered without asking for credentials again.
-  config.remember_for = 1.month 
+  config.remember_for = 1.month
 
   # If true, extends the user's remember period when remembered via cookie.
   # config.extend_remember_period = false
