@@ -32,6 +32,11 @@ WhyJustRun::Application.routes.draw do
   get 'club/:club_id/events', to: 'events#index'
   get 'club/:club_id/participation_report', to: 'clubs#participant_counts'
 
+  #post 'api/redactor/uploadImage', to: 'redactor#upload_image'
+  #post 'api/redactor/uploadFile', to: 'redactor#upload_file'
+
+  get 'api/maps', to: 'maps#index'
+
   # Handle all CORS OPTIONS requests
   match '*all', to: 'application#cors', via: [:options]
 end

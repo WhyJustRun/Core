@@ -48,6 +48,9 @@ gem "rails_config", "~> 0.3.3"
 gem "icalendar", "~> 1.4.3"
 gem "geocoder", "~> 1.1.9"
 
+# JSON Builder
+gem 'jbuilder', '~> 2.0.5'
+
 # Logging (email)
 gem "exception_notification", "~> 4.0.1"
 
