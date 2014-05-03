@@ -1,0 +1,28 @@
+<h2>Accounts</h2>
+
+<p>Linking your WhyJustRun account with other services allows you to quickly sign in to your WhyJustRun account without having to remembering another password.</p>
+<%
+ids = Settings.linkableAccounts
+ids.each { |id, data|
+  if user[id].nil?
+%>
+
+<div class="btn-group">
+  <a href="<%= user_omniauth_authorize_path(data.provider.to_s) %>" class="btn btn-success">
+    Link <%= data[:name] %> account
+  </a>
+</div>
+<br /><br />
+<%
+  else
+%>
+<div class="btn-group">
+  <a href="/users/unlink_account/<%= data.provider.to_s %>" class="btn btn-danger">
+    Unlink <%= data[:name] %> account
+  </a>
+</div>
+<br /><br />
+<%
+  end
+}
+%>

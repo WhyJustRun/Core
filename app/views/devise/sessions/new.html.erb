@@ -7,7 +7,7 @@
       <br/><br/>
       <%= link_to "<span>Sign in with <strong>Google</strong></span>".html_safe, user_omniauth_authorize_path(:google_oauth2), :class => "wjr-sign-in-btn wjr-sign-in-btn-google" %>
       <hr/>
-      <p>Sign in with your email address (existing WhyJustRun users)</h4>
+      <p><strong>Sign in with your email address</strong></p>
       <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
         <div class="form-group">
           <%= f.email_field :email, :required => true, :autofocus => true, :class => 'form-control', :placeholder => "Email" %>
@@ -25,8 +25,8 @@
       <% end %>
 
       <hr/>
-      <h3>Forgot password?</h3> 
-      <%= render "devise/passwords/new" %> 
+      <h3>Forgot password?</h3>
+      <%= render "devise/passwords/new" %>
     </div>
   </div>
 
@@ -41,4 +41,3 @@
     </div>
   </div>
 </div>
-

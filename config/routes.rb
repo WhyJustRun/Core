@@ -11,6 +11,7 @@ WhyJustRun::Application.routes.draw do
   user_id_constraint = { :user_id => /\b\d+\b/ }
   get 'users/:user_id', to: 'users#show', :constraints => user_id_constraint, :as => :user
   put 'users/:user_id', to: 'users#send_message', :constraints => user_id_constraint
+  get 'users/unlink_account/:provider', to: 'users#unlink_account'
 
   # :iof_version => /[^\/]*/ is needed to allow dots in the IOF XML version #
   version_constraint = { :iof_version => /[^\/]*/ }
@@ -31,9 +32,6 @@ WhyJustRun::Application.routes.draw do
   get 'events', to: 'events#index'
   get 'club/:club_id/events', to: 'events#index'
   get 'club/:club_id/participation_report', to: 'clubs#participant_counts'
-
-  #post 'api/redactor/uploadImage', to: 'redactor#upload_image'
-  #post 'api/redactor/uploadFile', to: 'redactor#upload_file'
 
   get 'api/maps', to: 'maps#index'
 

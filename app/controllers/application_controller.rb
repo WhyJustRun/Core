@@ -55,6 +55,7 @@ class ApplicationController < ActionController::Base
     headers['Access-Control-Expose-Headers'] = 'ETag'
     headers['Access-Control-Allow-Headers'] = '*,x-requested-with,Content-Type,If-Modified-Since,If-None-Match,Accept'
     headers['Access-Control-Request-Method'] = 'GET, POST, PATCH, PUT, DELETE, OPTIONS, HEAD'
+    headers['Access-Control-Allow-Credentials'] = 'true'
 
     head(:ok) if request.request_method == "OPTIONS"
   end

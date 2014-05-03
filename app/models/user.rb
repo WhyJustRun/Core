@@ -39,14 +39,9 @@ class User < ActiveRecord::Base
 
   def self.new_with_session(params, session)
     super.tap do |user|
-      if data = session["devise.facebook_data"] && session["devise.facebook_data"]["extra"]["raw_info"]
+      if data = session["devise.linked_data"] && session["devise.linked_data"]["extra"]["raw_info"]
         user.name = data["name"] if user.name.blank?
         user.email = data["email"] if user.email.blank?
-      end
-
-      if data = session['devise.google_data'] && session['devise.google_data']['extra']['raw_info']
-        user.name = data['name'] if user.name.blank?
-        user.email = data['email'] if user.email.blank?
       end
 
       if club_id = session[:redirect_club_id]
@@ -58,16 +53,17 @@ class User < ActiveRecord::Base
   def self.find_for_provider_and_uid(provider, uid)
     user = nil
     unless uid.nil?
-      if provider == 'google_oauth2'
-        user = User.find_by google_id: uid
-      elsif provider == 'facebook'
-        user = User.find_by facebook_id: uid
-      end
+      Settings.linkableAccounts.each { |column, data|
+        if provider == data[:provider]
+          user = User.find_by column => uid
+          break
+        end
+      }
     end
     user
   end
 
-  def self.find_for_omniauth(auth, signed_in_resource=nil)
+  def self.find_for_omniauth(auth)
     data = auth.info
     email = data['email']
     provider = auth.provider
@@ -76,11 +72,12 @@ class User < ActiveRecord::Base
     if user.nil? and not email.nil?
       user = User.find_by email: email
       unless user.nil? or uid.nil? or provider.nil?
-        if provider == 'google_oauth2'
-          user.google_id = uid
-        elsif provider == 'facebook'
-          user.facebook_id = uid
-        end
+        Settings.linkableAccounts.each { |column, data|
+          if provider == data[:provider]
+            user[column] = uid
+            break
+          end
+        }
         user.save
       end
     end
@@ -135,9 +132,29 @@ class User < ActiveRecord::Base
     super if not email.nil?
   end
 
+  # If club is nil, will see if the user has the privilege for any club
   def has_privilege?(desired_privilege, club)
     raise ArgumentError, "desired_privilege must not be nil" if desired_privilege.nil?
-    (privilege_level(club) >= desired_privilege)
+
+    privilege_level = 0
+    if club.nil?
+      privilege_level = max_privilege_level
+    else
+      privilege_level = privilege_level(club)
+    end
+
+    (privilege_level >= desired_privilege)
+  end
+
+  # the max privilege level the user has for any club
+  def max_privilege_level
+    privilege = Privilege.order('access_level DESC')
+                         .limit(1).take
+    if privilege.nil?
+      0
+    else
+      privilege.user_group.access_level
+    end
   end
 
   # Find the maximum privilege level the user has for a given club
@@ -148,6 +165,21 @@ class User < ActiveRecord::Base
                          .where('groups.club_id = ? OR groups.club_id IS NULL', club.id)
                          .order('access_level DESC')
                          .limit(1).take
-    privilege.user_group.access_level
+    if privilege.nil?
+      0
+    else
+      privilege.user_group.access_level
+    end
+  end
+
+  # Should check that the uid is not registered to another account before linking
+  def link_account(provider, uid)
+    self[provider.column.to_sym] = uid
+    self.save
+  end
+
+  def unlink_account(provider)
+    self[provider.column.to_sym] = nil
+    self.save
   end
 end

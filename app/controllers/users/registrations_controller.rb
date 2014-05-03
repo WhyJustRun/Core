@@ -20,12 +20,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def build_resource(hash=nil)
     super
     user = self.resource
-    if data = session['devise.facebook_data'] then
-      user.facebook_id = data['uid'] if user.facebook_id.blank?
-    end
-
-    if data = session['devise.google_data'] then
-      user.google_id = data['uid'] if user.google_id.blank?
+    if data = session['devise.linked_data'] then
+      column = session['devise.linked_id_column']
+      user[column] = data['uid'] if user[column].blank?
     end
   end
 end

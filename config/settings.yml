@@ -40,3 +40,12 @@ privileges:
     edit: 90
   user:
     edit: 100
+linkableAccounts:
+  facebook_id:
+    name: "Facebook"
+    provider: "facebook"
+    column: 'facebook_id'
+  google_id:
+    name: "Google"
+    provider: "google_oauth2"
+    column: 'google_id'
