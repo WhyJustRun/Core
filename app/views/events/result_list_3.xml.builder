@@ -70,9 +70,6 @@ xml.ResultList(
             end
 
             xml.Status result.iof_status
-            unless result.points.nil? then
-              xml.Score({ :type => "WhyJustRun" }, result.points)
-            end
             unless result.score_points.nil? then
               xml.Score({ :type => "Points" }, result.score_points)
             end
