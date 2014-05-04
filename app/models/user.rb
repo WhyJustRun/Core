@@ -10,6 +10,7 @@ class User < ActiveRecord::Base
   has_many :organizers
   has_many :privileges
   has_many :resources
+  has_many :cross_app_sessions
   belongs_to :club
 
   # Migrate to the Devise password scheme
