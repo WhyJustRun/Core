@@ -1,12 +1,11 @@
 class ClubsController < ApplicationController
   def index
-    @clubs = Club.where(:visible => true)
-		
+    @clubs = Club.where(:visible => true).includes(:club_category)
     respond_to do |format|
       format.xml  { render :layout => false }
     end
   end
-  
+
   # provides a CSV file with participant counts for the club events and any child club events
   def participant_counts
   	respond_to do |format|
@@ -20,7 +19,7 @@ class ClubsController < ApplicationController
 
   def events
     @events = Event.limit(50).where("club_id = ?", params[:id]).order('date DESC')
-	  
+
     respond_to do |wants|
       wants.ics do
         calendar = Icalendar::Calendar.new
