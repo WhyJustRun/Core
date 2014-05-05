@@ -6,7 +6,6 @@ module Devise
       end
 
       def authenticate!
-        Rails.logger.info "BLAH"
         session = ::CrossAppSession.find_by cross_app_session_id: params[:cross_app_session_id]
         u = session ? session.user : nil
         if u.nil?
