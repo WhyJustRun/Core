@@ -35,6 +35,9 @@ WhyJustRun::Application.routes.draw do
 
   get 'api/maps', to: 'maps#index'
 
+  post 'api/redactor/uploadImage', to: 'redactor#upload_image'
+  post 'api/redactor/uploadFile', to: 'redactor#upload_file'
+
   # Handle all CORS OPTIONS requests
   match '*all', to: 'application#cors', via: [:options]
 end
