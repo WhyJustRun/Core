@@ -19,7 +19,8 @@ gem "devise-encryptable", "~> 0.1.2"
 
 gem 'omniauth', '~> 1.2.1'
 gem 'omniauth-facebook', '~> 1.6.0'
-gem 'omniauth-google-oauth2', '~> 0.2.2'
+# TEMPORARY downgrade: google-oauth2 v0.2.4 doesn't work.
+gem 'omniauth-google-oauth2', '0.2.2'
 
 # Maps
 gem "leaflet-rails", "~> 0.6.2"
