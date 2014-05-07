@@ -10,4 +10,14 @@ module HomeHelper
     res << '</ul>'
     res.html_safe
   end
+
+  def formatted_clubs_list(clubs)
+    list = []
+    clubs.each { |c|
+      str = '<a href="' + c.url + '"><strong>' + c.acronym + ' (' + c.location + ')</strong></a>'
+      list << str.html_safe
+    }
+
+    list.to_sentence.html_safe
+  end
 end

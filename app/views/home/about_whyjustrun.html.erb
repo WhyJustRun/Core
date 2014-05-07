@@ -2,30 +2,44 @@
   <h1>WhyJustRun</h1>
 </div>
 
-<p class="lead">WhyJustRun is a web app for orienteering clubs. Clubs can post events, maps, results, and more.</p>
+<p class="lead">WhyJustRun is a web app and database for orienteering clubs. Clubs can post events, maps, results, and more. Information can be displayed in the WhyJustRun web app and through a club's own website using the WhyJustRun API.</p>
 
 <h2>Clubs using WhyJustRun</h2>
-<p>These clubs use WhyJustRun Clubsite as their main club website. There are many other clubs that use the WhyJustRun event database without using it as their primary website.</p>
-<%
-@primary_whyjustrun_clubs.each do |c|
-%>
-  <a href="<%= c.url %>"><h4><%= c.name %></h4></a>
-<%
-end
-%>
+<p>These clubs use WhyJustRun Clubsite as their main club website:<br/>
+<%= formatted_clubs_list(@primary_whyjustrun_clubs) %></p>
+
+<p>These clubs/associations use the WhyJustRun API to show information on their own website:<br/>
+<%= formatted_clubs_list(@api_whyjustrun_clubs) %></p>
+
+<p>There are other clubs that use the WhyJustRun event database to share their events with other clubs without using it as their primary website.</p>
 
 <h2>Features</h2>
 
-<h3>Core (whyjustrun.ca)</h3>
+<h3>Core (<a href="https://whyjustrun.ca">whyjustrun.ca</a>)</h3>
 
 <p>The core of WhyJustRun is the whyjustrun.ca website. It handles user sign in and provides APIs for other services to integrate with WhyJustRun. For the most part, you won't interact with it.</p>
 
-<h3>Clubsite</h3>
+<h3>Clubsite (ex: <a href="http://gvoc.whyjustrun.ca">gvoc.whyjustrun.ca</a>)</h3>
 
-<p>The clubsite is the website for your club. There is lots of in depth functionality to help you organize events, do registration, and post results.</p>
+<p>The clubsite is the website for your club.
+  There is lots of in depth functionality to help you organize events, do registration, and post results.
+  You can use it just to enter data into WhyJustRun, or use it as your club's main website. It is very easy to set up.
+  The best way to see the functionality of WhyJustRun is to <a href="https://github.com/WhyJustRun/Core/wiki/Get-WhyJustRun-for-your-club!">try it!</a></p>
 
-<a href="https://github.com/WhyJustRun/Core/wiki/Get-WhyJustRun-for-your-club!" class="btn btn-success btn-lg">Get WhyJustRun for your club!</a>
+<a href="https://github.com/WhyJustRun/Core/wiki/Get-WhyJustRun-for-your-club!" class="btn btn-success">Get WhyJustRun for your club (free)!</a>
+
+<h3>Community</h3>
+
+<p>We have a <a href="https://groups.google.com/forum/#!forum/orienteering-canada-database-user-group">user group</a> where you can get help and discuss WhyJustRun with other users and the developers.</p>
+
+<p>In addition, you can contact us directly at <a href="mailto:support@whyjustrun.ca">support@whyjustrun.ca</a>.</p>
+
+<h3>API</h3>
+
+<p>We have a <a href="https://github.com/WhyJustRun/Core/wiki/API">documented API</a> so you can easily integrate WhyJustRun into your own website.</p>
 
 <h3>History</h3>
 
-<p>The WhyJustRun project was started in early 2011 by GVOC members Thomas Nipen and Russell Porter to replace the existing GVOC website. The website was designed so that other clubs could take advantage of the functionality. Over time, clubs have switched to use WhyJustRun for their club website.</p>
+<p>The WhyJustRun project was started in early 2011 by GVOC members Thomas Nipen and Russell Porter to replace the existing GVOC website.
+  The website was designed so that other clubs could take advantage of the functionality.
+  Over time, clubs have switched to use WhyJustRun for their club website.</p>
