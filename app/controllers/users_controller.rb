@@ -1,6 +1,14 @@
 class UsersController < ApplicationController
   before_filter :authenticate_user!, only: [:send_message, :unlink_account]
 
+  def competitor_list
+    @users = User.find_all_real
+
+    respond_to do |format|
+      format.xml  { render action: :competitor_list_3, layout: false }
+    end
+  end
+
   def show
     @message ||= ""
     includes = { results: { course: { event: :club } }, organizers: { event: [:club], role: nil } };

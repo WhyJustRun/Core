@@ -17,6 +17,7 @@ WhyJustRun::Application.routes.draw do
   version_constraint = { :iof_version => /[^\/]*/ }
   get 'iof/:iof_version/events/:id/start_list', to: 'events#start_list', :constraints => version_constraint
   get 'iof/:iof_version/organization_list', to: 'clubs#index', :constraints => version_constraint
+  get 'iof/:iof_version/competitor_list', to: 'users#competitor_list', :constraints => version_constraint
   get 'iof/:iof_version/events/:id/entry_list', to: 'events#entry_list', :constraints => version_constraint
 
   get 'iof/:iof_version/users/event_list/limit/:limit', to: 'events#event_list_for_user', :constraints => version_constraint

@@ -22,7 +22,7 @@ xml.EntryList(
           end
         end
 
-        xml.ControlCard user.si_number unless user.si_number.nil?
+        render partial: 'users/control_cards_3', locals: { builder: xml, user: user }
         xml.Class do
           xml.Id course.id
           xml.Name course.name

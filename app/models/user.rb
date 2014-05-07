@@ -13,6 +13,12 @@ class User < ActiveRecord::Base
   has_many :cross_app_sessions
   belongs_to :club
 
+  validates :gender, inclusion: {
+    in: %w(M F),
+    message: "Gender must be male, female, or unspecified",
+    allow_nil: true
+  }
+
   # Migrate to the Devise password scheme
   # Inspired by https://gist.github.com/Bertg/966503
   def valid_password?(password_input)
@@ -87,6 +93,11 @@ class User < ActiveRecord::Base
       user = User.new
     end
     user
+  end
+
+  # Users that actually have a WJR account (aren't fake)
+  def self.find_all_real
+    User.where('users.email IS NOT NULL')
   end
 
   # Helpers
