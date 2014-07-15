@@ -1,4 +1,4 @@
-builder.Id club.id
+builder.Id({ type: 'WhyJustRun' }, club.id)
 builder.Name club.name
 builder.ShortName club.acronym
 builder.ParentOrganisationId club.parent_id unless club.parent_id.nil?

@@ -13,7 +13,7 @@ xml.EntryList(
     course.results.each { |result|
       user = result.user
       xml.PersonEntry do
-        xml.Id result.id
+        xml.Id({ type: 'WhyJustRun' }, result.id)
         render partial: 'users/person_3', locals: { builder: xml, user: user }
 
         unless user.club.nil?
@@ -24,7 +24,7 @@ xml.EntryList(
 
         render partial: 'users/control_cards_3', locals: { builder: xml, user: user }
         xml.Class do
-          xml.Id course.id
+          xml.Id({ type: 'WhyJustRun' }, course.id)
           xml.Name course.name
         end
         # TODO-RWP Add registration time to database <EntryTime>2011-07-14T18:20:05+01:00</EntryTime>

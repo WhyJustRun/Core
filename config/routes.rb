@@ -25,10 +25,12 @@ WhyJustRun::Application.routes.draw do
 
   get 'iof/:iof_version/clubs/:club_id/event_list', to: 'events#index', :constraints => version_constraint
 
-  get 'iof/:iof_version/events/:id/result_list', to: 'events#result_list', :constraints => version_constraint
-  post 'iof/:iof_version/events/:id/result_list', to: 'events#process_result_list', :constraints => version_constraint
-  post 'iof/:iof_version/events/:id/live_result_list', to: 'live_results#update', :constraints => version_constraint
-  get 'iof/:iof_version/events/:id/live_result_list', to: 'live_results#show', :constraints => version_constraint
+  # TODO TMP
+  get 'iof/result_list', to: 'results#update_result_list'
+  get 'iof/:iof_version/events/:id/result_list', to: 'results#result_list', :constraints => version_constraint
+  post 'iof/:iof_version/events/:id/result_list', to: 'results#update_result_list', :constraints => version_constraint
+  post 'iof/:iof_version/events/:id/live_result_list', to: 'results#update_live_result_list', :constraints => version_constraint
+  get 'iof/:iof_version/events/:id/live_result_list', to: 'results#live_result_list', :constraints => version_constraint
 
   get 'events', to: 'events#index'
   get 'club/:club_id/events', to: 'events#index'

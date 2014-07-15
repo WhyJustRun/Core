@@ -1,6 +1,6 @@
 gender = { gender: user.gender } unless user.gender.nil?
 builder.Person(gender) do
-  builder.Id user.id
+  builder.Id({ type: 'WhyJustRun' }, user.id)
   builder.Name do
     builder.Given user.first_name
     builder.Family user.last_name

@@ -21,7 +21,7 @@ xml.ResultList(
       end
 
       xml.Class do
-        xml.Id course.id
+        xml.Id({ type: 'WhyJustRun' }, course.id)
         xml.Name course.name
       end
 

@@ -1,6 +1,6 @@
 # TODO-RWP How to do Event Races?
 builder.Event do
-  builder.Id event.id
+  builder.Id({ type: 'WhyJustRun' }, event.id)
   builder.Name event.name
   builder.StartTime do
     builder.Date event.local_date.strftime('%F')
@@ -26,7 +26,7 @@ builder.Event do
   unless series.nil?
     builder.Extensions do
       builder.Series do
-        builder.Id series.id
+        builder.Id({ type: 'WhyJustRun' }, series.id)
         builder.Name series.name
         builder.Acronym series.acronym
         builder.Color series.color
@@ -35,7 +35,7 @@ builder.Event do
   end
   event.courses.each do |course|
     builder.Class do
-      builder.Id course.id
+      builder.Id({ type: 'WhyJustRun' }, course.id)
       builder.Name course.name
     end
   end
