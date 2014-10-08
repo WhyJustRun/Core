@@ -160,7 +160,9 @@ class User < ActiveRecord::Base
 
   # the max privilege level the user has for any club
   def max_privilege_level
-    privilege = Privilege.order('access_level DESC')
+    privilege = Privilege.includes(:user_group)
+                         .joins('LEFT JOIN groups ON groups.id = group_id')
+                         .order('access_level DESC')
                          .limit(1).take
     if privilege.nil?
       0
