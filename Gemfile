@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '~> 4.0.4'
+gem 'rails', '~> 4.1.6'
 gem 'mysql2', '~> 0.3.15'
 
 # MySQL Session store
@@ -45,7 +45,7 @@ end
 gem 'nokogiri', '~> 1.6.1'
 gem 'nori', '~> 2.4.0'
 
-gem "rails_config", "~> 0.3.3"
+gem "rails_config", "~> 0.4.2"
 
 gem 'icalendar', '~> 1.5.2'
 gem "geocoder", "~> 1.1.9"
