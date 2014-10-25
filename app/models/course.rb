@@ -3,7 +3,7 @@ class Course < ActiveRecord::Base
   belongs_to :event
   def sorted_results
     if is_score_o then
-        results.sort! { |a,b|
+        results.to_a.sort! { |a,b|
           if a.status == :ok and b.status == :ok then
             if a.score_points == b.score_points then
               if a.time == b.time then
@@ -31,7 +31,7 @@ class Course < ActiveRecord::Base
           end
         }
     else
-        results.sort! { |a,b|
+        results.to_a.sort! { |a,b|
           if a.status == :ok and b.status == :ok then
             if a.time == b.time then
               0
