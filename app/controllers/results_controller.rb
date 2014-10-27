@@ -21,7 +21,7 @@ class ResultsController < ApplicationController
   end
 
   def live_result_list
-    result = ResultList.find_by event_id: params[:id], status: ResultList::LIVE_STATUS
+    result = ResultList.find_by(event_id: params[:id], status: ResultList::LIVE_STATUS) or not_found_404
     expires_in 5.seconds, :public => true
     if stale?(last_modified: result.updated_at.utc, etag: result.cache_key)
       respond_to do |format|

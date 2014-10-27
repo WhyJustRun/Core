@@ -63,4 +63,8 @@ class ApplicationController < ActionController::Base
   def not_found(message)
     redirect_to '/', alert: message
   end
+
+  def not_found_404
+    raise ActionController::RoutingError.new('Not Found')
+  end
 end
