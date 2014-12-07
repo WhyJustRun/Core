@@ -32,7 +32,7 @@ WhyJustRun::Application.routes.draw do
   post 'iof/:iof_version/events/:id/live_result_list', to: 'results#update_live_result_list', :constraints => version_constraint
   get 'iof/:iof_version/events/:id/live_result_list', to: 'results#live_result_list', :constraints => version_constraint
 
-  get 'events', to: 'events#index'
+  get 'events', to: 'events#index', format: true
   get 'club/:club_id/events', to: 'events#index'
   get 'club/:club_id/participation_report', to: 'clubs#participant_counts'
 
