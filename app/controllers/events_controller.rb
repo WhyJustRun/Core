@@ -97,7 +97,7 @@ class EventsController < ApplicationController
       wants.json do
         output = []
         @events.each { |event|
-          output << event.to_fullcalendar(should_prefix.call(event, club), club_id)
+          output << event.to_fullcalendar(should_prefix.call(event, club), club)
         }
         render :text => output.to_json
       end

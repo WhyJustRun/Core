@@ -1,4 +1,5 @@
 require 'action_view'
+require 'haversine'
 
 class Event < ActiveRecord::Base
   # Thresholds (in km) for distances to events. We will show events at clubs within the given distance
@@ -175,7 +176,7 @@ class Event < ActiveRecord::Base
     event
   end
 
-  def to_fullcalendar(prefix_acronym, club_id)
+  def to_fullcalendar(prefix_acronym, for_club)
     Time.zone = "UTC"
     out = {}
     out[:id] = id
@@ -198,13 +199,40 @@ class Event < ActiveRecord::Base
       :acronym => club.acronym
     }
     out[:url] = url
-    if series.nil?
-        out[:textColor] = '#000000'
+    if for_club.nil?
+      # if no club provided, use the series color
+      out[:textColor] = series.nil? ? '#000000' : series.color
+    elsif for_club.id == club.id
+      # if club provided and it matches the event club, use standard green
+      out[:textColor] = '#238216'
     else
-        out[:textColor] = series.color
+      # otherwise grayscale based on distance
+      distance = distance_to(for_club)
+      if (distance < 50)
+        out[:textColor] = '#000000'
+      elsif distance >= 50 && distance < 2000
+        hex = 0xAA * (distance - 50) / 1950
+        scaled_hex = hex.round.to_s(16).rjust(2, '0')
+        out[:textColor] = '#' + scaled_hex * 3
+      else
+        out[:textColor] = '#' + 'AA' * 3
+      end
+      
+      if (distance > 100)
+        out[:title] += " (" + distance.round(-1).to_s + "km)"
+      end
     end
     out[:color] = '#fafafa'
     out
+  end
+
+  # in km
+  def distance_to(other_club)
+    if has_location
+      return Haversine.distance(lat, lng, other_club.lat, other_club.lng)
+    else
+      return Haversine.distance(club.lat, club.lng, other_club.lat, other_club.lng)
+    end
   end
 
   def has_organizer?(user)

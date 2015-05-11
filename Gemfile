@@ -13,7 +13,7 @@ gem "coffee-rails", "~> 4.0.1"
 gem "uglifier", "~> 2.5.0"
 
 # Authentication
-gem 'bcrypt-ruby', '~> 3.1.5'
+gem 'bcrypt', '~> 3.1.5'
 gem 'devise', '~> 3.2.4'
 gem "devise-encryptable", "~> 0.1.2"
 
@@ -58,3 +58,6 @@ gem "exception_notification", "~> 4.0.1"
 
 # Authorization
 gem "pundit", "~> 0.2.2"
+
+# Geo
+gem 'haversine_distance', '~> 1.0.0'
