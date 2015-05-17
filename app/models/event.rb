@@ -220,7 +220,7 @@ class Event < ActiveRecord::Base
       :id => club.id,
       :acronym => club.acronym
     }
-    if for_club.nil? or for_club.id == club.id
+    if not for_club.nil? and for_club.id == club.id
       out[:color] = display_colour(for_club)
     else
       out[:color] = '#FFFFFF'
