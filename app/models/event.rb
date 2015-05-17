@@ -220,16 +220,18 @@ class Event < ActiveRecord::Base
       :id => club.id,
       :acronym => club.acronym
     }
-    if for_club.id == club.id
+    if for_club.nil? or for_club.id == club.id
       out[:color] = display_colour(for_club)
     else
       out[:color] = '#FFFFFF'
       out[:textColor] = display_colour(for_club)
     end
     out[:url] = url
-    distance = distance_to(for_club)
-    if (distance > 100)
-      out[:title] += " (" + distance.round(-1).to_s + "km)"
+    unless for_club.nil?
+      distance = distance_to(for_club)
+      if (distance > 100)
+        out[:title] += " (" + distance.round(-1).to_s + "km)"
+      end
     end
     out
   end
