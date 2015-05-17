@@ -176,6 +176,28 @@ class Event < ActiveRecord::Base
     event
   end
 
+  def display_colour(for_club)
+    if for_club.nil?
+      # if no club provided, use the series color
+      return series.nil? ? '#000000' : series.color
+    elsif for_club.id == club.id
+      # if club provided and it matches the event club, use standard green
+      return '#238216'
+    else
+      # otherwise grayscale based on distance
+      distance = distance_to(for_club)
+      if (distance < 50)
+        return '#000000'
+      elsif distance >= 50 && distance < 2000
+        hex = 0xAA * (distance - 50) / 1950
+        scaled_hex = hex.round.to_s(16).rjust(2, '0')
+        return '#' + scaled_hex * 3
+      else
+        return '#' + 'AA' * 3
+      end
+    end
+  end
+  
   def to_fullcalendar(prefix_acronym, for_club)
     Time.zone = "UTC"
     out = {}
@@ -198,31 +220,17 @@ class Event < ActiveRecord::Base
       :id => club.id,
       :acronym => club.acronym
     }
-    out[:url] = url
-    if for_club.nil?
-      # if no club provided, use the series color
-      out[:textColor] = series.nil? ? '#000000' : series.color
-    elsif for_club.id == club.id
-      # if club provided and it matches the event club, use standard green
-      out[:textColor] = '#238216'
+    if for_club.id == club.id
+      out[:color] = display_colour(for_club)
     else
-      # otherwise grayscale based on distance
-      distance = distance_to(for_club)
-      if (distance < 50)
-        out[:textColor] = '#000000'
-      elsif distance >= 50 && distance < 2000
-        hex = 0xAA * (distance - 50) / 1950
-        scaled_hex = hex.round.to_s(16).rjust(2, '0')
-        out[:textColor] = '#' + scaled_hex * 3
-      else
-        out[:textColor] = '#' + 'AA' * 3
-      end
-      
-      if (distance > 100)
-        out[:title] += " (" + distance.round(-1).to_s + "km)"
-      end
+      out[:color] = '#FFFFFF'
+      out[:textColor] = display_colour(for_club)
     end
-    out[:color] = '#fafafa'
+    out[:url] = url
+    distance = distance_to(for_club)
+    if (distance > 100)
+      out[:title] += " (" + distance.round(-1).to_s + "km)"
+    end
     out
   end
 
