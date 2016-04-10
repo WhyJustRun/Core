@@ -109,7 +109,7 @@ class User < ActiveRecord::Base
       session[:cross_app_session_id] = cross_session.cross_app_session_id
       cross_session.save
     end
-    "http://" + club.domain + "/users/localLogin?cross_app_session_id=" + cross_session.cross_app_session_id
+    "https://" + club.domain + "/users/localLogin?cross_app_session_id=" + cross_session.cross_app_session_id
   end
 
   def first_name
