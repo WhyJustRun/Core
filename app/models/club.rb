@@ -19,7 +19,7 @@ class Club < ActiveRecord::Base
   end
 
   def self.all_ordered
-    self.order(:name)
+    self.visible.order(:name)
   end
 
   # Returns any organizations with no parent id
@@ -34,7 +34,7 @@ class Club < ActiveRecord::Base
 
   # only the clubs with no child clubs.. Ideal for a map that allows people to find nearby clubs since a few organizations (Yukon) may not have any clubs beneath them, but we don't want to show COF, IOF, etc
   def self.all_leaves
-    self.joins("LEFT JOIN clubs AS child_clubs ON clubs.id = child_clubs.parent_id").where("child_clubs.id IS NULL")
+    self.visible.joins("LEFT JOIN clubs AS child_clubs ON clubs.id = child_clubs.parent_id").where("child_clubs.id IS NULL")
   end
 
   def all_siblings
