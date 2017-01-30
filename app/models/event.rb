@@ -4,7 +4,7 @@ require 'haversine'
 class Event < ActiveRecord::Base
   # Thresholds (in km) for distances to events. We will show events at clubs within the given distance
   LOCAL_DISTANCE = 300
-  REGIONAL_DISTANCE = 600
+  REGIONAL_DISTANCE = 1000
   NATIONAL_DISTANCE = 2000
 
   include ActionView::Helpers::SanitizeHelper
