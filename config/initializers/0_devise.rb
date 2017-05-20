@@ -11,7 +11,10 @@ Devise.setup do |config|
 
   # Facebook Configuration
   require "omniauth-facebook"
-  config.omniauth :facebook, Settings.facebookAppID, Settings.facebookAppSecret
+  config.omniauth :facebook,
+    Settings.facebookAppID,
+    Settings.facebookAppSecret,
+    {token_params: {parse: :json}}
 
   # Google Configuration
   require "omniauth-google-oauth2"
