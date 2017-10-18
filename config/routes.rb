@@ -43,4 +43,6 @@ WhyJustRun::Application.routes.draw do
 
   # Handle all CORS OPTIONS requests
   match '*all', to: 'application#cors', via: [:options]
+  
+  get ':name', to: 'short_links#show'
 end
