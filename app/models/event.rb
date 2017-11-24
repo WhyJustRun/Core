@@ -66,10 +66,10 @@ class Event < ActiveRecord::Base
     end
 
     units = Geocoder.config.units
-    earth = Geocoder::Calculations.earth_radius(units)
+    earth = Arel::Nodes::SqlLiteral.new(Geocoder::Calculations.earth_radius(units).to_s)
     earth_diameter = Arel::Nodes::Multiplication.new(2, earth)
-    lat = club.lat.to_f
-    lng = club.lng.to_f
+    lat = Arel::Nodes::SqlLiteral.new(club.lat.to_f.to_s)
+    lng = Arel::Nodes::SqlLiteral.new(club.lng.to_f.to_s)
     lat_pow_computation = arel_pow_sin_expr(lat, arel_table[:lat])
     lat_cos_computation = Arel::Nodes::Multiplication.new(arel_cos_deg(lat), arel_cos_deg(arel_table[:lat]))
     lng_pow_computation = arel_pow_sin_expr(lng, arel_table[:lng])
@@ -197,7 +197,7 @@ class Event < ActiveRecord::Base
       end
     end
   end
-  
+
   def to_fullcalendar(prefix_acronym, for_club)
     Time.zone = "UTC"
     out = {}
