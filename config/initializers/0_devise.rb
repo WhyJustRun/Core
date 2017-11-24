@@ -18,7 +18,7 @@ Devise.setup do |config|
 
   # Google Configuration
   require "omniauth-google-oauth2"
-  config.omniauth :google_oauth2, Settings.googleAppID, Settings.googleAppSecret
+  config.omniauth :google_oauth2, Settings.googleAppID, Settings.googleAppSecret, {scope: 'email'}
 
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in Devise::Mailer,
