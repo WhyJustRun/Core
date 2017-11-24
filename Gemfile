@@ -25,7 +25,7 @@ gem 'omniauth-google-oauth2', '0.5.2'
 gem "leaflet-rails", "~> 0.6.2"
 
 # Spam prevention
-gem "recaptcha", "~> 0.3.6", :require => "recaptcha/rails"
+gem "recaptcha", "~> 4.6.2", :require => "recaptcha/rails"
 
 # Jobs
 gem 'whenever', '~> 0.9.2'
