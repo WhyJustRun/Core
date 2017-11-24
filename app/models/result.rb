@@ -67,7 +67,7 @@ class Result < ActiveRecord::Base
 
   def time
     if not time_seconds.nil? then
-      time_seconds.since(Time.utc(0))
+      Time.utc(0) + time_seconds
     end
   end
 end
