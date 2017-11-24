@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
 
-gem 'rails', '~> 4.1.6'
-gem 'mysql2', '~> 0.3.15'
+gem 'rails', '~> 4.2.10'
+gem 'mysql2', '~> 0.4.10'
 
 # MySQL Session store
 gem "activerecord-session_store", "~> 0.1.0"
@@ -14,7 +14,7 @@ gem "uglifier", "~> 2.5.0"
 
 # Authentication
 gem 'bcrypt', '~> 3.1.5'
-gem 'devise', '~> 3.2.4'
+gem 'devise', '~> 3.5.10'
 gem "devise-encryptable", "~> 0.1.2"
 
 gem 'omniauth', '~> 1.2.1'
