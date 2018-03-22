@@ -28,7 +28,7 @@ WhyJustRun::Application.routes.draw do
   # TODO TMP
   get 'iof/result_list', to: 'results#update_result_list'
   get 'iof/:iof_version/events/:id/result_list', to: 'results#result_list', :constraints => version_constraint
-  post 'iof/:iof_version/events/:id/result_list', to: 'results#update_result_list', :constraints => version_constraint
+  post 'iof/:iof_version/events/:id/result_list', to: 'results#process_result_list', :constraints => version_constraint
   post 'iof/:iof_version/events/:id/live_result_list', to: 'results#update_live_result_list', :constraints => version_constraint
   get 'iof/:iof_version/events/:id/live_result_list', to: 'results#live_result_list', :constraints => version_constraint
 
