@@ -1,5 +1,7 @@
 source 'http://rubygems.org'
 
+gem 'bundle'
+
 gem 'rails', '~> 4.2.10'
 gem 'mysql2', '~> 0.4.10'
 
@@ -41,7 +43,7 @@ group :test do
 end
 
 # XML Parsing
-gem 'nokogiri', '~> 1.6.1'
+gem 'nokogiri', '~> 1.8.1'
 gem 'nori', '~> 2.4.0'
 
 gem "rails_config", "~> 0.4.2"
