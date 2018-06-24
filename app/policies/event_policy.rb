@@ -7,6 +7,9 @@ class EventPolicy
   end
 
   def update?
-    @user.has_privilege?(Settings.privileges.event.edit, @event.club) or event.has_organizer? @user
+    unless @user
+      return false
+    end
+    @user.has_privilege?(Settings.privileges.event.edit, @event.club) or @event.has_organizer? @user
   end
 end
