@@ -1,4 +1,4 @@
 every 1.day do
-  rake "sessions:cleanup"
+  rake "sessions:trim"
 end
 
