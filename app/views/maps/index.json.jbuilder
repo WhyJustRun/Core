@@ -3,4 +3,10 @@ json.maps @maps do |map|
   json.club do
     json.(map.club, :id, :name)
   end
+
+  json.map_standard do
+    if(map.map_standard)
+      json.(map.map_standard, :name, :color)
+    end
+  end
 end
