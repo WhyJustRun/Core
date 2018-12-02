@@ -181,8 +181,8 @@ class Event < ActiveRecord::Base
       # if no club provided, use the series color
       return series.nil? ? '#000000' : series.color
     elsif for_club.id == club.id
-      # if club provided and it matches the event club, use standard green
-      return '#238216'
+      # if club provided and it matches the event club, use series color if possible
+      return series.nil? ? '#000000' : series.color
     else
       # otherwise grayscale based on distance
       distance = distance_to(for_club)
@@ -196,6 +196,23 @@ class Event < ActiveRecord::Base
         return '#' + 'AA' * 3
       end
     end
+  end
+
+  def text_colour(colour)
+    # Check color format - #RRGGBB or rgba(0,0,0,0)
+    if colour.length == 7
+      r = Integer(colour[1,2], 16)
+      g = Integer(colour[3,2], 16)
+      b = Integer(colour[5,2], 16)
+    else
+      components = colour.split(',')
+      r = Integer(components[0][5])
+      g = Integer(components[1])
+      b = Integer(components[2])
+    end
+
+    yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000
+    return yiq >= 128 ? '#000000' : '#FFFFFF'
   end
 
   def to_fullcalendar(prefix_acronym, for_club)
@@ -222,6 +239,7 @@ class Event < ActiveRecord::Base
     }
     if not for_club.nil? and for_club.id == club.id
       out[:color] = display_colour(for_club)
+      out[:textColor] = text_colour(out[:color])
     else
       out[:color] = '#FFFFFF'
       out[:textColor] = display_colour(for_club)
