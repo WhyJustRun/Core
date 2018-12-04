@@ -205,8 +205,8 @@ class Event < ActiveRecord::Base
       g = Integer(colour[3,2], 16)
       b = Integer(colour[5,2], 16)
     else
-      components = colour.split(',')
-      r = Integer(components[0][5])
+      components = colour.gsub(/[rgb() ]/, '').split(',')
+      r = Integer(components[0])
       g = Integer(components[1])
       b = Integer(components[2])
     end
