@@ -33,7 +33,7 @@ gem "recaptcha", "~> 4.6.2", :require => "recaptcha/rails"
 gem 'whenever', '~> 0.9.2'
 
 # Bootstrap
-gem 'bootstrap-sass', '~> 3.0.3.0'
+gem 'bootstrap-sass', '~> 3.4.1'
 
 gem 'jquery-rails', '~> 3.1.0'
 
