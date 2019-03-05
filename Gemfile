@@ -20,8 +20,8 @@ gem 'devise', '~> 3.5.10'
 gem "devise-encryptable", "~> 0.1.2"
 
 gem 'omniauth', '~> 1.7.1'
-gem 'omniauth-facebook', '~> 4.0.0'
-gem 'omniauth-google-oauth2', '0.5.2'
+gem 'omniauth-facebook', '~> 5.0.0'
+gem 'omniauth-google-oauth2', '0.6.0'
 
 # Maps
 gem "leaflet-rails", "~> 0.6.2"
