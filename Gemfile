@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 gem 'bundle'
 
-gem 'rails', '~> 4.2.10'
+gem 'rails', '~> 4.2.11.1'
 gem 'mysql2', '~> 0.4.10'
 
 # MySQL Session store
