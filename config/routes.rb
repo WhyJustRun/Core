@@ -2,6 +2,7 @@ WhyJustRun::Application.routes.draw do
   devise_for :users, :controllers => { :registrations => 'users/registrations', :omniauth_callbacks => "users/omniauth_callbacks" }
 
   root :to => "home#about_whyjustrun"
+  get 'pages/privacy_policy', to: 'pages#privacy_policy'
   get 'about/orienteering', to: 'home#about_orienteering'
   get 'events/calendar', to: 'events#calendar'
   get 'clubs/map', to: 'clubs#map'
