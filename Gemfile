@@ -43,7 +43,7 @@ group :test do
 end
 
 # XML Parsing
-gem 'nokogiri', '~> 1.10.4'
+gem 'nokogiri', '~> 1.10.8'
 gem 'nori', '~> 2.4.0'
 
 gem "rails_config", "~> 0.4.2"
