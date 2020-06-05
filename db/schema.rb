@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20191001203548) do
+ActiveRecord::Schema.define(version: 20200605163839) do
 
   create_table "club_categories", force: :cascade do |t|
     t.string "name", limit: 255
@@ -21,20 +21,20 @@ ActiveRecord::Schema.define(version: 20191001203548) do
     t.text    "name",             limit: 255
     t.string  "acronym",          limit: 8
     t.text    "location",         limit: 255
-    t.text    "description",      limit: 65535
+    t.text    "description",      limit: 16777215
     t.text    "url",              limit: 255
     t.float   "lat",              limit: 53
     t.float   "lng",              limit: 53
     t.string  "country",          limit: 255
     t.text    "timezone",         limit: 255
-    t.boolean "visible",                        default: false,     null: false
+    t.boolean "visible",                           default: false,     null: false
     t.string  "domain",           limit: 255
     t.string  "redirect_domain",  limit: 255
     t.integer "parent_id",        limit: 4
     t.integer "club_category_id", limit: 4
-    t.string  "layout",           limit: 255,   default: "default", null: false
+    t.string  "layout",           limit: 255,      default: "default", null: false
     t.text    "facebook_page_id", limit: 255
-    t.boolean "use_map_urls",                   default: true,      null: false
+    t.boolean "use_map_urls",                      default: true,      null: false
     t.string  "juicer_feed_id",   limit: 255
   end
 
@@ -42,8 +42,8 @@ ActiveRecord::Schema.define(version: 20191001203548) do
 
   create_table "content_blocks", force: :cascade do |t|
     t.string  "key",     limit: 255
-    t.text    "content", limit: 65535
-    t.integer "order",   limit: 4,     default: 1
+    t.text    "content", limit: 16777215
+    t.integer "order",   limit: 4,        default: 1
     t.integer "club_id", limit: 4
   end
 
@@ -55,9 +55,9 @@ ActiveRecord::Schema.define(version: 20191001203548) do
     t.text    "name",        limit: 255
     t.integer "distance",    limit: 4
     t.integer "climb",       limit: 4
-    t.text    "description", limit: 65535
+    t.text    "description", limit: 16777215
     t.text    "map_url",     limit: 255
-    t.boolean "is_score_o",                default: false, null: false
+    t.boolean "is_score_o",                   default: false, null: false
   end
 
   add_index "courses", ["event_id"], name: "event_id", using: :btree
@@ -76,7 +76,7 @@ ActiveRecord::Schema.define(version: 20191001203548) do
     t.string "name",           limit: 50
     t.string "iof_3_0_name",   limit: 50
     t.string "iof_2_0_3_name", limit: 50
-    t.string "description",    limit: 100
+    t.text   "description",    limit: 16777215
   end
 
   create_table "events", force: :cascade do |t|
@@ -86,9 +86,9 @@ ActiveRecord::Schema.define(version: 20191001203548) do
     t.datetime "date"
     t.float    "lat",                     limit: 53
     t.float    "lng",                     limit: 53
-    t.boolean  "is_ranked",                             default: false, null: false
-    t.text     "description",             limit: 65535
-    t.boolean  "results_posted",                        default: false, null: false
+    t.boolean  "is_ranked",                                default: false, null: false
+    t.text     "description",             limit: 16777215
+    t.boolean  "results_posted",                           default: false, null: false
     t.integer  "club_id",                 limit: 4
     t.string   "custom_url",              limit: 255
     t.integer  "event_classification_id", limit: 4
@@ -116,7 +116,7 @@ ActiveRecord::Schema.define(version: 20191001203548) do
   create_table "groups", force: :cascade do |t|
     t.text    "name",         limit: 255
     t.integer "access_level", limit: 4
-    t.text    "description",  limit: 65535
+    t.text    "description",  limit: 16777215
     t.integer "club_id",      limit: 4
   end
 
@@ -124,7 +124,7 @@ ActiveRecord::Schema.define(version: 20191001203548) do
 
   create_table "map_standards", force: :cascade do |t|
     t.text "name",        limit: 255
-    t.text "description", limit: 65535
+    t.text "description", limit: 16777215
     t.text "color",       limit: 255
   end
 
@@ -139,7 +139,7 @@ ActiveRecord::Schema.define(version: 20191001203548) do
     t.text     "repository_path", limit: 255
     t.integer  "club_id",         limit: 4
     t.string   "file_url",        limit: 255
-    t.text     "notes",           limit: 65535
+    t.text     "notes",           limit: 16777215
   end
 
   add_index "maps", ["club_id"], name: "club_id", using: :btree
@@ -181,7 +181,7 @@ ActiveRecord::Schema.define(version: 20191001203548) do
   create_table "pages", force: :cascade do |t|
     t.string  "name",    limit: 255
     t.string  "section", limit: 255
-    t.text    "content", limit: 65535
+    t.text    "content", limit: 16777215
     t.integer "club_id", limit: 4
   end
 
@@ -238,15 +238,15 @@ ActiveRecord::Schema.define(version: 20191001203548) do
 
   create_table "roles", force: :cascade do |t|
     t.text "name",        limit: 255
-    t.text "description", limit: 65535
+    t.text "description", limit: 16777215
   end
 
   create_table "series", force: :cascade do |t|
     t.text    "acronym",     limit: 255
     t.text    "name",        limit: 255
     t.text    "color",       limit: 255
-    t.text    "information", limit: 65535
-    t.boolean "is_current",                default: true
+    t.text    "information", limit: 16777215
+    t.boolean "is_current",                   default: true
     t.integer "club_id",     limit: 4
   end
 
