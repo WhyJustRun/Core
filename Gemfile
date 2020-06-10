@@ -49,7 +49,7 @@ gem 'nori', '~> 2.4.0'
 gem "rails_config", "~> 0.4.2"
 
 gem 'icalendar', '~> 1.5.2'
-gem "geocoder", "~> 1.1.9"
+gem "geocoder", "~> 1.6.1"
 
 # JSON Builder
 gem 'jbuilder', '~> 2.0.5'
