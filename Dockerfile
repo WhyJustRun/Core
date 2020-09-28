@@ -1,5 +1,13 @@
-FROM ruby:2.5
-RUN apt-get update -qq && apt-get install -y nodejs
+FROM ruby:2.5-alpine
+RUN apk add --no-cache \
+        make \
+        pkgconfig \
+        build-base \
+        autoconf \
+        nodejs \
+        yarn \
+        mariadb-dev
+
 RUN mkdir /application
 WORKDIR /application
 COPY Gemfile /application/Gemfile
@@ -9,7 +17,7 @@ RUN bundle install
 # Add a script to be executed every time the container starts.
 COPY docker-entrypoint.sh /usr/bin/
 RUN chmod +x /usr/bin/docker-entrypoint.sh
-ENTRYPOINT ["docker-entrypoint.sh"]
+ENTRYPOINT ["sh", "docker-entrypoint.sh"]
 EXPOSE 3000
 
 # Start the main process.

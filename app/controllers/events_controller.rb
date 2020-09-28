@@ -92,14 +92,14 @@ class EventsController < ApplicationController
           calendar.add_event(event.to_ics)
         }
         calendar.publish
-        render :text => calendar.to_ical
+        render :plain => calendar.to_ical
       end
       wants.json do
         output = []
         @events.each { |event|
           output << event.to_fullcalendar(should_prefix.call(event, club), club)
         }
-        render :text => output.to_json
+        render :plain => output.to_json
       end
       respond_to_event_xml_version(wants)
     end

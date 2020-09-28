@@ -28,7 +28,7 @@ class ClubsController < ApplicationController
           calendar.add_event(event.to_ics)
         }
         calendar.publish
-        render :text => calendar.to_ical
+        render :plain => calendar.to_ical
       end
     end
   end

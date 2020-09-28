@@ -60,7 +60,7 @@ class ResultsController < ApplicationController
       # TODO handle validation error
     end
 
-    render :text => remaining_conflicts.to_yaml
+    render :plain => remaining_conflicts.to_yaml
   end
 
   def result_list
