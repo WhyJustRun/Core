@@ -49,3 +49,39 @@ linkableAccounts:
     name: "Google"
     provider: "google_oauth2"
     column: 'google_id'
+
+host: <%= ENV.fetch('WJR_HOST', 'whyjustrun.ca') %>
+
+databaseName: <%= ENV.fetch('WJR_DATABASE_NAME') %>
+databaseHost: <%= ENV.fetch('WJR_DATABASE_HOST') %>
+databaseUsername: <%= ENV.fetch('WJR_DATABASE_USERNAME') %>
+databasePassword: <%= ENV.fetch('WJR_DATABASE_PASSWORD') %>
+
+# Should be the same as the salt used by CakePHP
+passwordSalt: <%= ENV.fetch('WJR_PASSWORD_SALT') %>
+
+secretKeyBase: <%= ENV.fetch('WJR_SECRET_BASE') %>
+secretToken: <%= ENV.fetch('WJR_SECRET_TOKEN') %>
+
+deviseSecretKey: <%= ENV.fetch('WJR_DEVISE_SECRET_KEY') %>
+
+facebookAppID: <%= ENV.fetch('WJR_FACEBOOK_APP_ID') %>
+facebookAppSecret: <%= ENV.fetch('WJR_FACEBOOK_APP_SECRET') %>
+
+googleAppID: <%= ENV.fetch('WJR_GOOGLE_APP_ID') %>
+googleAppSecret: <%= ENV.fetch('WJR_GOOGLE_APP_SECRET') %>
+
+recaptchaSiteKey: <%= ENV.fetch('WJR_RECAPTCHA_SITE_KEY') %>
+recaptchaSecretKey: <%= ENV.fetch('WJR_RECAPTCHA_SECRET_KEY') %>
+
+smtpSettings:
+  address: <%= ENV.fetch('WJR_SMTP_ADDRESS') %>
+  port: 587
+  domain: <%= ENV.fetch('WJR_SMTP_DOMAIN') %>
+  user_name: <%= ENV.fetch('WJR_SMTP_USER_NAME') %>
+  password: <%= ENV.fetch('WJR_SMTP_PASSWORD') %>
+  authentication: plain
+  enable_starttls_auto: true
+
+dataFolder: <%= ENV.fetch('WJR_DATA_FOLDER') %>
+dataURL: <%= ENV.fetch('WJR_DATA_URL') %>

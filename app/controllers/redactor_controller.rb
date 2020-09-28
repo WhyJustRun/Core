@@ -29,8 +29,8 @@ class RedactorController < ApplicationController
   def store_file(data)
     raise "not authorized" unless RedactorPolicy.new(current_user).store_file?
     extension = File.extname(data.original_filename)
-    root_path = Settings.dataFolder[Rails.env]
-    root_url = Settings.dataURL[Rails.env]
+    root_path = Settings.dataFolder
+    root_url = Settings.dataURL
     random = SecureRandom.urlsafe_base64
     random_folder_1 = SecureRandom.random_number(9).to_s
     random_folder_2 = SecureRandom.random_number(9).to_s

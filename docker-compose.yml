@@ -1,0 +1,24 @@
+version: '3'
+services:
+  web:
+    build: .
+    ports:
+      - 3000:3000
+    volumes:
+        - .:/application/
+    links:
+        - db
+    environment:
+        - WJR_DATABASE_NAME=whyjustrun
+        - WJR_DATABASE_HOST=db
+        - WJR_DATABASE_USERNAME=root
+        - WJR_DATABASE_PASSWORD=root
+    env_file:
+        - .env.web
+  db:
+    image: mariadb:10.2
+    restart: always
+    ports:
+        - 3306:3306
+    environment:
+        MYSQL_ROOT_PASSWORD: root

@@ -36,7 +36,9 @@ module WhyJustRun
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
 
-    config.action_mailer.default_url_options = { :host => 'whyjustrun.ca' }
+    config.action_mailer.smtp_settings = Settings.smtpSettings.to_hash
+    config.action_mailer.delivery_method = :smtp
+    config.action_mailer.default_url_options = { :host => Settings.host }
 
     # Specify timezone for active record
     config.active_record.default_timezone = :utc

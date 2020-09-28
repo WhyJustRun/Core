@@ -13,6 +13,8 @@ class User < ActiveRecord::Base
   has_many :cross_app_sessions
   belongs_to :club
 
+  validates :name, presence: true
+
   validates :gender, inclusion: {
     in: %w(M F),
     message: "Gender must be male, female, or unspecified",
@@ -41,7 +43,7 @@ class User < ActiveRecord::Base
 
   def cakephp_password_digest(password)
     require "digest/sha2"
-    ::Digest::SHA512.hexdigest(Settings.salt + password)
+    ::Digest::SHA512.hexdigest(Settings.passwordSalt + password)
   end
 
   def self.new_with_session(params, session)
