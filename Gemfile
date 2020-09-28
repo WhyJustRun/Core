@@ -2,17 +2,20 @@ source 'http://rubygems.org'
 
 gem 'bundle'
 
-gem 'rails', '~> 4.2.11.1'
+gem 'rails', '~> 5.2.4'
 gem 'mysql2', '~> 0.4.10'
 
+# Performance
+gem 'bootsnap', require: false
+
 # MySQL Session store
-gem "activerecord-session_store", "~> 0.1.0"
+gem "activerecord-session_store", "~> 1.1.3"
 
 # Asset pipeline
-gem 'sass-rails', '~> 4.0.2'
-gem "coffee-script", "~> 2.2.0"
-gem "coffee-rails", "~> 4.0.1"
-gem "uglifier", "~> 2.5.0"
+gem 'sass-rails', '~> 5.0.0'
+gem "coffee-script", "~> 2.4.1"
+gem "coffee-rails", "~> 5.0.0"
+gem "uglifier", "~> 4.2.0"
 
 # Authentication
 gem 'bcrypt', '~> 3.1.5'
@@ -24,41 +27,40 @@ gem 'omniauth-facebook', '~> 7.0.0'
 gem 'omniauth-google-oauth2', '0.8.0'
 
 # Maps
-gem "leaflet-rails", "~> 0.6.2"
+gem "leaflet-rails", "~> 1.7.0"
 
 # Spam prevention
-gem "recaptcha", "~> 4.6.2", :require => "recaptcha/rails"
+gem "recaptcha", "~> 5.5.0", :require => "recaptcha/rails"
 
 # Jobs
-gem 'whenever', '~> 0.9.2'
+gem 'whenever', '~> 1.0.0'
 
 # Bootstrap
 gem 'bootstrap-sass', '~> 3.4.1'
 
-gem 'jquery-rails', '~> 3.1.0'
-
-group :test do
-  # Pretty printed test output
-  gem 'turn', '~> 0.8.3', :require => false
-end
+gem 'jquery-rails', '~> 4.4.0'
 
 # XML Parsing
-gem 'nokogiri', '~> 1.10.8'
-gem 'nori', '~> 2.4.0'
+gem 'nokogiri', '~> 1.10.10'
+gem 'nori', '~> 2.6.0'
 
-gem "rails_config", "~> 0.4.2"
+gem "config", "~> 2.2.1"
 
-gem 'icalendar', '~> 1.5.2'
-gem "geocoder", "~> 1.6.1"
+gem 'icalendar', '~> 2.7.0'
+gem "geocoder", "~> 1.6.3"
 
 # JSON Builder
-gem 'jbuilder', '~> 2.0.5'
+gem 'jbuilder', '~> 2.10.1'
 
 # Logging (email)
-gem "exception_notification", "~> 4.0.1"
+gem "exception_notification", "~> 4.4.3"
 
 # Authorization
-gem "pundit", "~> 0.2.2"
+gem "pundit", "~> 2.1.0"
 
 # Geo
-gem 'haversine_distance', '~> 1.0.0'
+gem 'haversine_distance', '~> 1.1.1'
+
+group :development do
+  gem 'listen'
+end

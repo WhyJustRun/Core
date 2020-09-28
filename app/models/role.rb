@@ -1,2 +1,2 @@
-class Role < ActiveRecord::Base
+class Role < ApplicationRecord
 end

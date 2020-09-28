@@ -1,2 +1,2 @@
-class Page < ActiveRecord::Base
+class Page < ApplicationRecord
 end

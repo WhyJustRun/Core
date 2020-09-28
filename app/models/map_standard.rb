@@ -1,3 +1,3 @@
-class MapStandard < ActiveRecord::Base
+class MapStandard < ApplicationRecord
   has_many :maps
 end

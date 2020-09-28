@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_filter :authenticate_user!, only: [:send_message, :unlink_account]
+  before_action :authenticate_user!, only: [:send_message, :unlink_account]
 
   def competitor_list
     @users = User.find_all_real

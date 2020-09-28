@@ -1,4 +1,4 @@
-class EventClassification < ActiveRecord::Base
+class EventClassification < ApplicationRecord
   CLUB_ID = 5
   LOCAL_ID = 4
   REGIONAL_ID = 3

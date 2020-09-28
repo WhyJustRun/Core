@@ -1,7 +1,7 @@
 require 'nokogiri'
 
 class ResultsController < ApplicationController
-  before_filter :authenticate_user!, :only => :update_live
+  before_action :authenticate_user!, :only => :update_live
 
   def check_event_id id
     unless Event.exists? id

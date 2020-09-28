@@ -1,2 +1,2 @@
-class Series < ActiveRecord::Base
+class Series < ApplicationRecord
 end

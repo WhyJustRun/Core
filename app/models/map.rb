@@ -1,4 +1,4 @@
-class Map < ActiveRecord::Base
+class Map < ApplicationRecord
   has_many :event
   belongs_to :map_standard
   belongs_to :club

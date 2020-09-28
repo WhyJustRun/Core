@@ -1,2 +1,2 @@
-class ShortLink < ActiveRecord::Base
+class ShortLink < ApplicationRecord
 end

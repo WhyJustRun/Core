@@ -1,4 +1,4 @@
-class Course < ActiveRecord::Base
+class Course < ApplicationRecord
   has_many :results
   belongs_to :event
   def sorted_results

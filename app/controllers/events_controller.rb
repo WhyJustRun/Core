@@ -1,5 +1,5 @@
 class EventsController < ApplicationController
-  before_filter :authenticate_user!, :only => [:event_list_for_user, :process_result_list]
+  before_action :authenticate_user!, :only => [:event_list_for_user, :process_result_list]
 
   def respond_to_event_xml_version(wants)
     wants.xml do

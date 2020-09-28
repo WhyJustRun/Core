@@ -1,9 +1,9 @@
 require 'fileutils'
 
 class RedactorController < ApplicationController
-  before_filter :authenticate_user!
+  before_action :authenticate_user!
   # since this request is coming via PHP, we don't have an authenticity token
-  skip_before_filter  :verify_authenticity_token
+  skip_before_action  :verify_authenticity_token
 
   def upload_image
     data = params[:file]

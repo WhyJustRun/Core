@@ -1,4 +1,4 @@
-class CrossAppSession < ActiveRecord::Base
+class CrossAppSession < ApplicationRecord
   belongs_to :user
 
   def self.new_for_user(user)

@@ -1,4 +1,4 @@
-class ResultList < ActiveRecord::Base
+class ResultList < ApplicationRecord
   LIVE_STATUS = 'live'
   FINAL_STATUS = 'final'
 

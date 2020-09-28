@@ -1,11 +1,14 @@
-require File.expand_path('../boot', __FILE__)
+require_relative 'boot'
 
 require 'rails/all'
 
-Bundler.require(:default, Rails.env)
+Bundler.require(*Rails.groups)
 
 module WhyJustRun
   class Application < Rails::Application
+    # Application configuration can go into files in config/initializers
+    config.load_defaults 5.0
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
@@ -39,10 +42,6 @@ module WhyJustRun
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
-
-    config.action_mailer.smtp_settings = Settings.smtpSettings.to_hash
-    config.action_mailer.delivery_method = :smtp
-    config.action_mailer.default_url_options = { :host => Settings.host }
 
     # Specify timezone for active record
     config.active_record.default_timezone = :utc

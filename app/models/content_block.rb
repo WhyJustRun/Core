@@ -1,2 +1,2 @@
-class ContentBlock < ActiveRecord::Base
+class ContentBlock < ApplicationRecord
 end

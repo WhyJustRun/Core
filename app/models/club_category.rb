@@ -1,4 +1,4 @@
-class ClubCategory < ActiveRecord::Base
+class ClubCategory < ApplicationRecord
   has_many :clubs
 
   def self.club_id

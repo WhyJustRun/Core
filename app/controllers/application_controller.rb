@@ -2,10 +2,10 @@ class ApplicationController < ActionController::Base
   include Pundit
   protect_from_forgery
 
-  before_filter :clear_redirect_club_if_necessary
-  before_filter :configure_permitted_parameters, if: :devise_controller?
-  after_filter :store_location
-  after_filter :set_access_control_headers
+  before_action :clear_redirect_club_if_necessary
+  before_action :configure_permitted_parameters, if: :devise_controller?
+  after_action :store_location
+  after_action :set_access_control_headers
 
   def cors
     # Cache the OPTIONS response for 1 day
