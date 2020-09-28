@@ -33,6 +33,10 @@ module WhyJustRun
     # Enable the asset pipeline
     config.assets.enabled = true
 
+    # Configure static asset server for tests with Cache-Control for performance
+    config.serve_static_assets = true
+    config.static_cache_control = "public, max-age=3600"
+
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
 
