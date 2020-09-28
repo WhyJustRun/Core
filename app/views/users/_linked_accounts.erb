@@ -5,10 +5,14 @@
 ids = Settings.linkableAccounts
 ids.each { |id, data|
   if user[id].nil?
+    authorize_url = case data.provider 
+    when "google_oauth2" then user_google_oauth2_omniauth_authorize_path
+    when "facebook" then user_facebook_omniauth_authorize_path
+    end    
 %>
 
 <div class="btn-group">
-  <a href="<%= user_omniauth_authorize_path(data.provider.to_s) %>" class="btn btn-success">
+  <a href="<%= authorize_url %>" class="btn btn-success">
     Link <%= data[:name] %> account
   </a>
 </div>

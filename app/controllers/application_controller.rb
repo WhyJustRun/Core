@@ -21,13 +21,8 @@ class ApplicationController < ActionController::Base
   end
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.for(:sign_up) { |u|
-      u.permit(:club_id, :name, :si_number, :referred_from, :password, :email)
-    }
-
-    devise_parameter_sanitizer.for(:account_update) { |u|
-      u.permit(:club_id, :name, :si_number, :email, :password, :current_password)
-    }
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:club_id, :name, :si_number, :referred_from, :password, :email])
+    devise_parameter_sanitizer.permit(:account_update, keys: [:club_id, :name, :si_number, :email, :password, :current_password])
   end
 
   def store_location

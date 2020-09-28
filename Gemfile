@@ -16,12 +16,12 @@ gem "uglifier", "~> 2.5.0"
 
 # Authentication
 gem 'bcrypt', '~> 3.1.5'
-gem 'devise', '~> 3.5.10'
-gem "devise-encryptable", "~> 0.1.2"
+gem 'devise', '~> 4.7.3'
+gem "devise-encryptable", "~> 0.2.0"
 
-gem 'omniauth', '~> 1.7.1'
-gem 'omniauth-facebook', '~> 5.0.0'
-gem 'omniauth-google-oauth2', '0.6.0'
+gem 'omniauth', '~> 1.9.1'
+gem 'omniauth-facebook', '~> 7.0.0'
+gem 'omniauth-google-oauth2', '0.8.0'
 
 # Maps
 gem "leaflet-rails", "~> 0.6.2"
