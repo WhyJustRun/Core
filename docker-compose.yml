@@ -1,4 +1,4 @@
-version: '3'
+version: '3.5'
 services:
   web:
     build:
@@ -17,6 +17,8 @@ services:
         - WJR_DATABASE_PASSWORD=root
     env_file:
         - .env.web
+    networks:
+      - whyjustrun
   db:
     image: mariadb:10.2
     restart: always
@@ -24,3 +26,9 @@ services:
         - 3306:3306
     environment:
         MYSQL_ROOT_PASSWORD: root
+    networks:
+      - whyjustrun
+networks:
+  whyjustrun:
+    name: whyjustrun
+    driver: bridge
