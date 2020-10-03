@@ -8,6 +8,7 @@ class User < ApplicationRecord
 
   has_many :results
   has_many :organizers
+  has_many :officials
   has_many :privileges
   has_many :resources
   has_many :cross_app_sessions
