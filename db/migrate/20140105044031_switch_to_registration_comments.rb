@@ -1,4 +1,4 @@
-class SwitchToRegistrationComments < ActiveRecord::Migration
+class SwitchToRegistrationComments < ActiveRecord::Migration[4.2]
   def up
     add_column :results, :comment, :string
 

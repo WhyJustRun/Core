@@ -1,4 +1,4 @@
-class AddFileExtensionToResources < ActiveRecord::Migration
+class AddFileExtensionToResources < ActiveRecord::Migration[4.2]
   def up
     add_column :resources, :extension, :string 
 

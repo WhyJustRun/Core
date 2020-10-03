@@ -1,4 +1,4 @@
-class RemoveCourseAndMapFromResourcesTable < ActiveRecord::Migration
+class RemoveCourseAndMapFromResourcesTable < ActiveRecord::Migration[4.2]
   def change
     # not ever used
     remove_reference :resources, :course

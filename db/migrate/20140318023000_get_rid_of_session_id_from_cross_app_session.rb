@@ -1,4 +1,4 @@
-class GetRidOfSessionIdFromCrossAppSession < ActiveRecord::Migration
+class GetRidOfSessionIdFromCrossAppSession < ActiveRecord::Migration[4.2]
   def change
     remove_column :cross_app_sessions, :session_id, :string
   end

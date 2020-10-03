@@ -1,4 +1,4 @@
-class SupportBothFacebookAndGoogleAccounts < ActiveRecord::Migration
+class SupportBothFacebookAndGoogleAccounts < ActiveRecord::Migration[4.2]
   def up
     add_column :users, :google_id, :string
     add_column :users, :facebook_id, :string

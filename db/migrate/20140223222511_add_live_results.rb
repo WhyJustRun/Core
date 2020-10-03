@@ -1,4 +1,4 @@
-class AddLiveResults < ActiveRecord::Migration
+class AddLiveResults < ActiveRecord::Migration[4.2]
   def change
     create_table :live_results do |t|
       t.text :data, :limit => 16777215 #medium text field

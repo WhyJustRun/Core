@@ -1,4 +1,4 @@
-class CreateShortLinks < ActiveRecord::Migration
+class CreateShortLinks < ActiveRecord::Migration[4.2]
   def change
     create_table :short_links do |t|
       t.string :name

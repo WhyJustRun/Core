@@ -1,4 +1,4 @@
-class BiggerTextFields < ActiveRecord::Migration
+class BiggerTextFields < ActiveRecord::Migration[4.2]
   def change
     change_column :pages, :content, :mediumtext
     change_column :events, :description, :mediumtext

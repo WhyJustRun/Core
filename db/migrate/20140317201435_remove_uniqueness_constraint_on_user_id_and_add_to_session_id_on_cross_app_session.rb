@@ -1,4 +1,4 @@
-class RemoveUniquenessConstraintOnUserIdAndAddToSessionIdOnCrossAppSession < ActiveRecord::Migration
+class RemoveUniquenessConstraintOnUserIdAndAddToSessionIdOnCrossAppSession < ActiveRecord::Migration[4.2]
   def change
     remove_index :cross_app_sessions, column: :user_id, unique: true
     add_index :cross_app_sessions, :user_id, unique: false

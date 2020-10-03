@@ -1,4 +1,4 @@
-class MoreDatabaseConstraintsForCrossAppSessions < ActiveRecord::Migration
+class MoreDatabaseConstraintsForCrossAppSessions < ActiveRecord::Migration[4.2]
   def up
     add_index :cross_app_sessions, :user_id, :unique => true
     add_index :cross_app_sessions, :cross_app_session_id, :unique => true

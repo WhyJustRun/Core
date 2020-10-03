@@ -1,4 +1,4 @@
-class EnableLockableForDevise < ActiveRecord::Migration
+class EnableLockableForDevise < ActiveRecord::Migration[4.2]
   def up
     change_table(:users) do |t|
       t.integer  :failed_attempts, :default => 0 # Only if lock strategy is :failed_attempts

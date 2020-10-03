@@ -1,4 +1,4 @@
-class EvenMoreDatabaseConstraintsForCrossAppSessions < ActiveRecord::Migration
+class EvenMoreDatabaseConstraintsForCrossAppSessions < ActiveRecord::Migration[4.2]
   def up
     change_table(:cross_app_sessions) do |t|
       t.change :user_id, :integer, :null => false

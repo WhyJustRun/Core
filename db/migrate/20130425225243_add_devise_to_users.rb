@@ -1,4 +1,4 @@
-class AddDeviseToUsers < ActiveRecord::Migration
+class AddDeviseToUsers < ActiveRecord::Migration[4.2]
   def self.up
      
     # Deactivate users with duplicate email addresses

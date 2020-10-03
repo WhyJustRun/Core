@@ -1,4 +1,4 @@
-class AddMoreIndicesToEvents < ActiveRecord::Migration
+class AddMoreIndicesToEvents < ActiveRecord::Migration[4.2]
   def change
     add_index :events, [:lat, :lng]
     add_index :events, :lat
