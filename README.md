@@ -4,7 +4,7 @@ The app can easily be run using Docker.
 
 1) Use the default configuration: `cp .env.web{.sample,}`
 2) Start the container: `docker-compose up --build`
-3) Set up the database: `docker-compose exec web rake db:reset db:populate_example_data`
+3) Set up the database: `docker-compose exec web bundle exec rails db:reset db:populate_example_data`
 
 You should be up and running. Head to [localhost:3000](http://localhost:3000/).
 
