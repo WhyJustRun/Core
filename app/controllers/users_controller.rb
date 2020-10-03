@@ -51,7 +51,7 @@ class UsersController < ApplicationController
     end
 
     club = Club.find_by_id(params[:redirect_club_id])
-    redirect_to("https://" + club.domain + "/users/logoutComplete")
+    redirect_to("//" + club.domain + "/users/logoutComplete")
   end
 
   def unlink_account
