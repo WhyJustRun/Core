@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_28_204633) do
+ActiveRecord::Schema.define(version: 2020_10_03_155222) do
 
   create_table "club_categories", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.string "name"
@@ -252,7 +252,7 @@ ActiveRecord::Schema.define(version: 2020_09_28_204633) do
 
   create_table "users", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.integer "club_id"
-    t.text "name", size: :tiny
+    t.text "name", size: :tiny, null: false
     t.string "email"
     t.text "old_password", size: :tiny
     t.integer "year_of_birth"
