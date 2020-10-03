@@ -12,6 +12,7 @@ services:
         - db
     environment:
         - WJR_DATABASE_NAME=whyjustrun
+        - WJR_DATABASE_TEST_NAME=whyjustrun-test
         - WJR_DATABASE_HOST=db
         - WJR_DATABASE_USERNAME=root
         - WJR_DATABASE_PASSWORD=root

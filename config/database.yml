@@ -1,0 +1,21 @@
+default: &default
+    adapter: mysql2
+    encoding: utf8
+    database: <%= Settings.databaseName %>
+    pool: 5
+    username: <%= Settings.databaseUsername %>
+    password: <%= Settings.databasePassword %>
+    host: <%= Settings.databaseHost %>
+
+development:
+    <<: *default
+
+test:
+    <<: *default
+    database: <%= Settings.databaseTestName %>
+
+staging:
+    <<: *default
+
+production:
+    <<: *default

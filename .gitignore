@@ -15,14 +15,6 @@
 /tmp
 .DS_Store
 
-config/database.yml
-
-config/settings.local.yml
-config/settings/*.local.yml
-config/environments/*.local.yml
-
-.remote-sync.json
-
 /.env
 /.env.web
 /public/packs

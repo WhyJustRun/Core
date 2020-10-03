@@ -53,6 +53,7 @@ linkableAccounts:
 host: <%= ENV.fetch('WJR_HOST', 'whyjustrun.ca') %>
 
 databaseName: <%= ENV.fetch('WJR_DATABASE_NAME') %>
+databaseTestName: <%= ENV.fetch('WJR_DATABASE_TEST_NAME') %>
 databaseHost: <%= ENV.fetch('WJR_DATABASE_HOST') %>
 databaseUsername: <%= ENV.fetch('WJR_DATABASE_USERNAME') %>
 databasePassword: <%= ENV.fetch('WJR_DATABASE_PASSWORD') %>
