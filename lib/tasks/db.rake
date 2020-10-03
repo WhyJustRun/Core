@@ -11,7 +11,7 @@ namespace :db do
       country: "CAN",
       timezone: "America/Vancouver",
       visible: 1,
-      domain: "localhost",
+      domain: "localhost:3001",
       club_category: ClubCategory.find_by(name: 'Club'),
       layout: "default",
       use_map_urls: 1
