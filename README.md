@@ -1,4 +1,10 @@
-# Usage
+# WhyJustRun Core
+
+Source code for [whyjustrun.ca](https://whyjustrun.ca). Provides primarily authentication, IOF XML APIs, and cross-club pages.
+
+See also [WhyJustRun Clubsite](https://github.com/WhyJustRun/Clubsite), which provides a web app for clubs.
+
+## Usage
 
 The app can easily be run using Docker.
 
@@ -8,10 +14,13 @@ The app can easily be run using Docker.
 
 You should be up and running. Head to [localhost:3000](http://localhost:3000/).
 
+### Test Users
 
+By running the Rails task `db:populate_example_data`, a test club and several test users are set up with various privilege levels:
+admin@example.com, webmaster@example.com, executive@example.com, user@example.com
+Password for all accounts is: "password".
 
-
-## Keeping up to date
+### Keeping up to date
 
 When the database schema changes, you'll need to migrate your database: `docker-compose exec web rake db:migrate`
 

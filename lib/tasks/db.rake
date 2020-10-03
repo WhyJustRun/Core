@@ -24,6 +24,7 @@ namespace :db do
     admin = User.create(club: club, name: "Admin", email: "admin@example.com", password: "password", password_confirmation: "password")
     webmaster = User.create(club: club, name: "Webmaster", email: "webmaster@example.com", password: "password", password_confirmation: "password")
     executive = User.create(club: club, name: "Executive", email: "executive@example.com", password: "password", password_confirmation: "password")
+    User.create(club: club, name: "User", email: "user@example.com", password: "password", password_confirmation: "password")
     
     Privilege.create(user: admin, user_group: admin_group)
     Privilege.create(user: webmaster, user_group: webmaster_group)
