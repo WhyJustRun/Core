@@ -3,7 +3,7 @@ source 'http://rubygems.org'
 gem 'bundle'
 
 gem 'rails', '~> 6.0.0'
-gem 'mysql2', '~> 0.4.10'
+gem 'mysql2', '~> 0.5.3'
 
 # Performance
 gem 'bootsnap', require: false
