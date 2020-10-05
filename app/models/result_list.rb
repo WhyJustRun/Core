@@ -33,7 +33,7 @@ class ResultList < ApplicationRecord
   # Returns a list of conflicts
   # conflict hash: name, class, organisation
   def self.result_list_user_conflicts(event_id, data)
-    parser = ResultListParser.new data, event_id
+    parser = Tools::ResultListParser.new data, event_id
     parser.find_user_conflicts
   end
 end
