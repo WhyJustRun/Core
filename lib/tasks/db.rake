@@ -22,7 +22,7 @@ namespace :db do
     map = Map.create!(name: 'Map', map_standard: MapStandard.find_by(name: 'ISOM2000'), club: club)
     series = Series.create!(name: 'Series')
 
-    Event.create!(name: 'Event', series: series, club: club, date: DateTime.now, event_classification: event_classification, map: map)
+    Event.create!(name: 'Event', series: series, club: club, lat: 50, lng: -123, date: DateTime.now, event_classification: event_classification, map: map)
     
     admin_group = Group.create!(name: 'Administrator', access_level: 100, description: 'Has access to user details and can merge user accounts. Also has all the privileges of Webmasters and Executives.', club: club)
     webmaster_group = Group.create!(name: 'Webmaster', access_level: 90, description: 'Club webmasters can edit privileges and have all the privileges of Executives.', club: club)

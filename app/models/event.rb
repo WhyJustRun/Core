@@ -161,15 +161,15 @@ class Event < ApplicationRecord
   def to_ics
     Time.zone = "UTC"
     event = Icalendar::Event.new
-    event.start = date.strftime("%Y%m%dT%H%M%S") + "Z"
-    event.end = finish_date.strftime("%Y%m%dT%H%M%S") + "Z"
+    event.dtstart = date
+    event.dtend = finish_date
     event.summary = name
     event.description = strip_tags(description)
     if has_location
-      event.geo = Icalendar::Geo.new(lat, lng)
+      event.geo = [lat, lng]
       event.location = "#{lat.round(4)},#{lng.round(4)}"
     end
-    event.klass = "PUBLIC"
+    event.ip_class = "PUBLIC"
     # TODO-RWP event.created = self.created_at
     # TODO-RWP event.last_modified = self.updated_at
     event.uid = event.url = url
