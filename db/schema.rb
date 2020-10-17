@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_03_155222) do
+ActiveRecord::Schema.define(version: 2020_10_17_124223) do
 
   create_table "club_categories", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.string "name"
@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(version: 2020_10_03_155222) do
     t.text "timezone", size: :tiny
     t.boolean "visible", default: false, null: false
     t.string "domain"
+    t.string "domain_protocol", default: "https", null: false
     t.string "redirect_domain"
     t.integer "parent_id"
     t.integer "club_category_id"

@@ -145,7 +145,7 @@ class Event < ApplicationRecord
   end
 
   def url
-    "http://" + club.domain + "/events/view/" + id.to_s
+    club.clubsite_url("/events/view/" + id.to_s)
   end
 
   def number_of_participants

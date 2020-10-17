@@ -77,4 +77,8 @@ class Club < ApplicationRecord
       end
     end
   end
+
+  def clubsite_url(path)
+    domain_protocol + "://" + domain + path
+  end
 end

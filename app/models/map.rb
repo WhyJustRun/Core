@@ -4,6 +4,6 @@ class Map < ApplicationRecord
   belongs_to :club
 
   def url
-    "http://" + club.domain + "/maps/view/" + id.to_s
+    club.clubsite_url("/maps/view/" + id.to_s)
   end
 end

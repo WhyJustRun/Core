@@ -112,7 +112,7 @@ class User < ApplicationRecord
       session[:cross_app_session_id] = cross_session.cross_app_session_id
       cross_session.save
     end
-    "//" + club.domain + "/users/localLogin?cross_app_session_id=" + cross_session.cross_app_session_id
+    club.clubsite_url("/users/localLogin?cross_app_session_id=" + cross_session.cross_app_session_id)
   end
 
   def first_name
