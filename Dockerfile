@@ -25,6 +25,6 @@ CMD ["rails", "server", "-b", "0.0.0.0"]
 
 FROM dev as prod
 
-RUN bin/rails assets:precompile
+RUN rails assets:precompile
 
 COPY . /application
