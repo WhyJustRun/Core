@@ -87,7 +87,7 @@ class EventsController < ApplicationController
     respond_to do |wants|
       wants.ics do
         calendar = Icalendar::Calendar.new
-        calendar.custom_property("X-WR-CALNAME", Club.find(club_id).name)
+        calendar.x_wr_calname = Club.find(club_id).name
         @events.each { |event|
           calendar.add_event(event.to_ics)
         }
