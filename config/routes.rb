@@ -34,7 +34,7 @@ Rails.application.routes.draw do
   get 'iof/:iof_version/events/:id/live_result_list', to: 'results#live_result_list', :constraints => version_constraint
 
   get 'events', to: 'events#index', format: true
-  get 'club/:club_id/events', to: 'events#index'
+  get 'club/:club_id/events', to: 'events#index', format: true
   get 'club/:club_id/participation_report', to: 'clubs#participant_counts'
 
   get 'api/maps', to: 'maps#index'
