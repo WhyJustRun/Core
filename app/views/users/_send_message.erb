@@ -1,13 +1,6 @@
 <h2>Send message</h2>
 <% if user_signed_in? then %>
-  <p>Your email address will be revealed to <%= user.name %> so they can reply.</p>
-
-<%= form_tag("", :method => 'put') do %>
-  <%= hidden_field_tag(:user_id, user.id) %>
-  <%= text_area_tag(:message, @message, :rows => "6", :required => 'required', :class => 'form-control', :placeholder => 'Message') %><br />
-  <%= recaptcha_tags %>
-  <%= submit_tag("Send", :class => 'btn btn-primary'); %>
-<% end %>
+  <p>Temporarily unavailable, will be back soon. Please contact <a href="mailto:support@whyjustrun.ca">support@whyjustrun.ca</a> if it's urgent.</p>
 
 <% else %>
   <%= link_to "Sign in", new_user_session_path, :class => "btn btn-primary" %>
