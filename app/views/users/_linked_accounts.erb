@@ -12,9 +12,7 @@ ids.each { |id, data|
 %>
 
 <div class="btn-group">
-  <a href="<%= authorize_url %>" class="btn btn-success">
-    Link <%= data[:name] %> account
-  </a>
+  <%= link_to "Link #{data[:name]} account", authorize_url, method: :post, :class => "btn btn-success" %>
 </div>
 <br /><br />
 <%
