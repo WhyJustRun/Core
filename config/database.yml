@@ -2,7 +2,7 @@ default: &default
     adapter: mysql2
     encoding: utf8
     database: <%= Settings.databaseName %>
-    pool: 5
+    pool: 10
     username: <%= Settings.databaseUsername %>
     password: <%= Settings.databasePassword %>
     host: <%= Settings.databaseHost %>
