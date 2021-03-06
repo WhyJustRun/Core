@@ -62,7 +62,7 @@ gem "exception_notification", "~> 4.4.3"
 gem "pundit", "~> 2.1.0"
 
 # Geo
-gem 'haversine_distance', '~> 1.1.1'
+gem 'haversine', '~> 0.3.2'
 
 group :development do
   gem 'listen'

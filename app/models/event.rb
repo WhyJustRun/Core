@@ -257,9 +257,9 @@ class Event < ApplicationRecord
   # in km
   def distance_to(other_club)
     if has_location
-      return Haversine.distance(lat, lng, other_club.lat, other_club.lng)
+      return Haversine.distance(lat, lng, other_club.lat, other_club.lng).to_kilometers
     else
-      return Haversine.distance(club.lat, club.lng, other_club.lat, other_club.lng)
+      return Haversine.distance(club.lat, club.lng, other_club.lat, other_club.lng).to_kilometers
     end
   end
 
