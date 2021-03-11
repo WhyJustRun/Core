@@ -9,7 +9,7 @@ gem 'mysql2', '~> 0.5.3'
 gem 'bootsnap', require: false
 
 # MySQL Session store
-gem "activerecord-session_store", "~> 1.1.3"
+gem "activerecord-session_store", "~> 2.0.0"
 
 # Asset pipeline
 gem 'sass-rails', '~> 5.0.0'
