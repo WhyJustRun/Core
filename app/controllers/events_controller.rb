@@ -44,7 +44,7 @@ class EventsController < ApplicationController
     @events = Event.list_includes.order('date ASC')
 
     unless start_time.nil?
-      @events = @events.where("date >= ?", start_time)
+      @events = @events.where("date >= ?", start_time).or(@events.where("finish_date >= ?", start_time))
     end
     unless end_time.nil?
       @events = @events.where("date <= ?", end_time)
