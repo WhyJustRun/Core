@@ -14,6 +14,7 @@ The app can easily be run using Docker.
 
 You should be up and running. Head to [localhost:3000](http://localhost:3000/).
 
+To install/update gems, it's easiest to first run the container, and then run bundler commands inside the container. For example, to update the gems, use `docker-compose exec web bundle update`.
 ### Test Users
 
 By running the Rails task `db:populate_example_data`, a test club and several test users are set up with various privilege levels:
