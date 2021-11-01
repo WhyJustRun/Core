@@ -1,5 +1,5 @@
 {
   "dependencies": {
-    "@rails/webpacker": "~> 5.x"
+    "@rails/webpacker": "~5.4.3"
   }
 }
