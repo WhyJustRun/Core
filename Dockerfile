@@ -1,4 +1,4 @@
-FROM ruby:2.5-alpine as dev
+FROM ruby:2.6.8-alpine as dev
 RUN apk add --no-cache \
         make \
         pkgconfig \
