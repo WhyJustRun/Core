@@ -16,7 +16,7 @@
 .DS_Store
 
 /.env
-/.env.web
+/.env.core
 /public/packs
 /public/packs-test
 /node_modules

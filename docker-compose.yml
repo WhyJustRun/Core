@@ -1,6 +1,6 @@
 version: '3.5'
 services:
-  web:
+  core:
     build:
       context: .
       target: dev
@@ -17,7 +17,7 @@ services:
         - WJR_DATABASE_USERNAME=root
         - WJR_DATABASE_PASSWORD=root
     env_file:
-        - .env.web
+        - .env.core
     networks:
       - whyjustrun
   db:
