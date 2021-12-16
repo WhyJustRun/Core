@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 gem 'bundle'
 
-gem 'rails', '~> 6.0.0'
+gem 'rails', '~> 6.0.4', '>= 6.0.4.2'
 gem 'mysql2', '~> 0.5.3'
 
 # Performance
@@ -12,11 +12,11 @@ gem 'bootsnap', require: false
 gem "activerecord-session_store", "~> 2.0.0"
 
 # Asset pipeline
-gem 'sass-rails', '~> 5.0.0'
+gem 'sass-rails', '~> 5.0.8'
 gem "coffee-script", "~> 2.4.1"
 gem "coffee-rails", "~> 5.0.0"
 gem "uglifier", "~> 4.2.0"
-gem "webpacker"
+gem "webpacker", ">= 5.4.0"
 gem 'tzinfo-data'
 
 # Authentication
@@ -27,7 +27,7 @@ gem "devise-encryptable", "~> 0.2.0"
 gem 'omniauth', '~> 1.9.1'
 gem 'omniauth-facebook', '~> 7.0.0'
 gem 'omniauth-google-oauth2', '0.8.0'
-gem 'omniauth-rails_csrf_protection', '~> 0.1'
+gem 'omniauth-rails_csrf_protection', '~> 0.1', '>= 0.1.2'
 
 # Maps
 gem "leaflet-rails", "~> 1.7.0"
