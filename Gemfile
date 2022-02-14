@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 gem 'bundle'
 
-gem 'rails', '~> 6.0.4', '>= 6.0.4.2'
+gem 'rails', '~> 6.0.4', '>= 6.0.4.6'
 gem 'mysql2', '~> 0.5.3'
 
 # Performance
@@ -16,7 +16,7 @@ gem 'sass-rails', '~> 5.0.8'
 gem "coffee-script", "~> 2.4.1"
 gem "coffee-rails", "~> 5.0.0"
 gem "uglifier", "~> 4.2.0"
-gem "webpacker", ">= 5.4.0"
+gem "webpacker", ">= 5.4.3"
 gem 'tzinfo-data'
 
 # Authentication
