@@ -21,7 +21,7 @@ class EventsController < ApplicationController
   # Supported output formats: IOF XML 2.0.3, IOF XML 3.0, FullCalendar compatible JSON, iCal
   #
   # Parameters:
-  # start - find all events after this timestamp (optional)
+  # start - find all events after this timestamp (optional) (default: 1 year ago)
   # end - find all events before this timestamp (optional)
   # club_id - find events within this club - can also find external significant events by passing the parameter specified below (optional)
   # external_significant_events - default: none (options: none, all) (optional, only valid with a specified club_id)
@@ -33,7 +33,7 @@ class EventsController < ApplicationController
     club_id = (params[:club_id].nil?) ? nil : params[:club_id].to_i
     club = Club.find(club_id) unless club_id.nil?
     prefix_club_acronym = (params[:prefix_club_acronym].nil?) ? "false" : params[:prefix_club_acronym]
-    start_time = params[:start].nil? ? nil : Time.at(params[:start].to_i)
+    start_time = params[:start].nil? ? 1.year.ago : Time.at(params[:start].to_i)
     end_time = params[:end].nil? ? nil : Time.at(params[:end].to_i)
 
     # These params are only used if a club is specified
