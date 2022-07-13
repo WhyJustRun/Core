@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 gem 'bundle'
 
-gem 'rails', '~> 6.0.4', '>= 6.0.4.8'
+gem 'rails', '~> 6.0.5', '>= 6.0.5.1'
 gem 'mysql2', '~> 0.5.3'
 
 # Performance
