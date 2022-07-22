@@ -53,7 +53,7 @@ gem 'icalendar', '~> 2.7.0'
 gem "geocoder", "~> 1.6.3"
 
 # JSON Builder
-gem 'jbuilder', '~> 2.10.1'
+gem 'jbuilder', '~> 2.10.2'
 
 # Logging (email)
 gem "exception_notification", "~> 4.4.3"
