@@ -21,10 +21,10 @@ gem 'tzinfo-data'
 
 # Authentication
 gem 'bcrypt', '~> 3.1.5'
-gem 'devise', '~> 4.7.3'
+gem 'devise', '~> 4.8.1'
 gem "devise-encryptable", "~> 0.2.0"
 
-gem 'omniauth', '~> 2.0.0'
+gem 'omniauth', '~> 2.1.0'
 gem 'omniauth-facebook', '~> 7.0.0'
 gem 'omniauth-google-oauth2', '0.8.0'
 gem 'omniauth-rails_csrf_protection', '~> 0.1', '>= 0.1.2'
@@ -44,7 +44,7 @@ gem 'bootstrap-sass', '~> 3.4.1'
 gem 'jquery-rails', '~> 4.4.0'
 
 # XML Parsing
-gem 'nokogiri', '~> 1.13.6'
+gem 'nokogiri', '~> 1.13.8'
 gem 'nori', '~> 2.6.0'
 
 gem "config", "~> 2.2.1"
