@@ -320,7 +320,7 @@ DEPENDENCIES
   leaflet-rails (~> 1.7.0)
   listen
   mysql2 (~> 0.5.3)
-  nokogiri (~> 1.13.8)
+  nokogiri (~> 1.13.9)
   nori (~> 2.6.0)
   omniauth (~> 2.1.0)
   omniauth-facebook (~> 7.0.0)
