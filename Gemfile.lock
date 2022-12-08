@@ -175,7 +175,7 @@ GEM
     multi_xml (0.6.0)
     mysql2 (0.5.4)
     nio4r (2.5.8)
-    nokogiri (1.13.9)
+    nokogiri (1.13.10)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
     nori (2.6.0)
@@ -205,7 +205,7 @@ GEM
     orm_adapter (0.5.0)
     pundit (2.1.1)
       activesupport (>= 3.0.0)
-    racc (1.6.0)
+    racc (1.6.1)
     rack (2.2.4)
     rack-protection (3.0.2)
       rack
@@ -320,7 +320,7 @@ DEPENDENCIES
   leaflet-rails (~> 1.7.0)
   listen
   mysql2 (~> 0.5.3)
-  nokogiri (~> 1.13.9)
+  nokogiri (~> 1.13.10)
   nori (~> 2.6.0)
   omniauth (~> 2.1.0)
   omniauth-facebook (~> 7.0.0)
