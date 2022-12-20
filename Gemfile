@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 gem 'bundle'
 
-gem 'rails', '~> 6.0.5', '>= 6.0.5.1'
+gem 'rails', '~> 6.0.6'
 gem 'mysql2', '~> 0.5.3'
 
 # Performance
@@ -12,7 +12,7 @@ gem 'bootsnap', require: false
 gem "activerecord-session_store", "~> 2.0.0"
 
 # Asset pipeline
-gem 'sass-rails', '~> 5.0.8'
+gem 'sass-rails', '~> 6.0.0'
 gem "coffee-script", "~> 2.4.1"
 gem "coffee-rails", "~> 5.0.0"
 gem "uglifier", "~> 4.2.0"
