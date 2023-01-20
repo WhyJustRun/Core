@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 gem 'bundle'
 
-gem 'rails', '~> 6.0.6'
+gem 'rails', '~> 6.1.7', '>= 6.1.7.1'
 gem 'mysql2', '~> 0.5.3'
 
 # Performance
@@ -59,7 +59,7 @@ gem 'jbuilder', '~> 2.10.2'
 gem "exception_notification", "~> 4.4.3"
 
 # Authorization
-gem "pundit", "~> 2.1.0"
+gem "pundit", "~> 2.1.1"
 
 # Geo
 gem 'haversine', '~> 0.3.2'
