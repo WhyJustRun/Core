@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 gem 'bundle'
 
-gem 'rails', '~> 6.1.7', '>= 6.1.7.1'
+gem 'rails', '~> 6.1.7', '>= 6.1.7.3'
 gem 'mysql2', '~> 0.5.3'
 
 # Performance
@@ -16,7 +16,7 @@ gem 'sass-rails', '~> 6.0.0'
 gem "coffee-script", "~> 2.4.1"
 gem "coffee-rails", "~> 5.0.0"
 gem "uglifier", "~> 4.2.0"
-gem "webpacker", ">= 5.4.3"
+gem "webpacker", ">= 5.4.4"
 gem 'tzinfo-data'
 
 # Authentication
@@ -24,7 +24,7 @@ gem 'bcrypt', '~> 3.1.5'
 gem 'devise', '~> 4.8.1'
 gem "devise-encryptable", "~> 0.2.0"
 
-gem 'omniauth', '~> 2.1.0'
+gem 'omniauth', '~> 2.1.1'
 gem 'omniauth-facebook', '~> 7.0.0'
 gem 'omniauth-google-oauth2', '0.8.0'
 gem 'omniauth-rails_csrf_protection', '~> 1.0', '>= 1.0.1'
