@@ -192,7 +192,7 @@ GEM
     net-smtp (0.3.3)
       net-protocol
     nio4r (2.5.8)
-    nokogiri (1.13.10)
+    nokogiri (1.14.3)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
     nori (2.6.0)
@@ -334,7 +334,7 @@ DEPENDENCIES
   leaflet-rails (~> 1.7.0)
   listen
   mysql2 (~> 0.5.3)
-  nokogiri (~> 1.13.10)
+  nokogiri (~> 1.14.3)
   nori (~> 2.6.0)
   omniauth (~> 2.1.1)
   omniauth-facebook (~> 7.0.0)
