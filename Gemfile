@@ -5,6 +5,9 @@ gem 'bundle'
 gem 'rails', '~> 6.1.7', '>= 6.1.7.3'
 gem 'mysql2', '~> 0.5.3'
 
+# Use the Puma web server
+gem 'puma', '~> 6.3'
+
 # Performance
 gem 'bootsnap', require: false
 
@@ -44,7 +47,7 @@ gem 'bootstrap-sass', '~> 3.4.1'
 gem 'jquery-rails', '~> 4.4.0'
 
 # XML Parsing
-gem 'nokogiri', '~> 1.14.3'
+gem 'nokogiri', '~> 1.15.3'
 gem 'nori', '~> 2.6.0'
 
 gem "config", "~> 2.2.1"
