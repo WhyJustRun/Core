@@ -1,17 +1,21 @@
 <%= title 'Club Map' %>
 <% content_for :javascript do %>
   $(window).load(function() {
-  var map = L.map('leaflet-map');
-  L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-  var point = new L.LatLng(<%= @clubs[0].lat %>, <%= @clubs[0].lng %>);
-  var bounds = new L.LatLngBounds(point, point);
-  <% @clubs.each { |club| %>
-    point = new L.LatLng(<%= club.lat %>, <%= club.lng %>);
-    bounds.extend(point);
-    L.marker(point).addTo(map)
-    .bindPopup("<%= escape_javascript(link_to club.name, club.url) %>");
-  <% } %>
-  map.fitBounds(bounds);
+    var map = L.map('leaflet-map');
+    L.tileLayer(
+      'https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }
+    ).addTo(map);
+    var point = new L.LatLng(<%= @clubs[0].lat %>, <%= @clubs[0].lng %>);
+    var bounds = new L.LatLngBounds(point, point);
+    <% @clubs.each { |club| %>
+      point = new L.LatLng(<%= club.lat %>, <%= club.lng %>);
+      bounds.extend(point);
+      L.marker(point).addTo(map)
+      .bindPopup("<%= escape_javascript(link_to club.name, club.url) %>");
+    <% } %>
+    map.fitBounds(bounds);
   });
 <% end %>
 

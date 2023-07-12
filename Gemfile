@@ -33,7 +33,7 @@ gem 'omniauth-google-oauth2', '0.8.0'
 gem 'omniauth-rails_csrf_protection', '~> 1.0', '>= 1.0.1'
 
 # Maps
-gem "leaflet-rails", "~> 1.7.0"
+gem "leaflet-rails", "~> 1.9.3"
 
 # Spam prevention
 gem "recaptcha", "~> 5.5.0", :require => "recaptcha/rails"
