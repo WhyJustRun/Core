@@ -6,7 +6,7 @@ gem 'rails', '~> 6.1.7', '>= 6.1.7.3'
 gem 'mysql2', '~> 0.5.3'
 
 # Use the Puma web server
-gem 'puma', '~> 6.3'
+gem 'puma', '~> 6.4'
 
 # Performance
 gem 'bootsnap', require: false
