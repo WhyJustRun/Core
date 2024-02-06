@@ -47,7 +47,7 @@ gem 'bootstrap-sass', '~> 3.4.1'
 gem 'jquery-rails', '~> 4.4.0'
 
 # XML Parsing
-gem 'nokogiri', '~> 1.15.3'
+gem 'nokogiri', '~> 1.16.2'
 gem 'nori', '~> 2.6.0'
 
 gem "config", "~> 2.2.1"
