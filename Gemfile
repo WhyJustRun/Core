@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 gem 'bundle'
 
-gem 'rails', '~> 6.1.7', '>= 6.1.7.3'
+gem 'rails', '~> 6.1.7'
 gem 'mysql2', '~> 0.5.3'
 
 # Use the Puma web server
