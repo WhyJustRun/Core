@@ -40,15 +40,6 @@ privileges:
     edit: 90
   user:
     edit: 100
-linkableAccounts:
-  facebook_id:
-    name: "Facebook"
-    provider: "facebook"
-    column: 'facebook_id'
-  google_id:
-    name: "Google"
-    provider: "google_oauth2"
-    column: 'google_id'
 
 host: <%= ENV.fetch('WJR_HOST', 'whyjustrun.ca') %>
 
@@ -65,12 +56,6 @@ secretKeyBase: <%= ENV.fetch('WJR_SECRET_BASE') %>
 secretToken: <%= ENV.fetch('WJR_SECRET_TOKEN') %>
 
 deviseSecretKey: <%= ENV.fetch('WJR_DEVISE_SECRET_KEY') %>
-
-facebookAppID: <%= ENV.fetch('WJR_FACEBOOK_APP_ID') %>
-facebookAppSecret: <%= ENV.fetch('WJR_FACEBOOK_APP_SECRET') %>
-
-googleAppID: <%= ENV.fetch('WJR_GOOGLE_APP_ID') %>
-googleAppSecret: <%= ENV.fetch('WJR_GOOGLE_APP_SECRET') %>
 
 recaptchaSiteKey: <%= ENV.fetch('WJR_RECAPTCHA_SITE_KEY') %>
 recaptchaSecretKey: <%= ENV.fetch('WJR_RECAPTCHA_SECRET_KEY') %>

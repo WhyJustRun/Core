@@ -9,16 +9,6 @@ Devise.setup do |config|
 
   config.secret_key = Settings.deviseSecretKey
 
-  # Facebook Configuration
-  require "omniauth-facebook"
-  config.omniauth :facebook,
-    Settings.facebookAppID,
-    Settings.facebookAppSecret
-
-  # Google Configuration
-  require "omniauth-google-oauth2"
-  config.omniauth :google_oauth2, Settings.googleAppID, Settings.googleAppSecret, {scope: 'email'}
-
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class with default "from" parameter.

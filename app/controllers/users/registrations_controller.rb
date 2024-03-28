@@ -8,15 +8,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
     # account if desired, but I can't really see anyone wanting that.
   end
 
-  def build_resource(hash=nil)
-    super
-    user = self.resource
-    if data = session['devise.linked_data'] then
-      column = session['devise.linked_id_column']
-      user[column] = data['uid'] if user[column].blank?
-    end
-  end
-
   private
     def check_captcha
       unless verify_recaptcha

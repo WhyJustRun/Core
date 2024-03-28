@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :authenticate_user!, only: [:send_message, :unlink_account]
+  before_action :authenticate_user!, only: [:send_message]
 
   def competitor_list
     @users = User.find_all_real
@@ -52,20 +52,5 @@ class UsersController < ApplicationController
 
     club = Club.find_by_id(params[:redirect_club_id])
     redirect_to("//" + club.domain + "/users/logoutComplete")
-  end
-
-  def unlink_account
-    name = params[:provider]
-    provider = nil
-    Settings.linkableAccounts.each { |column, data|
-      if name == data[:provider]
-        provider = data
-      end
-    }
-
-    unless provider.nil?
-      current_user.unlink_account(provider)
-    end
-    redirect_to user_url(current_user.id)
   end
 end

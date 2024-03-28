@@ -3,8 +3,7 @@ class User < ApplicationRecord
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable, :lockable,
-    :recoverable, :rememberable, :trackable, :validatable,
-    :omniauthable, :omniauth_providers => [:facebook, :google_oauth2]
+    :recoverable, :rememberable, :trackable, :validatable
 
   has_many :results
   has_many :organizers
@@ -49,53 +48,10 @@ class User < ApplicationRecord
 
   def self.new_with_session(params, session)
     super.tap do |user|
-      if data = session["devise.linked_data"] && session["devise.linked_data"]["extra"]["raw_info"]
-        user.name = data["name"] if user.name.blank?
-        user.email = data["email"] if user.email.blank?
-      end
-
       if club_id = session[:redirect_club_id]
         user.club_id = club_id if user.club_id.blank?
       end
     end
-  end
-
-  def self.find_for_provider_and_uid(provider, uid)
-    user = nil
-    unless uid.nil?
-      Settings.linkableAccounts.each { |column, data|
-        if provider == data[:provider]
-          user = User.find_by column => uid
-          break
-        end
-      }
-    end
-    user
-  end
-
-  def self.find_for_omniauth(auth)
-    data = auth.info
-    email = data['email']
-    provider = auth.provider
-    uid = auth.uid
-    user = User.find_for_provider_and_uid(provider, uid)
-    if user.nil? and not email.nil?
-      user = User.find_by email: email
-      unless user.nil? or uid.nil? or provider.nil?
-        Settings.linkableAccounts.each { |column, data|
-          if provider == data[:provider]
-            user[column] = uid
-            break
-          end
-        }
-        user.save
-      end
-    end
-
-    unless user
-      user = User.new
-    end
-    user
   end
 
   # Users that actually have a WJR account (aren't fake)
@@ -187,16 +143,5 @@ class User < ApplicationRecord
     else
       privilege.user_group.access_level
     end
-  end
-
-  # Should check that the uid is not registered to another account before linking
-  def link_account(provider, uid)
-    self[provider.column.to_sym] = uid
-    self.save
-  end
-
-  def unlink_account(provider)
-    self[provider.column.to_sym] = nil
-    self.save
   end
 end

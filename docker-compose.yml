@@ -10,7 +10,6 @@ services:
         - .:/application/
     links:
         - db
-    # platform: linux/x86_64
     environment:
         - WJR_DATABASE_NAME=whyjustrun
         - WJR_DATABASE_TEST_NAME=whyjustrun-test

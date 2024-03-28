@@ -16,9 +16,6 @@ if is_current_user %>
     <%= render "users/results", :user => @user %>
   </div>
   <div class="col-sm-6">
-<% if is_current_user %>
-    <%= render "users/linked_accounts", :user => @user %>
-<% end %>
 <% if show_send_message %>
     <%= render "users/send_message", :user => @user %>
 <% end %>

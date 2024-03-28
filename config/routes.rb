@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  devise_for :users, :controllers => { :registrations => 'users/registrations', :omniauth_callbacks => "users/omniauth_callbacks" }
+  devise_for :users, :controllers => { :registrations => 'users/registrations' }
 
   root :to => "home#about_whyjustrun"
   get 'pages/privacy_policy', to: 'pages#privacy_policy'
@@ -12,7 +12,6 @@ Rails.application.routes.draw do
   user_id_constraint = { :user_id => /\b\d+\b/ }
   get 'users/:user_id', to: 'users#show', :constraints => user_id_constraint, :as => :user
   put 'users/:user_id', to: 'users#send_message', :constraints => user_id_constraint
-  get 'users/unlink_account/:provider', to: 'users#unlink_account'
 
   # :iof_version => /[^\/]*/ is needed to allow dots in the IOF XML version #
   version_constraint = { :iof_version => /[^\/]*/ }

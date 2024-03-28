@@ -3,10 +3,6 @@
   <div class="col-sm-4 col-sm-offset-2">
     <h3 class="wjr-sign-in-header">Sign in</h3>
     <div class="wjr-sign-in-column">
-      <%= link_to "<span>Sign in with <strong>Facebook</strong></span>".html_safe, user_facebook_omniauth_authorize_path, method: :post, :class => "wjr-sign-in-btn wjr-sign-in-btn-facebook" %>
-      <br/><br/>
-      <%= link_to "<span>Sign in with <strong>Google</strong></span>".html_safe, user_google_oauth2_omniauth_authorize_path, method: :post, :class => "wjr-sign-in-btn wjr-sign-in-btn-google" %>
-      <hr/>
       <p><strong>Sign in with your email address</strong></p>
       <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
         <div class="form-group">
@@ -23,21 +19,18 @@
 
         <div><%= f.submit "Sign in", :class => "btn btn-primary" %></div>
       <% end %>
-
       <hr/>
       <h3>Forgot password?</h3>
       <%= render "devise/passwords/new" %>
+      <hr/>
+      <p><strong>Facebook / Google sign in is not available anymore</strong>. Please sign in using your email address instead.</p>
     </div>
   </div>
 
   <div class="col-sm-4">
     <h3 class="wjr-sign-in-header">Need an account?</h3>
     <div class="wjr-sign-up-column">
-      <%= link_to "<span>Sign up with <strong>Facebook</strong></span>".html_safe, user_facebook_omniauth_authorize_path, method: :post, :class => "wjr-sign-in-btn wjr-sign-up-btn wjr-sign-in-btn-facebook" %>
-      <br/><br/>
-      <%= link_to "<span>Sign up with <strong>Google</strong></span>".html_safe, user_google_oauth2_omniauth_authorize_path, method: :post, :class => "wjr-sign-in-btn wjr-sign-up-btn wjr-sign-in-btn-google" %>
-      <br/><br/>
-      <%= link_to "<span>Sign up with <strong>Email</strong></span>".html_safe, new_registration_path(resource_name), :class => "wjr-sign-in-btn wjr-sign-up-btn wjr-sign-in-btn-email" %>
+      <%= link_to "<span>Sign up</span>".html_safe, new_registration_path(resource_name), :class => "btn btn-primary" %>
     </div>
   </div>
 </div>
