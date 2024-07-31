@@ -2,21 +2,20 @@
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# This file is the source Rails uses to define your schema when running `rails
-# db:schema:load`. When creating a new database, `rails db:schema:load` tends to
+# This file is the source Rails uses to define your schema when running `bin/rails
+# db:schema:load`. When creating a new database, `bin/rails db:schema:load` tends to
 # be faster and is potentially less error prone than running all of your
 # migrations from scratch. Old migrations may fail to apply correctly if those
 # migrations use external dependencies or application code.
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_17_124223) do
-
-  create_table "club_categories", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+ActiveRecord::Schema[7.1].define(version: 2024_07_31_185542) do
+  create_table "club_categories", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.string "name"
   end
 
-  create_table "clubs", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+  create_table "clubs", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.text "name", size: :tiny
     t.string "acronym", limit: 8
     t.text "location", size: :tiny
@@ -39,7 +38,7 @@ ActiveRecord::Schema.define(version: 2020_10_17_124223) do
     t.index ["club_category_id"], name: "club_category_id"
   end
 
-  create_table "content_blocks", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+  create_table "content_blocks", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.string "key"
     t.text "content", size: :medium
     t.integer "order", default: 1
@@ -48,7 +47,7 @@ ActiveRecord::Schema.define(version: 2020_10_17_124223) do
     t.index ["key"], name: "key"
   end
 
-  create_table "courses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+  create_table "courses", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.integer "event_id"
     t.text "name", size: :tiny
     t.integer "distance"
@@ -59,27 +58,27 @@ ActiveRecord::Schema.define(version: 2020_10_17_124223) do
     t.index ["event_id"], name: "event_id"
   end
 
-  create_table "cross_app_sessions", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+  create_table "cross_app_sessions", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "cross_app_session_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["cross_app_session_id"], name: "index_cross_app_sessions_on_cross_app_session_id", unique: true
     t.index ["user_id"], name: "index_cross_app_sessions_on_user_id"
   end
 
-  create_table "event_classifications", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+  create_table "event_classifications", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.string "name", limit: 50
     t.string "iof_3_0_name", limit: 50
     t.string "iof_2_0_3_name", limit: 50
     t.text "description", size: :medium
   end
 
-  create_table "events", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+  create_table "events", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.text "name", size: :tiny
     t.integer "map_id"
     t.integer "series_id"
-    t.datetime "date"
+    t.datetime "date", precision: nil
     t.float "lat", limit: 53
     t.float "lng", limit: 53
     t.boolean "is_ranked", default: false, null: false
@@ -88,14 +87,14 @@ ActiveRecord::Schema.define(version: 2020_10_17_124223) do
     t.integer "club_id"
     t.string "custom_url"
     t.integer "event_classification_id"
-    t.datetime "finish_date"
+    t.datetime "finish_date", precision: nil
     t.integer "number_of_participants"
     t.string "results_url"
     t.string "registration_url"
     t.string "routegadget_url"
     t.string "facebook_url"
     t.string "attackpoint_url"
-    t.datetime "registration_deadline"
+    t.datetime "registration_deadline", precision: nil
     t.index ["club_id"], name: "club_id"
     t.index ["date"], name: "index_events_on_date"
     t.index ["event_classification_id"], name: "event_classification_id"
@@ -108,7 +107,7 @@ ActiveRecord::Schema.define(version: 2020_10_17_124223) do
     t.index ["series_id"], name: "series_id"
   end
 
-  create_table "groups", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+  create_table "groups", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.text "name", size: :tiny
     t.integer "access_level"
     t.text "description", size: :medium
@@ -116,17 +115,17 @@ ActiveRecord::Schema.define(version: 2020_10_17_124223) do
     t.index ["club_id"], name: "club_id"
   end
 
-  create_table "map_standards", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+  create_table "map_standards", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.text "name", size: :tiny
     t.text "description", size: :medium
     t.text "color", size: :tiny
   end
 
-  create_table "maps", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+  create_table "maps", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.text "name", size: :tiny
     t.integer "map_standard_id"
-    t.datetime "created"
-    t.datetime "modified"
+    t.datetime "created", precision: nil
+    t.datetime "modified", precision: nil
     t.integer "scale"
     t.float "lat", limit: 53
     t.float "lng", limit: 53
@@ -138,28 +137,28 @@ ActiveRecord::Schema.define(version: 2020_10_17_124223) do
     t.index ["map_standard_id"], name: "map_standard_id"
   end
 
-  create_table "memberships", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+  create_table "memberships", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.integer "user_id"
     t.integer "year"
-    t.datetime "created"
+    t.datetime "created", precision: nil
     t.integer "club_id"
     t.index ["user_id"], name: "user_id"
   end
 
-  create_table "official_classifications", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+  create_table "official_classifications", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.string "name", limit: 40, default: "", null: false
     t.string "description", limit: 100
   end
 
-  create_table "officials", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+  create_table "officials", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "official_classification_id", null: false
-    t.datetime "date"
+    t.datetime "date", precision: nil
     t.index ["official_classification_id"], name: "official_classification_id"
     t.index ["user_id"], name: "user_id"
   end
 
-  create_table "organizers", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+  create_table "organizers", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.integer "user_id"
     t.integer "event_id"
     t.integer "role_id"
@@ -168,7 +167,7 @@ ActiveRecord::Schema.define(version: 2020_10_17_124223) do
     t.index ["user_id"], name: "user_id"
   end
 
-  create_table "pages", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+  create_table "pages", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.string "name"
     t.string "section"
     t.text "content", size: :medium
@@ -176,38 +175,38 @@ ActiveRecord::Schema.define(version: 2020_10_17_124223) do
     t.index ["club_id"], name: "club_id"
   end
 
-  create_table "privileges", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+  create_table "privileges", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.integer "group_id"
     t.integer "user_id"
     t.index ["group_id"], name: "group_id"
     t.index ["user_id"], name: "user_id"
   end
 
-  create_table "resources", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+  create_table "resources", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.string "caption"
     t.string "key"
     t.integer "club_id"
     t.string "extension"
-    t.datetime "updated_at"
-    t.datetime "created_at"
+    t.datetime "updated_at", precision: nil
+    t.datetime "created_at", precision: nil
     t.index ["club_id"], name: "club_id"
     t.index ["key"], name: "key"
   end
 
-  create_table "result_lists", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+  create_table "result_lists", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.text "data", size: :medium
     t.integer "event_id"
     t.integer "user_id"
-    t.datetime "upload_time"
+    t.datetime "upload_time", precision: nil
     t.boolean "visible", default: false, null: false
-    t.datetime "updated_at"
+    t.datetime "updated_at", precision: nil
     t.string "status"
     t.index ["event_id"], name: "index_result_lists_on_event_id"
     t.index ["upload_time"], name: "index_result_lists_on_upload_time"
     t.index ["user_id"], name: "index_result_lists_on_user_id"
   end
 
-  create_table "results", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+  create_table "results", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.integer "user_id"
     t.integer "course_id"
     t.string "status", limit: 50, default: "ok", null: false
@@ -221,12 +220,12 @@ ActiveRecord::Schema.define(version: 2020_10_17_124223) do
     t.index ["user_id"], name: "user_id"
   end
 
-  create_table "roles", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+  create_table "roles", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.text "name", size: :tiny
     t.text "description", size: :medium
   end
 
-  create_table "series", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+  create_table "series", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.text "acronym", size: :tiny
     t.text "name", size: :tiny
     t.text "color", size: :tiny
@@ -236,22 +235,22 @@ ActiveRecord::Schema.define(version: 2020_10_17_124223) do
     t.index ["club_id"], name: "club_id"
   end
 
-  create_table "sessions", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+  create_table "sessions", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.string "session_id", null: false
     t.text "data"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["session_id"], name: "index_sessions_on_session_id"
     t.index ["updated_at"], name: "index_sessions_on_updated_at"
   end
 
-  create_table "short_links", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+  create_table "short_links", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.string "name"
     t.string "destination"
     t.index ["name"], name: "index_short_links_on_name", unique: true
   end
 
-  create_table "users", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+  create_table "users", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.integer "club_id"
     t.text "name", size: :tiny, null: false
     t.string "email"
@@ -261,16 +260,16 @@ ActiveRecord::Schema.define(version: 2020_10_17_124223) do
     t.text "referred_from", size: :tiny
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
+    t.datetime "reset_password_sent_at", precision: nil
+    t.datetime "remember_created_at", precision: nil
     t.integer "sign_in_count", default: 0
-    t.datetime "current_sign_in_at"
-    t.datetime "last_sign_in_at"
+    t.datetime "current_sign_in_at", precision: nil
+    t.datetime "last_sign_in_at", precision: nil
     t.string "current_sign_in_ip"
     t.string "last_sign_in_ip"
     t.integer "failed_attempts", default: 0
     t.string "unlock_token"
-    t.datetime "locked_at"
+    t.datetime "locked_at", precision: nil
     t.string "google_id"
     t.string "facebook_id"
     t.string "gender"

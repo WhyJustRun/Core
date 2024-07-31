@@ -1,4 +1,4 @@
-FROM ruby:3.2-alpine as dev
+FROM ruby:3.3.4-alpine AS dev
 RUN apk add --no-cache \
         make \
         pkgconfig \
@@ -24,6 +24,6 @@ EXPOSE 3000
 # Start the main process.
 CMD ["rails", "server", "-b", "0.0.0.0"]
 
-FROM dev as prod
+FROM dev AS prod
 
 COPY . /application
