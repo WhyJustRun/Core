@@ -59,18 +59,6 @@ class User < ApplicationRecord
     User.where('users.email IS NOT NULL')
   end
 
-  # Helpers
-  def post_sign_in_clubsite_redirect_for_club(club, session)
-    cross_session = CrossAppSession.find_by cross_app_session_id: session[:cross_app_session_id]
-    # If we don't have a cross app session yet, create it.
-    if cross_session.nil?
-      cross_session = CrossAppSession.new_for_user(self)
-      session[:cross_app_session_id] = cross_session.cross_app_session_id
-      cross_session.save
-    end
-    club.clubsite_url("/users/localLogin?cross_app_session_id=" + cross_session.cross_app_session_id)
-  end
-
   def first_name
     names = name.split
     if names.length == 1

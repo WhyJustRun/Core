@@ -35,6 +35,7 @@ Rails.application.routes.draw do
   get 'events', to: 'events#index', format: true
   get 'club/:club_id/events', to: 'events#index', format: true
   get 'club/:club_id/participation_report', to: 'clubs#participant_counts'
+  get 'clubsite/:club_id', to: 'clubs#show_clubsite', as: :clubsite
 
   get 'api/maps', to: 'maps#index'
 

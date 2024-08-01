@@ -6,6 +6,24 @@ class ClubsController < ApplicationController
     end
   end
 
+  def show_clubsite
+    club = Club.find_by_id(params[:club_id])
+    if current_user.nil?
+      url = club.clubsite_url('/')
+    else
+      cross_session = CrossAppSession.find_by cross_app_session_id: session[:cross_app_session_id]
+      # If we don't have a cross app session yet, create it.
+      if cross_session.nil?
+        cross_session = CrossAppSession.new_for_user(current_user)
+        session[:cross_app_session_id] = cross_session.cross_app_session_id
+        cross_session.save
+      end
+      url = club.clubsite_url("/users/localLogin?cross_app_session_id=" + cross_session.cross_app_session_id)
+    end
+
+    redirect_to url, allow_other_host: true
+  end
+
   # provides a CSV file with participant counts for the club events and any child club events
   def participant_counts
   	respond_to do |format|

@@ -35,7 +35,7 @@ class UsersController < ApplicationController
   def sign_in_clubsite
     if user_signed_in?
       club = Club.find_by_id(params[:redirect_club_id])
-      redirect_to(current_user.post_sign_in_clubsite_redirect_for_club(club, session))
+      redirect_to(clubsite_url(club))
       session[:redirect_club_id] = nil
     else
       session[:redirect_club_id] = params[:redirect_club_id]

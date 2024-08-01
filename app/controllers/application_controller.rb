@@ -38,7 +38,7 @@ class ApplicationController < ActionController::Base
     unless redirect_club_id.nil? then
       club = Club.find_by_id(redirect_club_id)
       session[:redirect_club_id] = nil
-      current_user.post_sign_in_clubsite_redirect_for_club(club, session)
+      clubsite_path(club)
     else
       session[:previous_url] || root_path
     end
