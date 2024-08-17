@@ -51,6 +51,6 @@ class UsersController < ApplicationController
     end
 
     club = Club.find_by_id(params[:redirect_club_id])
-    redirect_to("//" + club.domain + "/users/logoutComplete")
+    redirect_to("//" + club.domain + "/users/logoutComplete", allow_other_host: true)
   end
 end
