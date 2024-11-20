@@ -94,8 +94,9 @@ Rails.application.configure do
 end
 
 Rails.application.config.middleware.use ExceptionNotification::Rack,
-  :email => {
-    :email_prefix => "[WhyJustRun Core] ",
-    :sender_address => %{"WhyJustRun Core" <noreply@whyjustrun.ca>},
-    :exception_recipients => %w{contact@russellporter.com}
+  ignore_if: ->(env, exception) { exception.message =~ /invalid byte sequence in UTF-8/ },
+  email: {
+    email_prefix: "[WhyJustRun Core] ",
+    sender_address: %{"WhyJustRun Core" <noreply@whyjustrun.ca>},
+    exception_recipients: ENV.fetch("WJR_LOG_EMAILS", "").split(",").reject(&:empty?)
   }
