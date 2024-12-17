@@ -93,8 +93,8 @@ Rails.application.configure do
   config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
 end
 
-Rails.application.config.middleware.use ExceptionNotification::Rack,
-  ignore_if: ->(env, exception) { exception.message =~ /invalid byte sequence in UTF-8/ },
+.use ExceptionNotification::Rack,
+  ignore_if: ->(env, exception) { exception.message =~ /invalid byte sequence in UTF-8/ || exception.message =~ /is not a valid MIME type/ },
   email: {
     email_prefix: "[WhyJustRun Core] ",
     sender_address: %{"WhyJustRun Core" <noreply@whyjustrun.ca>},
