@@ -97,7 +97,7 @@ GEM
     builder (3.3.0)
     bundle (0.0.1)
       bundler
-    cgi (0.4.1)
+    cgi (0.4.2)
     chronic (0.10.2)
     coffee-rails (5.0.0)
       coffee-script (>= 2.2.0)
