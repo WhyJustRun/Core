@@ -97,6 +97,6 @@ Rails.application.config.middleware.use ExceptionNotification::Rack,
   ignore_if: ->(env, exception) { exception.message =~ /invalid byte sequence in UTF-8/ || exception.message =~ /is not a valid MIME type/ },
   email: {
     email_prefix: "[WhyJustRun Core] ",
-    sender_address: %{"WhyJustRun Core" <noreply@whyjustrun.ca>},
+    sender_address: %{"WhyJustRun Core" <noreply@transactional.whyjustrun.ca>},
     exception_recipients: ENV.fetch("WJR_LOG_EMAILS", "").split(",").reject(&:empty?)
   }

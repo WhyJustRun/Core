@@ -1,5 +1,5 @@
 class UserMailer < ActionMailer::Base
-  default :from => 'noreply@whyjustrun.ca'
+  default :from => 'noreply@transactional.whyjustrun.ca'
 
   def send_message_email(sender, receiver, message)
     @sender = sender
