@@ -94,7 +94,7 @@ Rails.application.configure do
 end
 
 Rails.application.config.middleware.use ExceptionNotification::Rack,
-  ignore_if: ->(env, exception) { exception.message =~ /invalid byte sequence in UTF-8/ || exception.message =~ /is not a valid MIME type/ },
+  ignore_if: ->(env, exception) { exception.message =~ /invalid byte sequence in UTF-8/ || exception.message =~ /is not a valid MIME type/ || exception.message =~ /Invalid encoding for parameter/ || exception.message =~ /Missing template application\/cors/ },
   email: {
     email_prefix: "[WhyJustRun Core] ",
     sender_address: %{"WhyJustRun Core" <noreply@transactional.whyjustrun.ca>},
