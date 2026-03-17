@@ -21,7 +21,7 @@ gem 'tzinfo-data'
 
 # Authentication
 gem 'bcrypt', '~> 3.1.5'
-gem 'devise', '~> 4.9.4'
+gem 'devise', '~> 5.0.3'
 gem "devise-encryptable", "~> 0.2.0"
 
 # Maps
