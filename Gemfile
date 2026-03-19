@@ -20,7 +20,7 @@ gem "webpacker", ">= 5.4.4"
 gem 'tzinfo-data'
 
 # Authentication
-gem 'bcrypt', '~> 3.1.5'
+gem 'bcrypt', '~> 3.1.22'
 gem 'devise', '~> 4.9.4'
 gem "devise-encryptable", "~> 0.2.0"
 
