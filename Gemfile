@@ -44,7 +44,7 @@ gem 'nori', '~> 2.7.1'
 
 gem "config", "~> 5.5.1"
 
-gem 'icalendar', '~> 2.10.2'
+gem 'icalendar', '~> 2.12.2'
 gem "geocoder", "~> 1.8.3"
 
 # JSON Builder
