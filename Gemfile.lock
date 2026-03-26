@@ -139,8 +139,11 @@ GEM
     haversine (0.3.2)
     i18n (1.14.8)
       concurrent-ruby (~> 1.0)
-    icalendar (2.10.2)
+    icalendar (2.12.2)
+      base64
       ice_cube (~> 0.16)
+      logger
+      ostruct
     ice_cube (0.17.0)
     io-console (0.8.2)
     irb (1.17.0)
@@ -194,6 +197,7 @@ GEM
     nori (2.7.1)
       bigdecimal
     orm_adapter (0.5.0)
+    ostruct (0.6.3)
     pp (0.6.3)
       prettyprint
     prettyprint (0.2.0)
@@ -317,7 +321,7 @@ DEPENDENCIES
   exception_notification (~> 4.5)
   geocoder (~> 1.8.3)
   haversine (~> 0.3.2)
-  icalendar (~> 2.10.2)
+  icalendar (~> 2.12.2)
   jbuilder (~> 2.12.0)
   jquery-rails (~> 4.6.0)
   leaflet-rails (~> 1.9.3)
