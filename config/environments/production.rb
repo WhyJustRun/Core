@@ -26,9 +26,6 @@ Rails.application.configure do
   # Compress CSS using a preprocessor.
   # config.assets.css_compressor = :sass
 
-  # Legacy: don't require precompiled assets
-  config.assets.compile = true
-
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
   # config.asset_host = "http://assets.example.com"
 

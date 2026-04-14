@@ -27,3 +27,24 @@ CMD ["rails", "server", "-b", "0.0.0.0"]
 FROM dev AS prod
 
 COPY . /application
+RUN RAILS_ENV=production \
+    NODE_OPTIONS=--openssl-legacy-provider \
+    SECRET_KEY_BASE=placeholder \
+    WJR_DATABASE_NAME=placeholder \
+    WJR_DATABASE_TEST_NAME=placeholder \
+    WJR_DATABASE_HOST=placeholder \
+    WJR_DATABASE_USERNAME=placeholder \
+    WJR_DATABASE_PASSWORD=placeholder \
+    WJR_PASSWORD_SALT=placeholder \
+    WJR_SECRET_BASE=placeholder \
+    WJR_SECRET_TOKEN=placeholder \
+    WJR_DEVISE_SECRET_KEY=placeholder \
+    WJR_RECAPTCHA_SITE_KEY=placeholder \
+    WJR_RECAPTCHA_SECRET_KEY=placeholder \
+    WJR_SMTP_ADDRESS=placeholder \
+    WJR_SMTP_DOMAIN=placeholder \
+    WJR_SMTP_USER_NAME=placeholder \
+    WJR_SMTP_PASSWORD=placeholder \
+    WJR_DATA_FOLDER=placeholder \
+    WJR_DATA_URL=placeholder \
+    bundle exec rails assets:precompile
