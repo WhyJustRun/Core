@@ -26,6 +26,9 @@ CMD ["rails", "server", "-b", "0.0.0.0"]
 
 FROM dev AS prod
 
+COPY package.json yarn.lock /application/
+RUN yarn install --frozen-lockfile
+
 COPY . /application
 RUN RAILS_ENV=production \
     NODE_OPTIONS=--openssl-legacy-provider \
