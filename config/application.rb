@@ -11,6 +11,14 @@ module WhyJustRun
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.1
 
+    # Rails 7.2 no longer reads secrets.yml automatically; load it explicitly.
+    config.secrets = config_for(:secrets)
+    config.secret_key_base = config.secrets[:secret_key_base]
+
+    def secrets
+      config.secrets
+    end
+
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
     # Common ones are `templates`, `generators`, or `middleware`, for example.
