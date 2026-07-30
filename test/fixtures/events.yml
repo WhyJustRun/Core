@@ -2,6 +2,7 @@ cluba_race:
   name: Spring Sprint
   club: cluba
   event_classification: local
+  series: cluba_wednesday
   date: 2025-06-15 17:00:00
   finish_date: 2025-06-15 19:00:00
   lat: 49.3
@@ -12,3 +13,10 @@ cluba_training:
   club: cluba
   event_classification: club
   date: 2025-07-02 01:30:00
+
+cluba_external:
+  name: External Championships
+  club: cluba
+  event_classification: regional
+  date: 2025-08-10 16:00:00
+  custom_url: https://example.com/external-event

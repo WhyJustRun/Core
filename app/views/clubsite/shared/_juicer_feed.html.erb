@@ -1,0 +1,6 @@
+<% if current_club.juicer_feed_id.present? %>
+  <script src="https://assets.juicer.io/embed.js" type="text/javascript"></script>
+  <link href="https://assets.juicer.io/embed.css" media="all" rel="stylesheet" type="text/css" />
+  <ul class="juicer-feed" data-feed-id="<%= current_club.juicer_feed_id %>" data-per="3" data-truncate="250" data-columns="1"></ul>
+  <h4 class="referral" style="text-align: center; margin-top: 0; margin-bottom: 24px;"><a href="https://www.juicer.io">Feed powered by Juicer.io</a></h4>
+<% end %>

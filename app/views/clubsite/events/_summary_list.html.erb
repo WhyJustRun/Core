@@ -1,0 +1,12 @@
+<%
+  sections = {
+    'Ongoing' => current_club.events.list_includes.ongoing.to_a,
+    'Upcoming' => current_club.events.list_includes.upcoming.limit(4).to_a,
+    'Past' => current_club.events.list_includes.past.limit(2).to_a
+  }
+%>
+<% sections.each do |title, events| %>
+  <% next if events.empty? %>
+  <h3><%= title %></h3>
+  <%= render 'clubsite/events/box_list', events: events %>
+<% end %>

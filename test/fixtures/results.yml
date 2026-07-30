@@ -1,0 +1,12 @@
+member_long:
+  user: member
+  course: race_long
+  status: ok
+  time_seconds: 3600
+  registrant: member
+
+organizer_long:
+  user: organizer
+  course: race_long
+  status: did_not_finish
+  registrant: member

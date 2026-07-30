@@ -1,0 +1,36 @@
+<%# locals: event. Course list with registrations; the register/unregister
+    actions post to routes that are ported separately. %>
+<div class="courses">
+  <% user_id = current_user&.id || 0 %>
+  <% event.courses.each do |course| %>
+    <div class="course">
+      <div class="course-info">
+        <div class="pull-right">
+          <% if !@registered_course_ids.include?(course.id) && @registration_open %>
+            <div class="btn-group">
+              <%= button_to "/courses/register/#{course.id}/#{user_id}", class: 'btn btn-success' do %>
+                <span class="glyphicon glyphicon-plus"></span> Register
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+
+        <h3><%= course.name %></h3>
+        <span>
+          <%= sanitize course.description %>
+          <p>
+            <% if course.distance.present? %>
+              <br/><strong>Distance</strong>: <%= course.distance %>m
+            <% end %>
+            <% if course.climb.present? %>
+              <br/><strong>Climb</strong>: <%= course.climb %>m
+            <% end %>
+          </p>
+        </span>
+      </div>
+      <div class="results-list">
+        <%= render 'results_entries', course: course, results: @sorted_results[course.id] %>
+      </div>
+    </div>
+  <% end %>
+</div>

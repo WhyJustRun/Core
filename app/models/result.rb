@@ -1,6 +1,8 @@
 class Result < ApplicationRecord
   belongs_to :user
   belongs_to :course
+  # The user who registered this result's user (may differ when registering others)
+  belongs_to :registrant, class_name: 'User', optional: true
 
   @@iof_status = {
     :inactive => 'Inactive',

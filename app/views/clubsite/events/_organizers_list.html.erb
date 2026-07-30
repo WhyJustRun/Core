@@ -1,0 +1,2 @@
+<%# locals: organizers %>
+<% organizers.each_with_index do |organizer, index| %><%= ', ' if index.positive? %><b><%= link_to organizer.user.name, profile_url(organizer.user) %></b><%= " (#{organizer.role.name})" if organizer.role.present? %><% end %>

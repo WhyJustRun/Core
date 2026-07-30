@@ -43,6 +43,37 @@ Rails.application.routes.draw do
       get 'robots.txt', to: 'robots#show', format: false
       get '/', to: 'pages#home', as: :clubsite_root
 
+      # Events
+      get 'events(/index(/:date))', to: 'events#index', as: :clubsite_events
+      get 'events/listing', to: 'events#listing'
+      get 'events/view/:id', to: 'events#show', as: :clubsite_event
+      get 'events/results/:id', to: 'events#show'
+      get 'events/map/:id', to: 'events#map'
+      get 'events/rendering/:id', to: 'events#rendering'
+
+      # Maps
+      get 'maps(/index)', to: 'maps#index', as: :clubsite_maps
+      get 'maps/view/:id', to: 'maps#show', as: :clubsite_map
+      get 'maps/report', to: 'maps#report'
+      get 'maps/download/:id', to: 'maps#download'
+      get 'maps/rendering/:id(/:thumbnail)', to: 'maps#rendering'
+
+      # Courses
+      get 'courses/view/:id', to: 'courses#show', as: :clubsite_course
+      get 'courses/map/:id(/:thumbnail)', to: 'courses#map'
+
+      # Results
+      get 'results(/index)', to: 'results#index', as: :clubsite_results
+
+      # Pages and content blocks. The jEditable editors post to the legacy
+      # CakePHP URLs (/pages/edit, /contentBlocks/edit).
+      post 'pages/add', to: 'pages#create'
+      post 'pages/edit', to: 'pages#update'
+      post 'pages/delete/:id', to: 'pages#destroy'
+      post 'contentBlocks/edit', to: 'content_blocks#update'
+      get 'pages/:page', to: 'pages#show', as: :clubsite_page
+      get 'Pages/:page', to: 'pages#show'
+
       match '*unmatched', to: 'errors#not_found', via: :all, format: false
     end
   end

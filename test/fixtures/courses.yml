@@ -1,0 +1,11 @@
+race_long:
+  event: cluba_race
+  name: Long Course
+  distance: 5000
+  climb: 150
+  description: The long course
+
+race_score:
+  event: cluba_race
+  name: Score Course
+  is_score_o: true

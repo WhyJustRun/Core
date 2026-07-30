@@ -15,6 +15,10 @@
     {
       "fingerprint": "dcd469c3af248cfe9ad0bd62ca6d04d009d336c4a057ed702eae420d78ad92f2",
       "note": "Intentional 301 from a club's old domain to its current one; both values come from the clubs table, not from user input."
+    },
+    {
+      "fingerprint": "6f385d255ed0c43e612d0bb77992a41e96ac6c9186d2510ca2616f5ac694982d",
+      "note": "MediaStore builds the path from the configured data folder, the club id, and an Integer-cast record id; no user-controlled path components."
     }
   ],
   "updated": "2026-07-30 00:00:00 +0000",

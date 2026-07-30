@@ -1,0 +1,22 @@
+<%# locals: event, can_edit %>
+<div class="results">
+  <header>
+    <h2>Results</h2>
+  </header>
+
+  <% result_list = event.result_list %>
+  <% if event.results_posted %>
+    <%= render 'results_list', event_id: event.id %>
+  <% elsif result_list.present? && result_list.status == ResultList::LIVE_STATUS %>
+    <% if can_edit %>
+      <%= render 'live_results_visibility_button', event: event, result_list: result_list %>
+    <% end %>
+
+    <% if result_list.visible %>
+      <%= render 'live_result_list', event: event %>
+    <% end %>
+  <% end %>
+
+  <%= render 'results_links', event: event %>
+  <%= render 'course_maps', event: event %>
+</div>

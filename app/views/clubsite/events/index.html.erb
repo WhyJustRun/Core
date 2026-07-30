@@ -1,0 +1,10 @@
+<% content_for :title, 'Calendar' %>
+<%= render 'list_header', type: 'calendar' %>
+<%= render 'calendar', year: @year, month: @month, day: @day %>
+<% if @series.any? %>
+  <ul class="list-inline series-legend">
+    <% @series.each do |series| %>
+      <li class="series-<%= series.id %>"><%= series.name %></li>
+    <% end %>
+  </ul>
+<% end %>

@@ -1,0 +1,17 @@
+cluba_trail_guide:
+  name: Trail Guide
+  section: Resources
+  content: <p>Club A trails and how to find them.</p>
+  club: cluba
+
+cluba_membership_info:
+  name: Membership Info
+  section: Resources
+  content: <p>How to join Club A.</p>
+  club: cluba
+
+clubb_handbook:
+  name: Club B Handbook
+  section: Resources
+  content: <p>The Club B handbook.</p>
+  club: clubb

@@ -1,0 +1,17 @@
+cluba_general_information:
+  key: general_information
+  order: 1
+  content: <h2>Welcome to Club A!</h2>
+  club: cluba
+
+cluba_contact:
+  key: contact
+  order: 1
+  content: <p>Contact Club A at cluba@example.com.</p>
+  club: cluba
+
+clubb_general_information:
+  key: general_information
+  order: 1
+  content: <h2>Welcome to Club B!</h2>
+  club: clubb

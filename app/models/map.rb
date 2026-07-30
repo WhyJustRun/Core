@@ -1,6 +1,7 @@
 class Map < ApplicationRecord
   has_many :event
-  belongs_to :map_standard
+  # Legacy records may not have a map standard assigned
+  belongs_to :map_standard, optional: true
   belongs_to :club
 
   def url

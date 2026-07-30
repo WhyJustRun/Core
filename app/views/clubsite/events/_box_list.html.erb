@@ -1,0 +1,18 @@
+<%# locals: either events (a collection), or filter ('ongoing'/'upcoming'/'past')
+    with optional limit and series_id (0 or negative means no series) %>
+<%
+  events = local_assigns[:events]
+  if events.nil?
+    scope = current_club.events.list_includes.for_series(local_assigns[:series_id]).public_send(filter)
+    scope = scope.limit(local_assigns[:limit]) if local_assigns[:limit].to_i.positive?
+    events = scope
+  end
+%>
+<% events.each do |event| %>
+  <%= render 'clubsite/events/box',
+             location: event.name,
+             date: event_box_date(event),
+             link: event_link_url(event),
+             style: event.series_id,
+             map_id: event.map_id %>
+<% end %>

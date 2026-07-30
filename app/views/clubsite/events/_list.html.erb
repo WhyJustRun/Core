@@ -1,0 +1,29 @@
+<%# Knockout event list fed by the IOF XML event feed. Self-contained so the
+    home page can render it too. %>
+<div class="row">
+  <div class="col-sm-6 col-sm-offset-3">
+    <button id="older-button" class="center-block btn btn-primary ladda-button" data-style="zoom-out">
+      <span class="ladda-label">
+        <span class="glyphicon glyphicon-chevron-up"></span>
+        Older
+      </span>
+    </button>
+    <div class="event-list"
+         data-event-list-coloring="club-only"
+         data-event-list-type="time-window"
+         data-event-list-older-button="#older-button"
+         data-event-list-newer-button="#newer-button"
+         data-event-list-url="<%= core_url("/club/#{current_club.id}/events.xml?iof_version=3.0&external_significant_events=all") %>">
+      <h4 style="text-align: center" data-bind="visible: formattedStartTime">Showing events after <span data-bind="text: formattedStartTime"></span></h4>
+      <div data-bind="template: { name: 'event-box-template', foreach: events }"></div>
+      <h4 style="text-align: center" data-bind="visible: formattedEndTime">Showing events before <span data-bind="text: formattedEndTime"></span></h4>
+    </div>
+    <button id="newer-button" class="center-block btn btn-primary ladda-button" data-style="zoom-out">
+      <span class="ladda-label">
+        <span class="glyphicon glyphicon-chevron-down"></span>
+        Newer
+      </span>
+    </button>
+    <%= render 'clubsite/events/knockout_box', template_name: 'event-box-template' %>
+  </div>
+</div>

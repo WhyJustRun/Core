@@ -1,0 +1,9 @@
+<% if map.lat.present? %>
+  <h3>Location</h3>
+  <% location = geocode_look_up(map.lat, map.lng) %>
+  <% location_name = [location['neighbourhood'], location['city']].reject(&:blank?).join(', ') %>
+  <% if location_name.present? %>
+    <p><%= location_name %></p>
+  <% end %>
+  <iframe width="100%" height="500" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?q=<%= map.lat %>%2C<%= map.lng %>&key=<%= Settings.googleMapsApiKey %>"></iframe>
+<% end %>
