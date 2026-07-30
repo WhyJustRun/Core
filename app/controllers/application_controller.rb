@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  include Pundit
+  include Pundit::Authorization
   protect_from_forgery with: :exception
 
   before_action :clear_redirect_club_if_necessary

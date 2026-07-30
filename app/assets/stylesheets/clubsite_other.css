@@ -1,0 +1,7 @@
+/*
+ * Additions for the "other" clubsite layout. The layout also loads the main
+ * clubsite bundle (mirrors other.ctp, which loaded layout_dependencies plus
+ * other.css).
+ *
+ *= require clubsite/other
+ */

@@ -44,6 +44,11 @@ privileges:
     merge: 90
 
 host: <%= ENV.fetch('WJR_HOST', 'whyjustrun.ca') %>
+# Absolute URL of the apex site, used for cross-domain links from club sites
+coreURL: <%= ENV.fetch('WJR_CORE_URL', 'https://whyjustrun.ca') %>
+
+googleMapsApiKey: <%= ENV.fetch('WJR_GOOGLE_MAPS_API_KEY', '') %>
+flickrApiKey: <%= ENV.fetch('WJR_FLICKR_API_KEY', '') %>
 
 databaseName: <%= ENV.fetch('WJR_DATABASE_NAME') %>
 databaseTestName: <%= ENV.fetch('WJR_DATABASE_TEST_NAME') %>

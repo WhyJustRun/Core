@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# event: http://ogp.me/ns/event#">
+    <title><%= content_for?(:title) ? yield(:title) : current_club.name %></title>
+    <%= render 'layouts/clubsite/head' %>
+    <%= stylesheet_link_tag 'clubsite_other', media: 'all' %>
+    <%= yield :head %>
+  </head>
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/"><%= current_club.name %></a>
+        </div>
+        <div class="collapse navbar-collapse" id="main-navbar-collapse">
+          <ul class="nav navbar-nav">
+            <%= menu_item 'Events', '/events/index' %>
+            <%= menu_item 'Maps', '/maps/' %>
+            <%= menu_item 'Export', '/pages/export/' %>
+            <%= menu_item 'Officials', '/officials/' if officials_access? %>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li class="divider"></li>
+            <% if user_signed_in? %>
+              <%= menu_item 'Admin', '/pages/admin/' if admin_access? %>
+              <%= menu_item 'My Profile', profile_url %>
+              <%= menu_item 'Sign out', '/users/logout/' %>
+            <% else %>
+              <%= menu_item 'Sign in/Sign up', '/users/login' %>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container" id="content">
+      <%= render 'layouts/clubsite/flash' %>
+      <%= yield %>
+    </div>
+    <footer class="other-footer">
+      <div class="container">
+        &copy; <%= Time.zone.now.year %> Orienteering Canada
+        <span class="pull-right">By Thomas Nipen, <a href="http://www.russellporter.com">Russell Porter</a>
+        and Adrian Zissos</span>
+      </div>
+    </footer>
+    <%= javascript_include_tag 'clubsite' %>
+    <%= yield :javascript_bottom %>
+  </body>
+</html>

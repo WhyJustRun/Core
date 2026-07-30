@@ -84,10 +84,13 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
-  # Enable DNS rebinding protection and other `Host` header attacks.
-  config.hosts = ["whyjustrun.ca"]
-  # Skip DNS rebinding protection for the default health check endpoint.
-  config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+  # Club domains are arbitrary customer strings stored in the clubs table, so
+  # Rails cannot allowlist hosts. nginx is the Host allowlist: its vhosts are
+  # generated from the clubs table and a default_server rejects unknown hosts.
+  config.hosts.clear
+
+  # Club sites are visible to crawlers in production (subject to clubs.visible)
+  config.x.clubsite_robots_hidden = false
 end
 
 Rails.application.config.middleware.use ExceptionNotification::Rack,

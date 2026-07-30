@@ -1,0 +1,503 @@
+/**
+ *
+ * Generic CSS for CakePHP
+ *
+ * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
+ * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ *
+ * Licensed under The MIT License
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @copyright Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @link http://cakephp.org CakePHP(tm) Project
+ * @package cake
+ * @subpackage cake.app.webroot.css
+ * @since CakePHP(tm)
+ * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
+ */
+
+/* Registration deadline additional classes */
+.reg-deadline-header {
+    color: #d2322d;
+    padding: 5px;
+}
+
+/* Use to ensure the image fits within the responsive column*/
+.fitting-image {
+    max-width: 100%;
+}
+
+/* inputs that are ketchup validated will not be aligned properly if there is a validation error. This works around that issue. */
+.form-group.inline-validated {
+    vertical-align: top;
+}
+
+.inline-validated-help {
+    vertical-align: -webkit-baseline-middle;
+}
+/* Fix for nesting of inline form inside horizontal form (http://stackoverflow.com/questions/18429121/inline-form-nested-within-horizontal-form-in-bootstrap-3) */
+.form-inline .form-group {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.ketchup-custom {
+    line-height: 1.5em;
+    padding: 0;
+    margin: 0;
+    margin-top: 5px;
+    display: none;
+}
+
+.ketchup-custom li {
+    font-size: 12px;
+    text-transform: uppercase;
+    text-shadow: 1px 1px 0 #9F4631;
+    border: 0;
+    color: white;
+    background: #F46644;
+    padding: 1px 10px;
+    margin: 0;
+}
+
+/** Placeholder polyfill **/
+input, textarea {
+    color: #000;
+}
+.placeholder {
+    color: #aaa;
+}
+
+/** Facebook bugfix **/
+.fb-like-box iframe {
+    height: 100px;
+}
+
+/** Thinner select input, useful for tables**/
+input.thin-control, select.thin-control, form.thin-form select, form.thin-form input {
+    height: 18px;
+    min-height: 18px;
+    padding: 0;
+    padding-left: 2px;
+    padding-right: 2px;
+    margin-bottom: 0;
+}
+
+input.spanning-control {
+    width: 99%;
+}
+
+form.thin-form {
+    margin: 0;
+}
+
+/** Result ride sharing **/
+#ResultEditRideForm {
+    margin: 0;
+}
+
+/** General Style Info **/
+
+#content {
+    padding-bottom: 15px;
+}
+
+/** Event page **/
+
+.social-event-button {
+    padding: 7px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-bottom: 15px;
+}
+
+.social-event-text {
+    padding-left: 3px;
+    vertical-align: bottom;
+}
+
+.event-header {
+    padding: 0;
+    margin: 0;
+}
+
+.course-info h3 {
+    text-align: left;
+    padding-left: 0px;
+}
+
+.column-box {
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 10px;
+    padding: 10px;
+    background-color: #f8f8f8;
+}
+
+.column-box h2 {
+    padding-top: 0px;
+}
+
+#location-map {
+    height: 500px;
+}
+
+.course-editing input {
+    font-size: 100%;
+}
+
+.content-block img {
+    max-width: 100%;
+}
+
+.content-block textarea {
+    font-size: 100%;
+}
+
+.wjr-editable:hover {
+    background-color: #fffdd7;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+.wjr-editable:hover > form {
+    cursor: initial;
+}
+
+.wjr-editable .btn {
+    margin-right: 7px;
+}
+
+/**
+Results editing
+ **/
+
+.results-editing input {
+    font-size: small;
+
+}
+
+.results-editing {
+    padding: 0;
+    width: 5%;
+    padding-left: 5px;
+}
+
+/** Navigation bar styling **/
+
+.navbar-constrained-width {
+    max-width: 100%;
+    width: 1200px;
+    margin:0 auto 0 auto;
+}
+
+.navbar-squared-top {
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+}
+
+.navbar-nav-main-text {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+/* Custom navbar colouring style (generated from http://jsfiddle.net/drSbw/102/) */
+.navbar-colored {
+    background-color: #238216;
+    border-color: #1e6613;
+}
+.navbar-colored .navbar-brand {
+    color: #ecf0f1;
+}
+.navbar-colored .navbar-brand:hover, .navbar-colored .navbar-brand:focus {
+    color: white;
+}
+.navbar-colored .navbar-nav > li > a {
+    color: #ecf0f1;
+}
+.navbar-colored .navbar-nav > li > a:hover, .navbar-colored .navbar-nav > li > a:focus {
+    background-color: #238216;
+    color: white;
+}
+.navbar-colored .navbar-nav .active > a, .navbar-colored .navbar-nav .active > a:hover, .navbar-colored .navbar-nav .active > a:focus {
+    color: white;
+    background-color: #1e6613;
+}
+.navbar-colored .navbar-nav .open > a, .navbar-colored .navbar-nav .open > a:hover, .navbar-colored .navbar-nav .open > a:focus {
+    color: white;
+    background-color: #1e6613;
+}
+.navbar-colored .navbar-nav .open > a .caret, .navbar-colored .navbar-nav .open > a:hover .caret, .navbar-colored .navbar-nav .open > a:focus .caret {
+    border-top-color: white;
+    border-bottom-color: white;
+}
+.navbar-colored .navbar-nav > .dropdown > a .caret {
+    border-top-color: #ecf0f1;
+    border-bottom-color: #ecf0f1;
+}
+.navbar-colored .navbar-nav > .dropdown > a:hover .caret, .navbar-colored .navbar-nav > .dropdown > a:focus .caret {
+    border-top-color: white;
+    border-bottom-color: white;
+}
+.navbar-colored .navbar-toggle {
+    border-color: #1e6613;
+}
+.navbar-colored .navbar-toggle:hover, .navbar-colored .navbar-toggle:focus {
+    background-color: #1e6613;
+}
+.navbar-colored .navbar-toggle .icon-bar {
+    background-color: #ecf0f1;
+}
+
+@media (max-width: 767px) {
+  .navbar-colored .navbar-nav .open .dropdown-menu > li > a {
+    color: #ecf0f1;
+  }
+  .navbar-colored .navbar-nav .open .dropdown-menu > li > a:hover, .navbar-colored .navbar-nav .open .dropdown-menu > li > a:focus {
+    color: white;
+    background-color: #1e6613;
+  }
+}
+
+header.header h1 {
+    text-align: center;
+    font-size: 40px;
+    line-height: 50px;
+}
+
+/** Footer **/
+
+#credits {
+    text-align: right;
+}
+
+footer.other-footer, footer.main-footer,
+footer.other-footer a, footer.other-footer a:hover,
+footer.main-footer a, footer.main-footer a:hover {
+    color: #fff;
+}
+
+footer.other-footer {
+    padding: 5px;
+    background-color: black;
+}
+
+footer.main-footer, footer.other-footer {
+    color: #fff;
+}
+
+footer.main-footer {
+    padding-bottom: 5px;
+    background-color: #213449;
+}
+
+footer.main-footer div {
+    padding: 5px;
+    padding-left: 12px;
+}
+
+/** General styling **/
+
+.page-header > h1 {
+    text-align: left;
+}
+
+/** Layout **/
+
+.three-column {
+    /** Needed so three-column surrounds the enclosed divs **/
+    overflow:hidden;
+}
+
+.three-column h2, .three-column h3 {
+    text-align: center;
+}
+
+.three-column .events-by-series h4 {
+    font-weight: bold;
+}
+
+.event-box {
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+/** Outer event-box is needed to safely override the a style and still allow for block clicking. **/
+.event-box a {
+    color: #000000;
+    text-decoration: none;
+
+}
+.event-box-icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 60px;
+}
+
+.event-box-icon > img {
+    width: 60px;
+    height: 60px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.event-box-inner {
+    position: relative;
+}
+
+.event-box-inner {
+    background-color: #f8f8f8;
+    border-radius: 10px;
+    padding: 6px;
+    padding-left: 11px;
+    padding-right: 11px;
+    display: block;
+    color: #000000;
+    text-decoration: none;
+    font-weight: normal;
+    clear: both;
+    overflow: hidden;
+}
+
+.event-box .location {
+    font-size: 18px;
+}
+
+.event-box .location, .event-box .city, .event-box .date-text {
+    text-decoration: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.event-box .city {
+    color: #000000;
+    text-decoration: none;
+}
+
+.event-box .date {
+    padding-top: 3px;
+    font-size: 100%;
+    font-weight: bold;
+}
+
+@media (min-width: 980px) {
+    .event-box.has-picture .location, .event-box.has-picture .city, .event-box.has-picture .date {
+        margin-right: 50px;
+}
+}
+
+@media (max-width: 767px) {
+    .event-box.has-picture .location, .event-box.has-picture .city, .event-box.has-picture .date {
+        margin-right: 50px;
+}
+}
+
+.event-box-classification, .event-box-club-acronym {
+    vertical-align: 3px;
+}
+
+#home_left {
+    padding-right: 4px;
+    width: 500px;
+    float: left;
+    text-align: left;
+}
+#home_right {
+    padding-left: 4px;
+    width: 227px;
+    float: right;
+    text-align: left;
+    border-left: 2px solid #325174;
+}
+
+.flickr-photos .thumbnail div {
+    background-position: center;
+    background-size: cover;
+    width: 100%;
+    height: 180px;
+}
+
+@media (max-width: 767px) {
+    .flickr-photos {
+        width: 100%;
+}
+
+.flickr-photos > li {
+    width: 46%;
+}
+
+.input-xxxlarge, {
+    display: block;
+    width: 100%;
+    min-height: 30px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+}
+
+@media (max-width: 600px) {
+    .flickr-photos > li {
+        width: 100%;
+}
+}
+
+
+/** Notices and Errors **/
+.alert {
+    margin: 5px;
+}
+
+.typeahead{margin-top:2px;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;}
+
+.typeahead .active > a {
+    color: #fff;
+}
+
+.full-width {
+    width: 100%;
+}
+
+span.thin-control {
+    height: 18px;
+    line-height: 18px;
+    min-height: 18px;
+    padding: 0;
+    padding-left: 2px;
+    padding-right: 2px;
+    margin-bottom: 0;
+}
+
+.input-group .time-spacer {
+    padding: 0;
+}
+
+.input-group .time-segment {
+    width: 30px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.input-group .millisecond-time-segment {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.wjr-help-tooltip:hover {
+    text-decoration: none;
+}
+
+.wjr-help-tooltip > i {
+    vertical-align: middle;
+    font-size: 20px;
+    color: #888888;
+    padding-left: 4px;
+}
+
+/* Hide the built in referral as we show it below the first feed items.
+   Also increase CSS specificity so this is actually used. */
+.juicer-feed .referral.referral {
+    display: none;
+}

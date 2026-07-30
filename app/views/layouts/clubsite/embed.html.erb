@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# event: http://ogp.me/ns/event#">
+    <title><%= content_for?(:title) ? yield(:title) : current_club.name %></title>
+    <%= render 'layouts/clubsite/head' %>
+    <%= stylesheet_link_tag 'clubsite_embed', media: 'all' %>
+    <%= yield :head %>
+  </head>
+  <body>
+    <%= yield %>
+    <%= javascript_include_tag 'clubsite' %>
+    <%= yield :javascript_bottom %>
+  </body>
+</html>

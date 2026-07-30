@@ -11,6 +11,10 @@
     {
       "fingerprint": "98b26f60d776fd41ee6f088c833725145be9aac2d7c5b33780241c273622db42",
       "note": "Rails 7.2 end-of-life is a known issue; the framework upgrade is tracked as follow-up work to the clubsite consolidation."
+    },
+    {
+      "fingerprint": "dcd469c3af248cfe9ad0bd62ca6d04d009d336c4a057ed702eae420d78ad92f2",
+      "note": "Intentional 301 from a club's old domain to its current one; both values come from the clubs table, not from user input."
     }
   ],
   "updated": "2026-07-30 00:00:00 +0000",

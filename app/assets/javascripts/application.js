@@ -7,5 +7,23 @@
 //= require jquery
 //= require jquery_ujs
 //= require bootstrap
-//= require_tree .
+//= require bootstrap_and_overrides
+//= require clubs
+//= require content_blocks
+//= require courses
+//= require events
+//= require groups
+//= require home
+//= require map_standards
+//= require maps
+//= require memberships
+//= require organizers
+//= require pages
+//= require privileges
+//= require results
+//= require roles
+//= require series
+//= require tokens
+//= require users
+//= require whyjustrun
 

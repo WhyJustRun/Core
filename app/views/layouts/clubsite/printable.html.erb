@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title><%= content_for?(:title) ? yield(:title) : current_club.name %></title>
+    <meta charset="utf-8">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <%= stylesheet_link_tag 'clubsite_printable', media: 'all' %>
+    <%= yield :head %>
+  </head>
+  <body>
+    <%= yield %>
+    <%= javascript_include_tag 'clubsite' %>
+    <%= yield :javascript_bottom %>
+  </body>
+</html>
