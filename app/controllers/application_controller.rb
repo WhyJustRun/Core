@@ -17,7 +17,13 @@ class ApplicationController < ActionController::Base
 
   def clear_redirect_club_if_necessary
     # if the user gets distracted while logging in and does something else and then goes back later to log in, we don't want to redirect them to the source club in that case
-    session.delete(:redirect_club_id) unless request.fullpath =~ /\/users/
+    unless request.fullpath =~ /\/users/
+      session.delete(:redirect_club_id)
+      unless request.fullpath.start_with?('/sso')
+        session.delete(:sso_return_host)
+        session.delete(:sso_return_path)
+      end
+    end
   end
 
   def configure_permitted_parameters
@@ -34,6 +40,12 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource)
+    sso_return_host = session.delete(:sso_return_host)
+    if sso_return_host.present?
+      query = { return_host: sso_return_host, return_path: session.delete(:sso_return_path) }.compact.to_query
+      return "/sso/authorize?#{query}"
+    end
+
     redirect_club_id = session[:redirect_club_id]
     unless redirect_club_id.nil? then
       club = Club.find_by_id(redirect_club_id)

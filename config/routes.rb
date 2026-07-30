@@ -65,6 +65,15 @@ Rails.application.routes.draw do
       # Results
       get 'results(/index)', to: 'results#index', as: :clubsite_results
 
+      # Sign-in/out via the apex site (legacy CakePHP URL shapes preserved)
+      get 'users/login', to: 'sessions#new'
+      get 'users/logout', to: 'sessions#destroy'
+      get 'users/logoutComplete', to: 'sessions#logout_complete'
+      get 'users/localLogin', to: 'sessions#new'
+      get 'sso/consume', to: 'sessions#consume'
+      get 'users/register', to: redirect { |_params, _request| "#{Settings.coreURL.chomp('/')}/users/sign_up" }, status: 301
+      get 'users/view/:id', to: redirect { |params, _request| "#{Settings.coreURL.chomp('/')}/users/#{params[:id]}" }, status: 301
+
       # Pages and content blocks. The jEditable editors post to the legacy
       # CakePHP URLs (/pages/edit, /contentBlocks/edit).
       post 'pages/add', to: 'pages#create'
@@ -81,7 +90,13 @@ Rails.application.routes.draw do
   # ---------------------------------------------------------------------------
   # Apex (whyjustrun.ca) routes
   # ---------------------------------------------------------------------------
-  devise_for :users, :controllers => { :registrations => 'users/registrations' }
+  devise_for :users, :controllers => {
+    :registrations => 'users/registrations',
+    :sessions => 'users/sessions',
+    :passwords => 'users/passwords'
+  }
+  get 'sso/authorize', to: 'sso#authorize'
+  get 'sso/logout', to: 'sso#logout'
 
   root :to => "home#about_whyjustrun"
   get 'robots.txt', to: 'home#robots', format: false

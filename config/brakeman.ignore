@@ -19,6 +19,14 @@
     {
       "fingerprint": "6f385d255ed0c43e612d0bb77992a41e96ac6c9186d2510ca2616f5ac694982d",
       "note": "MediaStore builds the path from the configured data folder, the club id, and an Integer-cast record id; no user-controlled path components."
+    },
+    {
+      "fingerprint": "8f1cb77ac9d40ad45b479709b5709735fceded583c1e86999bc47a589252535b",
+      "note": "SSO sign-in redirect to a club domain; the host is resolved from the clubs table (the raw return_host param is never used) and the path is restricted to relative paths."
+    },
+    {
+      "fingerprint": "7a50d993f0b0314fb42b58ae7b0e3160e1b80116b463b17351b6f9cc43ecd53f",
+      "note": "SSO sign-out redirect back to a club domain resolved from the clubs table."
     }
   ],
   "updated": "2026-07-30 00:00:00 +0000",
