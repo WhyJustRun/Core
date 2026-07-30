@@ -2,6 +2,9 @@ require 'nokogiri'
 
 class ResultsController < ApplicationController
   before_action :authenticate_user!, :only => [:update_live, :process_result_list]
+  # Result list uploads come from external tools authenticating over HTTP Basic,
+  # which cannot supply a CSRF token.
+  skip_forgery_protection only: [:process_result_list, :update_live_result_list, :update_result_list]
 
   def check_event_id id
     unless Event.exists? id

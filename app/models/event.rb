@@ -159,10 +159,9 @@ class Event < ApplicationRecord
   end
 
   def to_ics
-    Time.zone = "UTC"
     event = Icalendar::Event.new
-    event.dtstart = date
-    event.dtend = finish_date
+    event.dtstart = date.utc
+    event.dtend = finish_date.utc
     event.summary = name
     event.description = strip_tags(description)
     if has_location
@@ -216,7 +215,6 @@ class Event < ApplicationRecord
   end
 
   def to_fullcalendar(prefix_acronym, for_club)
-    Time.zone = "UTC"
     out = {}
     out[:id] = id
     out[:title] = prefix_acronym ? (club.acronym + ' - ' + name) : name

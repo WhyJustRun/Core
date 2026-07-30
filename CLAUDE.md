@@ -44,5 +44,5 @@ Test users (password: "password"): admin@example.com, webmaster@example.com, exe
 - **Cross-app sessions**: Shared authentication with the Clubsite app via `CrossAppSession` model
 - **Privilege system**: Role-based access with numeric levels (0-100) defined in `config/settings.yml`
 - **Cron jobs**: Managed by the `whenever` gem
-- **Frontend**: Bootstrap with CoffeeScript, Webpacker, jQuery, Leaflet for maps
+- **Frontend**: Bootstrap with CoffeeScript, Sprockets asset pipeline, jQuery, Leaflet for maps
 - **Testing**: Minitest with fixtures in `test/fixtures/`

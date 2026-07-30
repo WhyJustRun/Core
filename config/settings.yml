@@ -10,7 +10,8 @@ privileges:
     delete: 90
     edit: 80
     planning: 80
-  map:
+  # named "maps" because a "map" key would collide with Enumerable#map on the settings object
+  maps:
     delete: 90
     edit: 80
     viewOCAD: 0
@@ -40,6 +41,7 @@ privileges:
     edit: 90
   user:
     edit: 100
+    merge: 90
 
 host: <%= ENV.fetch('WJR_HOST', 'whyjustrun.ca') %>
 

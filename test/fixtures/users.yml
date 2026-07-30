@@ -1,11 +1,29 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+admin:
+  name: Alice Admin
+  email: admin@example.com
+  club: cluba
 
-# This model initially had no columns defined.  If you add columns to the
-# model remove the '{}' from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
-#
-one: {}
-# column: value
-#
-two: {}
-#  column: value
+webmaster:
+  name: Wendy Webmaster
+  email: webmaster@example.com
+  club: cluba
+
+executive:
+  name: Evan Executive
+  email: executive@example.com
+  club: cluba
+
+member:
+  name: Mary Member
+  email: member@example.com
+  club: cluba
+
+organizer:
+  name: Oscar Organizer
+  email: organizer@example.com
+  club: cluba
+
+global_admin:
+  name: Gary Global
+  email: global@example.com
+  club: clubb

@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   include Pundit
-  protect_from_forgery
+  protect_from_forgery with: :exception
 
   before_action :clear_redirect_club_if_necessary
   before_action :configure_permitted_parameters, if: :devise_controller?

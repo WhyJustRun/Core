@@ -1,7 +1,5 @@
 source 'http://rubygems.org'
 
-gem 'bundle'
-
 gem 'rails', '~> 7.1'
 gem 'mysql2', '~> 0.5.3'
 
@@ -16,7 +14,6 @@ gem 'sass-rails', '~> 6.0.0'
 gem "coffee-script", "~> 2.4.1"
 gem "coffee-rails", "~> 5.0.0"
 gem "uglifier", "~> 4.2.0"
-gem "webpacker", ">= 5.4.4"
 gem 'tzinfo-data'
 
 # Authentication
@@ -58,3 +55,7 @@ gem "pundit", "~> 2.3.2"
 
 # Geo
 gem 'haversine', '~> 0.3.2'
+
+group :development, :test do
+  gem 'brakeman', require: false
+end

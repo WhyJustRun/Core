@@ -109,6 +109,7 @@ class User < ApplicationRecord
   def max_privilege_level
     privilege = Privilege.includes(:user_group)
                          .joins('LEFT JOIN groups ON groups.id = group_id')
+                         .where(user_id: self.id)
                          .order('access_level DESC')
                          .limit(1).take
     if privilege.nil?
