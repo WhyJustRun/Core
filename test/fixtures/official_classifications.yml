@@ -1,0 +1,7 @@
+level_one:
+  name: Level 1
+  description: Introductory certification
+
+level_two:
+  name: Level 2
+  description: ''

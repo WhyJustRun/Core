@@ -51,7 +51,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install MySQL client headers
-        run: sudo apt-get update && sudo apt-get install -y default-libmysqlclient-dev
+        run: sudo apt-get update && sudo apt-get install -y default-libmysqlclient-dev imagemagick ghostscript
 
       - uses: ruby/setup-ruby@v1
         with:

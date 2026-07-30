@@ -53,6 +53,9 @@ gem "exception_notification", "~> 4.5"
 # Authorization
 gem "pundit", "~> 2.3.2"
 
+# Image thumbnail generation (requires ImageMagick)
+gem 'image_processing', '~> 1.13'
+
 # Geo
 gem 'haversine', '~> 0.3.2'
 

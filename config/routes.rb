@@ -50,6 +50,15 @@ Rails.application.routes.draw do
       get 'events/results/:id', to: 'events#show'
       get 'events/map/:id', to: 'events#map'
       get 'events/rendering/:id', to: 'events#rendering'
+      get 'events/planner', to: 'events#planner'
+      get 'events/printableEntries/:id', to: 'events#printable_entries'
+      get 'events/edit(/:id)', to: 'events#edit'
+      post 'events/edit(/:id)', to: 'events#save'
+      post 'events/delete/:id', to: 'events#destroy'
+      get 'events/uploadMaps/:id', to: 'events#upload_maps'
+      get 'events/editResults/:id', to: 'events#edit_results'
+      post 'events/editResults/:id', to: 'events#update_results'
+      post 'events/toggle_live_results_visibility/:id/:visible', to: 'events#toggle_live_results_visibility'
 
       # Maps
       get 'maps(/index)', to: 'maps#index', as: :clubsite_maps
@@ -57,13 +66,31 @@ Rails.application.routes.draw do
       get 'maps/report', to: 'maps#report'
       get 'maps/download/:id', to: 'maps#download'
       get 'maps/rendering/:id(/:thumbnail)', to: 'maps#rendering'
+      get 'maps/edit(/:id)', to: 'maps#edit'
+      post 'maps/edit(/:id)', to: 'maps#save'
+      post 'maps/delete/:id', to: 'maps#destroy'
+      post 'maps/update/:id/:lat/:lng', to: 'maps#update_location',
+           constraints: { lat: /-?[\d.]+/, lng: /-?[\d.]+/ }
 
       # Courses
       get 'courses/view/:id', to: 'courses#show', as: :clubsite_course
       get 'courses/map/:id(/:thumbnail)', to: 'courses#map'
+      post 'courses/register/:course_id(/:user_id)', to: 'courses#register'
+      post 'courses/unregister/:course_id(/:user_id)', to: 'courses#unregister'
+      post 'courses/delete/:id', to: 'courses#destroy'
+      post 'courses/uploadMap/:id', to: 'courses#upload_map'
 
       # Results
       get 'results(/index)', to: 'results#index', as: :clubsite_results
+      post 'results/editRegistrantComment', to: 'results#edit_registrant_comment'
+      post 'results/delete/:id', to: 'results#destroy'
+
+      # User admin and pickers
+      get 'users(/index)', to: 'users#index'
+      post 'users/add', to: 'users#create'
+      post 'users/merge/:target_id/:source_id', to: 'users#merge'
+      get 'users/showDuplicates', to: 'users#show_duplicates'
+      post 'users/showDuplicates', to: 'users#show_duplicates'
 
       # Sign-in/out via the apex site (legacy CakePHP URL shapes preserved)
       get 'users/login', to: 'sessions#new'
@@ -73,6 +100,44 @@ Rails.application.routes.draw do
       get 'sso/consume', to: 'sessions#consume'
       get 'users/register', to: redirect { |_params, _request| "#{Settings.coreURL.chomp('/')}/users/sign_up" }, status: 301
       get 'users/view/:id', to: redirect { |params, _request| "#{Settings.coreURL.chomp('/')}/users/#{params[:id]}" }, status: 301
+
+      # Club admin
+      get 'clubs(/index)', to: 'clubs#index'
+      get 'clubs/edit', to: 'clubs#edit'
+      post 'clubs/edit', to: 'clubs#update'
+
+      get 'series(/index)', to: 'series#index', as: :clubsite_series
+      get 'series/edit(/:id)', to: 'series#edit'
+      post 'series/edit(/:id)', to: 'series#update'
+
+      get 'roles(/index)', to: 'roles#index', as: :clubsite_roles
+      get 'roles/edit(/:id)', to: 'roles#edit'
+      post 'roles/edit(/:id)', to: 'roles#update'
+
+      get 'mapStandards(/index)', to: 'map_standards#index'
+      get 'map_standards(/index)', to: 'map_standards#index'
+      get 'mapStandards/edit(/:id)', to: 'map_standards#edit'
+      post 'mapStandards/edit(/:id)', to: 'map_standards#update'
+      post 'mapStandards/delete/:id', to: 'map_standards#destroy'
+
+      get 'memberships(/index)', to: 'memberships#index'
+      get 'memberships/edit(/:id)', to: 'memberships#edit'
+      post 'memberships/edit(/:id)', to: 'memberships#update'
+      post 'memberships/delete/:id', to: 'memberships#destroy'
+
+      get 'officials(/index)', to: 'officials#index'
+      post 'officials/add', to: 'officials#create'
+      get 'officials/edit/:id', to: 'officials#edit'
+      post 'officials/edit/:id', to: 'officials#update'
+      post 'officials/delete/:id', to: 'officials#destroy'
+
+      get 'privileges(/index)', to: 'privileges#index'
+      post 'privileges/add', to: 'privileges#create'
+      post 'privileges/delete/:id', to: 'privileges#destroy'
+
+      get 'resources(/index)', to: 'resources#index'
+      post 'resources/add', to: 'resources#create'
+      post 'resources/delete/:id', to: 'resources#destroy'
 
       # Pages and content blocks. The jEditable editors post to the legacy
       # CakePHP URLs (/pages/edit, /contentBlocks/edit).
