@@ -14,8 +14,18 @@ WJR['register-others'] = (function ($, forms) {
         element.find('#RegisterOthersUserId').val((person !== null) ? person.id : null);
       });
 
+      // Registration is a POST; build and submit a form so the browser
+      // follows the redirect back to the event page.
       function completeSubmit(courseId, userId) {
-        location.href = "/courses/register/" + courseId + "/" + userId;
+        var form = $('<form></form>', {
+            method: 'post',
+            action: '/courses/register/' + courseId + '/' + userId
+          }),
+          token = $('meta[name="csrf-token"]').attr('content');
+        if (token) {
+          form.append($('<input>', { type: 'hidden', name: 'authenticity_token', value: token }));
+        }
+        form.appendTo('body').submit();
       }
 
       element.find('#RegisterOthersSubmit').click(function () {
@@ -28,7 +38,9 @@ WJR['register-others'] = (function ($, forms) {
             if (userName.indexOf(" ") !== -1) {
               if (confirm("This registration will create a new user in the system. Are you sure " + userName + " isn't already an WhyJustRun user?")) {
                 $.post('/users/add', { userName: userName }, function (data) {
-                  completeSubmit(courseId, $.parseJSON(data));
+                  // The endpoint responds with the new user id as JSON,
+                  // which jQuery has already parsed.
+                  completeSubmit(courseId, data);
                 });
               } else {
                 alert("Thanks! Please re-enter the participant's name and choose the matching person from the dropdown.");

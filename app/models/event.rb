@@ -12,13 +12,26 @@ class Event < ApplicationRecord
   reverse_geocoded_by :lat, :lng
 
   belongs_to :club
-  belongs_to :map
-  belongs_to :series
-  belongs_to :event_classification
-  has_many :organizers
-  has_many :courses
+  belongs_to :map, optional: true
+  belongs_to :series, optional: true
+  belongs_to :event_classification, optional: true
+  has_many :organizers, dependent: :destroy
+  has_many :courses, dependent: :destroy
   has_one :live_result
-  has_one :result_list
+  has_one :result_list, dependent: :destroy
+
+  # Lenient URL check matching the legacy validation: scheme optional,
+  # hostname with a TLD, optional port and path.
+  URL_FORMAT = %r{\A(?:https?://)?(?:[\w-]+\.)+[a-z]{2,}(?::\d+)?(?:/\S*)?\z}i
+
+  validates :name, presence: true
+  validates :lat, :lng, numericality: { allow_nil: true }
+  validates :custom_url, :registration_url, :results_url, :routegadget_url,
+            format: { with: URL_FORMAT }, allow_blank: true
+
+  # The legacy app nulled empty redirect URLs so blank strings never bypass
+  # the custom_url.present? redirect checks.
+  normalizes :custom_url, with: ->(url) { url.presence }
 
   scope :list_includes, -> { includes(:series, :club, :event_classification, :courses) }
 

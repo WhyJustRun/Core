@@ -11,8 +11,8 @@ WJR.wysiwyg = (function ($) {
     $(element).redactor({
       toolbarFixed: true,
       toolbarFixedBox: true,
-      imageUpload: '/proxies/redactor/uploadImage',
-      fileUpload: '/proxies/redactor/uploadFile'
+      imageUpload: '/api/redactor/uploadImage.json',
+      fileUpload: '/api/redactor/uploadFile.json'
     });
   };
 

@@ -12,4 +12,19 @@ class MapPolicy
     end
     @user.has_privilege?(Settings.privileges.maps.edit, @map.club)
   end
+
+  def save?
+    edit?
+  end
+
+  def update_location?
+    edit?
+  end
+
+  def destroy?
+    unless @user
+      return false
+    end
+    @user.has_privilege?(Settings.privileges.maps.delete, @map.club)
+  end
 end

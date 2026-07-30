@@ -92,7 +92,7 @@ WJR['result-editor'] = (function ($, _, ko, utils, forms) {
           if (!confirm("Are you sure you want to delete this competitor? The entry be deleted from the server immediately.")) {
             return;
           }
-          $.ajax('/results/delete/' + this.id);
+          $.ajax('/results/delete/' + this.id, { method: 'POST' });
         }
 
         var courses = viewModel.courses(),
@@ -146,14 +146,14 @@ WJR['result-editor'] = (function ($, _, ko, utils, forms) {
     loadObjects = function () {
       // TODO: We should use the result list xml api.
       $.getJSON('/events/view/' + eventId + '.json', function (data) {
-        viewModel.event(new Event(data.Event.id, data.Event.name, data.Event.date));
-        var courses = data.Course;
+        viewModel.event(new Event(data.id, data.name, data.date));
+        var courses = data.courses;
         _.each(courses, function (course) {
-          var results = course.Result,
+          var results = course.results,
             importedResults = [];
 
           _.each(results, function (result) {
-            var user = new User(result.User.id, result.User.name);
+            var user = new User(result.user.id, result.user.name);
             importedResults.push(new Result(result.id, user, result.course_id, result.time_seconds, result.status, result.registrant_comment, result.official_comment, result.score_points));
           });
 

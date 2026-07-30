@@ -1,6 +1,9 @@
+# MediaStore's image pipeline uses MiniMagick, which is not autoloaded
+require 'mini_magick'
+
 module Clubsite
-  # Read-only map pages: listing, detail, usage report, plus serving map file
-  # downloads and uploaded map renderings.
+  # Map pages: listing, detail, usage report, the map editor, plus serving map
+  # file downloads and uploaded map renderings.
   class MapsController < BaseController
     # Serves uploaded media files through MediaStore. Shared with
     # CoursesController, which serves uploaded course maps the same way.
@@ -82,7 +85,81 @@ module Clubsite
       serve_media('Map', params[:id], params[:thumbnail])
     end
 
+    # Edit doubles as add when no id is given (legacy URL shape)
+    def edit
+      @map = find_or_build_map
+      authorize @map
+      @map_standards = MapStandard.all
+    end
+
+    def save
+      @map = find_or_build_map
+      authorize @map
+
+      if @map.update(map_params)
+        error = store_uploaded_image(@map)
+        if error
+          flash[:danger] = error
+        else
+          flash[:success] = 'The map has been updated.'
+        end
+        redirect_to "/maps/view/#{@map.id}"
+      else
+        @map_standards = MapStandard.all
+        render :edit
+      end
+    end
+
+    def destroy
+      map = current_club.maps.find(params[:id])
+      authorize map
+      map.destroy
+      map_media_store.delete(map.id)
+      flash[:success] = 'The map was deleted.'
+      redirect_to '/maps/'
+    end
+
+    # Posted by the draggable marker on the edit form when the marker is
+    # dropped. The legacy action had no privilege check; it now requires the
+    # same maps.edit privilege as the rest of the editor.
+    def update_location
+      map = current_club.maps.find(params[:id])
+      authorize map
+      map.update!(lat: params[:lat], lng: params[:lng])
+      head :ok
+    end
+
     private
+
+    # Scoping the find through current_club 404s ids belonging to other clubs.
+    def find_or_build_map
+      if params[:id].present?
+        current_club.maps.find(params[:id])
+      else
+        current_club.maps.new
+      end
+    end
+
+    def map_params
+      params.require(:map).permit(:name, :map_standard_id, :scale, :file_url, :notes, :lat, :lng)
+    end
+
+    def map_media_store
+      MediaStore.new(current_club.id, 'Map')
+    end
+
+    # Stores an uploaded map image and regenerates the randomly cropped 60x60
+    # banner (the legacy generateBanner step, which ran after every upload).
+    # Returns an error message string on rejection, nil otherwise.
+    def store_uploaded_image(map)
+      upload = params.dig(:map, :image)
+      return nil if upload.blank?
+
+      store = map_media_store
+      error = store.store(map.id, upload)
+      store.create_cropped_thumbnail(map.id, '60x60') if error.nil?
+      error
+    end
 
     def edit_maps?
       user_signed_in? && MapPolicy.new(current_user, Map.new(club: current_club)).edit?

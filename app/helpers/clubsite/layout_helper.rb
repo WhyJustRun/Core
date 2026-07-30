@@ -17,5 +17,18 @@ module Clubsite
     def officials_access?
       user_signed_in? && current_user.has_privilege?(Settings.privileges.official.edit, current_club)
     end
+
+    # Redactor is licensed software mounted into public/redactor at deploy
+    # time; rich text editing degrades gracefully when it is absent.
+    def redactor_available?
+      File.exist?(Rails.public_path.join('redactor', 'redactor.js'))
+    end
+
+    def redactor_script_tags
+      return unless redactor_available?
+
+      javascript_include_tag('/redactor/redactor.js', skip_pipeline: true) +
+        stylesheet_link_tag('/redactor/redactor.css', skip_pipeline: true)
+    end
   end
 end

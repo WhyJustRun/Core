@@ -13,7 +13,7 @@
           <a href="/maps/edit/<%= @map.id %>" class="btn btn-primary"><span class="glyphicon glyphicon-cog"></span> Edit</a>
         </div>
         <div class="btn-group">
-          <a href="/maps/delete/<%= @map.id %>" class="btn btn-danger" onclick="return confirm('Delete this map?');"><span class="glyphicon glyphicon-trash"></span></a>
+          <%= button_to "/maps/delete/#{@map.id}", method: :post, class: 'btn btn-danger', form: { style: 'display: inline-block', onsubmit: "return confirm('Delete this map?');" } do %><span class="glyphicon glyphicon-trash"></span><% end %>
         </div>
       <% end %>
     </div>

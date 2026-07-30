@@ -32,7 +32,7 @@ WJR['edit-event-courses'] = (function ($, _, ko) {
         // Only need to confirm for deletion if the course hasn't been created locally
         if (this.id !== null) {
           if (confirm("Are you sure you want to delete this course? This will also delete any results associated to the course.")) {
-            $.ajax('/courses/delete/' + this.id);
+            $.ajax('/courses/delete/' + this.id, { method: 'POST' });
             viewModel.courses.remove(this);
           }
         } else {

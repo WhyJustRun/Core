@@ -4,6 +4,8 @@ class Map < ApplicationRecord
   belongs_to :map_standard, optional: true
   belongs_to :club
 
+  validates :name, presence: true
+
   def url
     club.clubsite_url("/maps/view/" + id.to_s)
   end
