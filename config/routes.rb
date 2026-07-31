@@ -53,7 +53,7 @@ Rails.application.routes.draw do
       get 'events/planner', to: 'events#planner'
       get 'events/printableEntries/:id', to: 'events#printable_entries'
       get 'events/edit(/:id)', to: 'events#edit'
-      post 'events/edit(/:id)', to: 'events#save'
+      match 'events/edit(/:id)', to: 'events#save', via: [:post, :patch]
       post 'events/delete/:id', to: 'events#destroy'
       get 'events/uploadMaps/:id', to: 'events#upload_maps'
       get 'events/editResults/:id', to: 'events#edit_results'
@@ -67,7 +67,7 @@ Rails.application.routes.draw do
       get 'maps/download/:id', to: 'maps#download'
       get 'maps/rendering/:id(/:thumbnail)', to: 'maps#rendering'
       get 'maps/edit(/:id)', to: 'maps#edit'
-      post 'maps/edit(/:id)', to: 'maps#save'
+      match 'maps/edit(/:id)', to: 'maps#save', via: [:post, :patch]
       post 'maps/delete/:id', to: 'maps#destroy'
       post 'maps/update/:id/:lat/:lng', to: 'maps#update_location',
            constraints: { lat: /-?[\d.]+/, lng: /-?[\d.]+/ }
@@ -104,31 +104,31 @@ Rails.application.routes.draw do
       # Club admin
       get 'clubs(/index)', to: 'clubs#index'
       get 'clubs/edit', to: 'clubs#edit'
-      post 'clubs/edit', to: 'clubs#update'
+      match 'clubs/edit', to: 'clubs#update', via: [:post, :patch]
 
       get 'series(/index)', to: 'series#index', as: :clubsite_series
       get 'series/edit(/:id)', to: 'series#edit'
-      post 'series/edit(/:id)', to: 'series#update'
+      match 'series/edit(/:id)', to: 'series#update', via: [:post, :patch]
 
       get 'roles(/index)', to: 'roles#index', as: :clubsite_roles
       get 'roles/edit(/:id)', to: 'roles#edit'
-      post 'roles/edit(/:id)', to: 'roles#update'
+      match 'roles/edit(/:id)', to: 'roles#update', via: [:post, :patch]
 
       get 'mapStandards(/index)', to: 'map_standards#index'
       get 'map_standards(/index)', to: 'map_standards#index'
       get 'mapStandards/edit(/:id)', to: 'map_standards#edit'
-      post 'mapStandards/edit(/:id)', to: 'map_standards#update'
+      match 'mapStandards/edit(/:id)', to: 'map_standards#update', via: [:post, :patch]
       post 'mapStandards/delete/:id', to: 'map_standards#destroy'
 
       get 'memberships(/index)', to: 'memberships#index'
       get 'memberships/edit(/:id)', to: 'memberships#edit'
-      post 'memberships/edit(/:id)', to: 'memberships#update'
+      match 'memberships/edit(/:id)', to: 'memberships#update', via: [:post, :patch]
       post 'memberships/delete/:id', to: 'memberships#destroy'
 
       get 'officials(/index)', to: 'officials#index'
       post 'officials/add', to: 'officials#create'
       get 'officials/edit/:id', to: 'officials#edit'
-      post 'officials/edit/:id', to: 'officials#update'
+      match 'officials/edit/:id', to: 'officials#update', via: [:post, :patch]
       post 'officials/delete/:id', to: 'officials#destroy'
 
       get 'privileges(/index)', to: 'privileges#index'
