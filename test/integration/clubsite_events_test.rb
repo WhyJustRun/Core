@@ -32,7 +32,7 @@ class ClubsiteEventsTest < ActionDispatch::IntegrationTest
     get '/events/listing'
     assert_response :success
     assert_select '.event-list[data-event-list-url=?]',
-                  "#{Settings.coreURL.chomp('/')}/club/#{clubs(:cluba).id}/events.xml?iof_version=3.0&external_significant_events=all"
+                  "/club/#{clubs(:cluba).id}/events.xml?iof_version=3.0&external_significant_events=all"
     assert_select 'script#event-box-template'
   end
 
@@ -58,7 +58,7 @@ class ClubsiteEventsTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select 'h2', text: 'Results'
     assert_select '.result-list[data-result-list-url=?]',
-                  "#{Settings.coreURL.chomp('/')}/iof/3.0/events/#{event.id}/result_list.xml"
+                  "/iof/3.0/events/#{event.id}/result_list.xml"
     assert_select 'h2', text: 'Course Maps'
   end
 

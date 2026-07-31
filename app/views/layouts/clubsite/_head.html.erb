@@ -1,6 +1,7 @@
 <meta charset="utf-8">
 <link rel="icon" href="/favicon.ico" type="image/x-icon">
-<meta name="wjr.core.domain" content="<%= Settings.coreURL.chomp('/') %>">
+<%# Empty: the core APIs are same-origin now that club sites are served by this app %>
+<meta name="wjr.core.domain" content="">
 <meta name="wjr.clubsite.club.id" content="<%= current_club.id %>">
 <meta name="wjr.google-maps-key" content="<%= Settings.googleMapsApiKey %>">
 <%= csrf_meta_tags %>

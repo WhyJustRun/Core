@@ -6,7 +6,7 @@
 </p>
 
 <div class="results-list">
-  <div class="result-list" data-result-list-url="<%= core_url("/iof/3.0/events/#{event.id}/live_result_list.xml") %>" data-result-list-mode="live">
+  <div class="result-list" data-result-list-url="/iof/3.0/events/<%= event.id %>/live_result_list.xml" data-result-list-mode="live">
     <%= render 'knockout_result_list', mode: 'live' %>
   </div>
 </div>

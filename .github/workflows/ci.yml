@@ -63,6 +63,59 @@ jobs:
       - name: Run tests
         run: bundle exec rails test
 
+  system-test:
+    runs-on: ubuntu-latest
+
+    services:
+      db:
+        image: mariadb:10.11
+        env:
+          MARIADB_ROOT_PASSWORD: root
+          MARIADB_DATABASE: whyjustrun-test
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=10
+
+    env:
+      RAILS_ENV: test
+      WJR_DATABASE_NAME: whyjustrun
+      WJR_DATABASE_TEST_NAME: whyjustrun-test
+      WJR_DATABASE_HOST: 127.0.0.1
+      WJR_DATABASE_USERNAME: root
+      WJR_DATABASE_PASSWORD: root
+      WJR_PASSWORD_SALT: test-only-salt
+      WJR_SECRET_BASE: 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
+      WJR_SECRET_TOKEN: 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
+      WJR_DEVISE_SECRET_KEY: 0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
+      WJR_RECAPTCHA_SITE_KEY: test
+      WJR_RECAPTCHA_SECRET_KEY: test
+      WJR_SMTP_ADDRESS: localhost
+      WJR_SMTP_DOMAIN: example.com
+      WJR_SMTP_USER_NAME: test
+      WJR_SMTP_PASSWORD: test
+      WJR_DATA_FOLDER: /tmp/whyjustrun-data/
+      WJR_DATA_URL: http://localhost/data/
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install MySQL client headers
+        run: sudo apt-get update && sudo apt-get install -y default-libmysqlclient-dev imagemagick ghostscript
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Prepare test database
+        run: bundle exec rails db:test:prepare
+
+      - name: Run system tests
+        run: bundle exec rails test:system
+
   brakeman:
     runs-on: ubuntu-latest
     steps:
@@ -80,7 +133,7 @@ jobs:
 
   push:
     runs-on: ubuntu-latest
-    needs: [test, brakeman]
+    needs: [test, system-test, brakeman]
     if: github.event_name == 'push'
 
     steps:

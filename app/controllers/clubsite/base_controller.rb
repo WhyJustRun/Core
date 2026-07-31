@@ -16,12 +16,14 @@ module Clubsite
     private
 
     def set_current_club
-      # Ports include the port so development domains like demo.localhost:3000 work.
-      requested_host = request.host_with_port
-      @current_club = Club.find_by(domain: requested_host)
+      # Match with the port first so development domains like
+      # demo.localhost:3000 work, then without it (production domains carry no
+      # port, whatever port the server actually runs on).
+      @current_club = Club.find_by(domain: request.host_with_port) || Club.find_by(domain: request.host)
       return if @current_club.present?
 
-      redirected = Club.find_by(redirect_domain: requested_host)
+      redirected = Club.find_by(redirect_domain: request.host_with_port) ||
+                   Club.find_by(redirect_domain: request.host)
       if redirected
         redirect_to "#{redirected.domain_protocol}://#{redirected.domain}#{request.fullpath}",
                     status: :moved_permanently, allow_other_host: true

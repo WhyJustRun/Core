@@ -13,7 +13,7 @@
          data-event-list-type="time-window"
          data-event-list-older-button="#older-button"
          data-event-list-newer-button="#newer-button"
-         data-event-list-url="<%= core_url("/club/#{current_club.id}/events.xml?iof_version=3.0&external_significant_events=all") %>">
+         data-event-list-url="/club/<%= current_club.id %>/events.xml?iof_version=3.0&external_significant_events=all">
       <h4 style="text-align: center" data-bind="visible: formattedStartTime">Showing events after <span data-bind="text: formattedStartTime"></span></h4>
       <div data-bind="template: { name: 'event-box-template', foreach: events }"></div>
       <h4 style="text-align: center" data-bind="visible: formattedEndTime">Showing events before <span data-bind="text: formattedEndTime"></span></h4>

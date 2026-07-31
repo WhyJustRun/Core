@@ -62,3 +62,8 @@ gem 'haversine', '~> 0.3.2'
 group :development, :test do
   gem 'brakeman', require: false
 end
+
+group :test do
+  gem 'capybara'
+  gem 'selenium-webdriver'
+end
