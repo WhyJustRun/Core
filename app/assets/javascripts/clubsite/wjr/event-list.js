@@ -87,12 +87,12 @@ WJR['event-list'] = (function ($, moment, ko, club) {
       };
 
     viewModel.formattedStartTime = ko.computed(function () {
-      var hasStartTime = (this.startTime() === null);
+      var hasStartTime = (this.startTime() !== null && this.startTime() !== undefined);
       return hasStartTime ? this.startTime().format('MMMM Do YYYY') : null;
     }, viewModel);
 
     viewModel.formattedEndTime = ko.computed(function () {
-      var hasEndTime = (this.endTime() === null);
+      var hasEndTime = (this.endTime() !== null && this.endTime() !== undefined);
       return hasEndTime ? this.endTime().format('MMMM Do YYYY') : null;
     }, viewModel);
 

@@ -25,6 +25,18 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
 
   Capybara.always_include_port = true
 
+  # The clubsite sign-in flow bounces through absolute apex URLs
+  # (Settings.coreURL), so the apex URL must point at the test server. The
+  # server port is fixed so the URL can be built before the server boots.
+  Capybara.server_port = 45_671
+  Settings.coreURL = "http://#{Settings.host}:#{Capybara.server_port}"
+
+  setup do
+    # The browser can only reach the test server over plain http, so the SSO
+    # redirects onto club domains must not use the fixtures' https protocol.
+    Club.where(domain_protocol: 'https').update_all(domain_protocol: 'http')
+  end
+
   # Browser console errors almost always mean broken JS wiring; fail loudly.
   # Individual tests can allow expected noise via allow_console_errors(/pattern/).
   # Third-party hosts are unreachable in tests (everything resolves to the
@@ -32,7 +44,7 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   IGNORED_CONSOLE_ERRORS = [
     %r{/favicon\.ico}, %r{/apple-touch-icon}, %r{/redactor/},
     /Google Maps/i, /maps\.googleapis/, /flickr/i,
-    /facebook/i, /juicer/i, /oss\.maxcdn\.com/
+    /facebook/i, /juicer/i, /oss\.maxcdn\.com/, /pinterest/i
   ].freeze
 
   teardown do
@@ -54,9 +66,31 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   def sign_in_through_browser(user, password: 'password123')
     user.update!(password: password, password_confirmation: password)
     visit_apex '/users/sign_in'
-    fill_in 'user[email]', with: user.email
-    fill_in 'user[password]', with: password
-    click_button 'Log in'
+    # The page carries a second user[email] field (forgot password)
+    within "form[action='/users/sign_in']" do
+      fill_in 'user[email]', with: user.email
+      fill_in 'user[password]', with: password
+      click_button 'Sign in'
+    end
+  end
+
+  # Signs in on the apex domain, then follows the SSO handoff so the club
+  # domain has a signed-in session too.
+  def sign_in_to_club(user, club: clubs(:cluba))
+    sign_in_through_browser(user)
+    visit_club '/users/login', club: club
+    assert_selector 'a', text: 'Sign out'
+    assert_equal club.domain, URI.parse(current_url).host
+  end
+
+  # Waits for a database-side effect of an in-page AJAX call. Prefer Capybara
+  # matchers whenever the effect is visible in the DOM.
+  def wait_for_condition(timeout: Capybara.default_max_wait_time, message: 'condition not met in time')
+    deadline = Process.clock_gettime(Process::CLOCK_MONOTONIC) + timeout
+    until yield
+      flunk message if Process.clock_gettime(Process::CLOCK_MONOTONIC) > deadline
+      sleep 0.1
+    end
   end
 
   private

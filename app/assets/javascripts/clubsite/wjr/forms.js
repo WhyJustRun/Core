@@ -52,6 +52,12 @@ WJR.forms = (function ($, _) {
           $.ajax({
             url: "/users/index.json?term=" + query + "&allowFake=" + (options.allowFake ? 'true' : 'false'),
             success: function (data) {
+              // Responses can arrive out of order while the user types; a
+              // stale response would hide the menu again. Only the response
+              // for what is in the input now may be shown.
+              if ($(element).val() !== query) {
+                return;
+              }
               if (options.createNew) {
                 data.push({
                   position: "bottom",

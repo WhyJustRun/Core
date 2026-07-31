@@ -8,6 +8,11 @@ WJR.wysiwyg = (function ($) {
   var wysiwyg = {};
   wysiwyg.updateTextareas = function () { return; };
   wysiwyg.createRichTextArea = function (element) {
+    // Degrade to a plain textarea when the redactor library isn't mounted;
+    // without this guard every page with a rich-text area throws on load.
+    if ($.fn.redactor === undefined) {
+      return;
+    }
     $(element).redactor({
       toolbarFixed: true,
       toolbarFixedBox: true,
