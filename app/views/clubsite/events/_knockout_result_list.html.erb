@@ -1,7 +1,7 @@
 <%# locals: mode ('normal' or 'live') %>
 <div data-bind="if: resultList">
   <% if mode == 'live' %>
-    <p>Results produced on <span data-bind="text: resultList().creationDate"></span></p>
+    <p>Results produced on <span data-bind="text: resultList().formattedCreationTime"></span></p>
   <% end %>
   <div data-bind="foreach: resultList().event().courses">
     <h3 data-bind="text: name"></h3>
