@@ -17,9 +17,12 @@ class RegistrantCommentTest < ApplicationSystemTestCase
       click_button 'Save'
     end
 
-    # Saving posts the comment and returns to the event page
-    assert_selector 'h1', text: 'Spring Sprint'
-    assert_equal 'Can offer a ride from downtown', result.reload.registrant_comment
+    # Saving posts the comment and returns to the event page. The event page
+    # is already visible under the modal, so wait on the database effect
+    # rather than on a page element.
+    wait_for_condition(message: 'comment was not saved') do
+      result.reload.registrant_comment == 'Can offer a ride from downtown'
+    end
 
     # The entry now offers editing and shows the comment bubble
     within find('tr', text: 'Mary Member') do
@@ -47,7 +50,8 @@ class RegistrantCommentTest < ApplicationSystemTestCase
       click_button 'Save'
     end
 
-    assert_selector 'h1', text: 'Spring Sprint'
-    assert_equal 'Ride offer withdrawn', result.reload.registrant_comment
+    wait_for_condition(message: 'comment was not saved') do
+      result.reload.registrant_comment == 'Ride offer withdrawn'
+    end
   end
 end

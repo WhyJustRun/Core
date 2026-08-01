@@ -25,6 +25,11 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
 
   Capybara.always_include_port = true
 
+  # Bootstrap's fade animations move elements while Capybara computes click
+  # coordinates, so clicks can land on the backdrop and dismiss modals
+  # instead of hitting their buttons.
+  Capybara.disable_animation = true
+
   # The clubsite sign-in flow bounces through absolute apex URLs
   # (Settings.coreURL), so the apex URL must point at the test server. The
   # server port is fixed so the URL can be built before the server boots.
@@ -48,8 +53,14 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   ].freeze
 
   teardown do
-    save_failure_page unless passed?
     raise_on_console_errors if passed?
+  end
+
+  # Runs before the framework's screenshot-and-reset hook: the page is still
+  # live here, so the captured URL and HTML reflect the failure state.
+  def before_teardown
+    save_failure_page unless passed?
+    super
   end
 
   def allow_console_errors(pattern)
@@ -73,6 +84,11 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
       fill_in 'user[password]', with: password
       click_button 'Sign in'
     end
+    # The submit goes through rails-ujs, so the driver's click does not wait
+    # for the resulting navigation. Wait for the signed-in page before
+    # returning, or a caller's next visit races the in-flight redirect and can
+    # be silently dropped.
+    assert_selector 'a', text: 'Sign out'
   end
 
   # Signs in on the apex domain, then follows the SSO handoff so the club
