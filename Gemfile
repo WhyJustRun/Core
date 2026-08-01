@@ -7,7 +7,6 @@ gem 'mysql2', '~> 0.5.3'
 gem 'puma', '~> 6.4'
 
 # MySQL Session store
-gem "activerecord-session_store", "~> 2.1.0"
 
 # Asset pipeline
 gem 'sass-rails', '~> 6.0.0'
