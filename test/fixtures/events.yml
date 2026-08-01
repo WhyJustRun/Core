@@ -1,11 +1,24 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+cluba_race:
+  name: Spring Sprint
+  club: cluba
+  # The classification fixtures carry explicit production ids, so label
+  # references do not resolve; reference the ids directly.
+  event_classification_id: 4 # local
+  series: cluba_wednesday
+  date: 2025-06-15 17:00:00
+  finish_date: 2025-06-15 19:00:00
+  lat: 49.3
+  lng: -123.1
 
-# This model initially had no columns defined.  If you add columns to the
-# model remove the '{}' from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
-#
-one: {}
-# column: value
-#
-two: {}
-#  column: value
+cluba_training:
+  name: Evening Training
+  club: cluba
+  event_classification_id: 5 # club
+  date: 2025-07-02 01:30:00
+
+cluba_external:
+  name: External Championships
+  club: cluba
+  event_classification_id: 3 # regional
+  date: 2025-08-10 16:00:00
+  custom_url: https://example.com/external-event

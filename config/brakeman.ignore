@@ -1,0 +1,34 @@
+{
+  "ignored_warnings": [
+    {
+      "fingerprint": "5d41c99952d21e80fdb86aeae06ea42039c714d2ac801571a150f4c89f548bd9",
+      "note": "Intentional cross-domain redirect: sends the signed-in user to their club's own domain for the clubsite session handoff. The target host always comes from the clubs table, not from user input."
+    },
+    {
+      "fingerprint": "ec2fa90ab59aba7a6890bfdc5c76cf7e4b1b241b6dcd1f3a604735709a94af2e",
+      "note": "Short links exist to redirect to admin-configured external destinations stored in the short_links table."
+    },
+    {
+      "fingerprint": "98b26f60d776fd41ee6f088c833725145be9aac2d7c5b33780241c273622db42",
+      "note": "Rails 7.2 end-of-life is a known issue; the framework upgrade is tracked as follow-up work to the clubsite consolidation."
+    },
+    {
+      "fingerprint": "dcd469c3af248cfe9ad0bd62ca6d04d009d336c4a057ed702eae420d78ad92f2",
+      "note": "Intentional 301 from a club's old domain to its current one; both values come from the clubs table, not from user input."
+    },
+    {
+      "fingerprint": "6f385d255ed0c43e612d0bb77992a41e96ac6c9186d2510ca2616f5ac694982d",
+      "note": "MediaStore builds the path from the configured data folder, the club id, and an Integer-cast record id; no user-controlled path components."
+    },
+    {
+      "fingerprint": "8f1cb77ac9d40ad45b479709b5709735fceded583c1e86999bc47a589252535b",
+      "note": "SSO sign-in redirect to a club domain; the host is resolved from the clubs table (the raw return_host param is never used) and the path is restricted to relative paths."
+    },
+    {
+      "fingerprint": "7a50d993f0b0314fb42b58ae7b0e3160e1b80116b463b17351b6f9cc43ecd53f",
+      "note": "SSO sign-out redirect back to a club domain resolved from the clubs table."
+    }
+  ],
+  "updated": "2026-07-30 00:00:00 +0000",
+  "brakeman_version": "7.1.1"
+}

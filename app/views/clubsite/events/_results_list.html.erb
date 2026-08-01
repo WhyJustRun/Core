@@ -1,0 +1,6 @@
+<%# locals: event_id %>
+<div class="results-list">
+  <div id="list" class="result-list" data-result-list-url="/iof/3.0/events/<%= event_id %>/result_list.xml">
+    <%= render 'knockout_result_list', mode: 'normal' %>
+  </div>
+</div>

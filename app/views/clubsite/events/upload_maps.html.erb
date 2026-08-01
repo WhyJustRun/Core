@@ -1,0 +1,31 @@
+<% content_for :title, 'Upload Course Maps' %>
+<header class="page-header">
+  <h1>Upload Course Maps</h1>
+</header>
+
+<p>Upload one map for each course. The upload process may take some time,
+as thumbnails also have to be generated. Uploading will overwrite any existing maps for the particular course. Allowed map formats: jpg/jpeg, gif, png, pdf.</p>
+<% if @courses.any? %>
+  <table class="table table-striped table-condensed table-bordered">
+    <thead>
+      <tr><th>Course</th><th>Add map</th><th width="50%">Current Map</th></tr>
+    </thead>
+    <% @courses.each do |course| %>
+      <tr>
+        <td><%= course.name %></td>
+        <td>
+          <%= form_with url: "/courses/uploadMap/#{course.id}", method: :post, scope: :course,
+                        html: { multipart: true } do |f| %>
+            <%= f.file_field :image, style: 'width: 240px' %>
+            <%= f.submit 'Upload' %>
+          <% end %>
+        </td>
+        <td>
+          <%= media_image('Course', course.id, '100x150') %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+<% else %>
+  <p>No courses defined.</p>
+<% end %>

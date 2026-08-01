@@ -15,6 +15,8 @@ services:
         - WJR_DATABASE_HOST=db
         - WJR_DATABASE_USERNAME=root
         - WJR_DATABASE_PASSWORD=root
+        - WJR_HOST=localhost
+        - WJR_CORE_URL=http://localhost:3000
     env_file:
         - .env.core
     networks:

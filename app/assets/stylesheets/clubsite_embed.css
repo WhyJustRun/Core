@@ -1,0 +1,6 @@
+/*
+ * Styles for the embeddable widget layout (embed.ctp). The layout also loads
+ * the main clubsite bundle (embed.ctp loaded layout_dependencies).
+ *
+ *= require clubsite/embed
+ */

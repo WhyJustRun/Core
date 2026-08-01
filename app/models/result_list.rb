@@ -5,14 +5,15 @@ class ResultList < ApplicationRecord
   belongs_to :event
   belongs_to :user
 
-  validates :type, inclusion: {
+  # The status column stores the result list type (live or final)
+  validates :status, inclusion: {
     in: %w(live final),
     message: "Result list type must be live or final"
   }
 
   # One-way synchronizes the result list to the results/courses tables
   def sync_result_list
-    if type != FINAL_STATUS
+    if status != FINAL_STATUS
       raise 'Can only sync results using a finalized result list'
     end
 

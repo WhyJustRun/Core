@@ -1,0 +1,6 @@
+<%# locals: event, result_list. Editors only; the toggle endpoint is ported
+    separately. %>
+<%= button_to result_list.visible ? 'Hide Live Results' : 'Show Live Results',
+              "/events/toggle_live_results_visibility/#{event.id}/#{result_list.visible ? 'false' : 'true'}",
+              class: 'btn btn-primary' %>
+<br/><br/>

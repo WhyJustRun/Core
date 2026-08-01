@@ -1,0 +1,12 @@
+/*
+ * Clubsite stylesheet bundle: bootstrap, plugin CSS (formerly loaded on
+ * demand via the RequireJS css! plugin), then the first-party styles.
+ *
+ *= require clubsite/bootstrap.min
+ *= require clubsite/fullcalendar
+ *= require clubsite/jquery.fancybox
+ *= require clubsite/ladda-themeless.min
+ *= require clubsite/bootstrap-datetimepicker.min
+ *= require clubsite/bootstrap-colorpicker
+ *= require clubsite/whyjustrun
+ */

@@ -1,0 +1,83 @@
+<% content_for :title, @map.persisted? ? 'Edit Map' : 'Add Map' %>
+<header class="page-header">
+  <h1><%= @map.persisted? ? 'Edit' : 'Add' %> Map</h1>
+</header>
+
+<% edit_url = @map.persisted? ? "/maps/edit/#{@map.id}" : '/maps/edit' %>
+<%= form_with model: @map, url: edit_url, html: { class: 'form-horizontal', multipart: true } do |f| %>
+  <div class="form-group">
+    <label class="control-label col-sm-2">Name</label>
+    <div class="col-sm-10">
+      <%= f.text_field :name, class: 'form-control', required: 'required' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label col-sm-2">Map Standard</label>
+    <div class="col-sm-10">
+      <%= f.collection_select :map_standard_id, @map_standards, :id, :name,
+                              { include_blank: 'Choose the standard' }, class: 'form-control' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label col-sm-2">Scale</label>
+    <div class="col-sm-10">
+      <%= f.text_field :scale, class: 'form-control', placeholder: '10000' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label col-sm-2">Map File URL</label>
+    <div class="col-sm-10">
+      <%= f.text_field :file_url, class: 'form-control' %>
+    </div>
+  </div>
+  <fieldset class="form-group">
+    <label class="control-label col-sm-2">Notes</label>
+    <div class="col-sm-10">
+      <%= f.text_area :notes, class: 'form-control wjr-wysiwyg' %>
+    </div>
+  </fieldset>
+  <fieldset class="form-group">
+    <label class="control-label col-sm-2">Map Image
+      <span data-toggle="tooltip" data-container="body" class="wjr-help-tooltip"
+            title="Provide a high quality image version of the orienteering map, JPG or GIF recommended. This is displayed on the map page so people who don't have OCAD can still view it.">
+        <span class="glyphicon glyphicon-question-sign"></span>
+      </span>
+    </label>
+    <div class="col-sm-10">
+      <%= f.file_field :image %>
+      <% if @map.persisted? && media_exists?('Map', @map.id) %>
+        <br/><%= media_image('Map', @map.id, '400x600', width: '400px', class: 'fitting-image') %>
+      <% end %>
+    </div>
+  </fieldset>
+  <% if @map.persisted? && media_exists?('Map', @map.id) %>
+    <fieldset class="form-group">
+      <label class="control-label col-sm-2">Banner image</label>
+      <div class="col-sm-10">
+        <%= media_image('Map', @map.id, '60x60', width: '60px') %>
+        <p class="help-block">The banner is regenerated from a random crop of the map image on every upload.</p>
+      </div>
+    </fieldset>
+  <% end %>
+  <fieldset class="form-group">
+    <label class="control-label col-sm-2">Location</label>
+    <div class="col-sm-10">
+      <%= f.hidden_field :lat, id: 'MapLat', value: @map.lat || current_club.lat %>
+      <%= f.hidden_field :lng, id: 'MapLng', value: @map.lng || current_club.lng %>
+      <div class="draggable-marker-map"
+           data-lat-element="#MapLat"
+           data-lng-element="#MapLng"
+           <% if @map.persisted? %>data-update-url="/maps/update/<%= @map.id %>"<% end %>
+           data-zoom="10"
+           style="height: 400px; width: 100%">
+      </div>
+
+      <p class="help-block">Drag the marker to the location of the map</p>
+    </div>
+  </fieldset>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <%= f.submit 'Save', class: 'btn btn-primary' %>
+    </div>
+  </div>
+<% end %>

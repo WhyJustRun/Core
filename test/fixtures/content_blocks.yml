@@ -1,11 +1,17 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+cluba_general_information:
+  key: general_information
+  order: 1
+  content: <h2>Welcome to Club A!</h2>
+  club: cluba
 
-# This model initially had no columns defined.  If you add columns to the
-# model remove the '{}' from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
-#
-one: {}
-# column: value
-#
-two: {}
-#  column: value
+cluba_contact:
+  key: contact
+  order: 1
+  content: <p>Contact Club A at cluba@example.com.</p>
+  club: cluba
+
+clubb_general_information:
+  key: general_information
+  order: 1
+  content: <h2>Welcome to Club B!</h2>
+  club: clubb

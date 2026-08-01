@@ -1,0 +1,3 @@
+<% if user_signed_in? && current_user.has_privilege?(Settings.privileges.event.edit, current_club) %>
+  <a href="/events/edit" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Event</a>
+<% end %>

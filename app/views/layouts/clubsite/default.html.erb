@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# event: http://ogp.me/ns/event#">
+    <title><%= content_for?(:title) ? yield(:title) : current_club.name %></title>
+    <%= render 'layouts/clubsite/head' %>
+    <%= yield :head %>
+  </head>
+  <body>
+    <header class="navbar-constrained-width">
+      <div class="hidden-xs">
+        <% if club_resources['headerImage'].present? %>
+          <a href="/">
+            <img width="100%" src="<%= club_resources['headerImage_1300'] %>" srcset="<%= club_resources['headerImage_1300'] %> 1x, <%= club_resources['headerImage_2600'] %> 2x" />
+          </a>
+        <% else %>
+          <h1><%= current_club.name %></h1>
+        <% end %>
+      </div>
+      <nav class="navbar navbar-colored navbar-squared-top navbar-constrained-width" role="navigation">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand visible-xs"><%= current_club.acronym %></a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="main-navbar-collapse">
+          <ul class="nav navbar-nav navbar-nav-main-text">
+            <%= menu_item 'Home', '/', home: true %>
+            <%= menu_item 'Events', '/events/listing', 'visible-xs' %>
+            <%= menu_item 'Calendar', '/events/index', 'hidden-xs' %>
+            <%= menu_item 'Maps', '/maps/' %>
+            <%= menu_item 'Resources', '/pages/resources' %>
+            <%= menu_item 'Contact', '/pages/contact' %>
+          </ul>
+          <ul class="nav navbar-nav navbar-nav-main-text navbar-right">
+            <% if user_signed_in? %>
+              <%= menu_item 'Admin', '/pages/admin' if admin_access? %>
+              <%= menu_item 'My Profile', profile_url %>
+              <%= menu_item 'Sign out', '/users/logout/' %>
+            <% else %>
+              <%= menu_item 'Sign in/Sign up', '/users/login/' %>
+            <% end %>
+          </ul>
+        </div>
+      </nav>
+    </header>
+    <div id="content">
+      <div class="container">
+        <%= render 'layouts/clubsite/flash' %>
+        <%= yield %>
+      </div>
+    </div>
+    <footer class="main-footer">
+      <div class="container">
+        <a href="<%= core_url %>">whyjustrun.ca</a>
+        <span class="pull-right">
+          <%= link_to 'API', 'https://github.com/WhyJustRun/Core/wiki/API' %> |
+          <%= link_to 'Get this website for your club', 'https://github.com/WhyJustRun/Core/wiki/Get-WhyJustRun-for-your-club!' %>
+        </span>
+      </div>
+      <div class="container">
+        <span id="copyright">
+          &copy; <%= Time.zone.now.year %> <%= current_club.name %>
+        </span>
+        <span id="credits" class="pull-right">
+          By <a href="">Thomas Nipen</a> and <a href="http://www.russellporter.com">Russell Porter</a> | <a href="mailto:support@whyjustrun.ca">support@whyjustrun.ca</a>
+        </span>
+      </div>
+    </footer>
+    <%= javascript_include_tag 'clubsite' %>
+    <%= redactor_script_tags %>
+    <%= yield :javascript_bottom %>
+  </body>
+</html>

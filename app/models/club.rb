@@ -14,6 +14,13 @@ class Club < ApplicationRecord
 
   scope :visible, -> { where(visible: 1) }
 
+  validates :acronym, format: { with: /\A[a-zA-Z0-9]+\z/, message: 'may only contain letters and numbers' },
+                      allow_blank: true
+  validates :lat, :lng, numericality: true, allow_nil: true
+
+  FACEBOOK_PAGE_URL_PREFIX = 'https://www.facebook.com/'.freeze
+  JUICER_FEED_URL_PREFIX = 'https://www.juicer.io/feeds/'.freeze
+
   def children
     Club.where(:parent_id => id)
   end
@@ -80,5 +87,38 @@ class Club < ApplicationRecord
 
   def clubsite_url(path)
     domain_protocol + "://" + domain + path
+  end
+
+  # Virtual attributes for the club settings form: the admin pastes a page/feed
+  # URL (or a raw id) and only the id is stored.
+
+  def facebook_page_url
+    facebook_page_id.present? ? FACEBOOK_PAGE_URL_PREFIX + facebook_page_id : nil
+  end
+
+  def facebook_page_url=(url)
+    self.facebook_page_id = self.class.trailing_url_segment(url)
+  end
+
+  def juicer_feed_url
+    juicer_feed_id.present? ? JUICER_FEED_URL_PREFIX + juicer_feed_id : nil
+  end
+
+  def juicer_feed_url=(url)
+    self.juicer_feed_id = self.class.trailing_url_segment(url)
+  end
+
+  # Extracts the last path segment of a URL ("https://www.facebook.com/foo/"
+  # becomes "foo"). Raw ids without slashes pass through unchanged.
+  def self.trailing_url_segment(value)
+    value = value.to_s.strip
+    return nil if value.blank?
+
+    path = begin
+      URI.parse(value).path.to_s
+    rescue URI::InvalidURIError
+      value
+    end
+    path.delete_suffix('/').split('/').last.presence
   end
 end

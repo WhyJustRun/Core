@@ -1,0 +1,265 @@
+<% content_for :title, @event.new_record? ? 'Add Event' : 'Edit Event' %>
+<header class="page-header">
+  <h1><%= @event.new_record? ? 'Add' : 'Edit' %> Event</h1>
+</header>
+
+<%
+  start_time = @event.date
+  finish_time = @event.read_attribute(:finish_date)
+  deadline_time = @event.registration_deadline
+  edit_url = @event.persisted? ? "/events/edit/#{@event.id}" : '/events/edit'
+%>
+<%= form_with model: @event, scope: :event, url: edit_url, method: :post,
+              html: { class: 'form-horizontal', 'data-validate' => 'ketchup' } do |f| %>
+  <div class="form-group">
+    <label class="control-label col-sm-2" for="EventName">Name</label>
+    <div class="col-sm-10">
+      <%= f.text_field :name, id: 'EventName', class: 'form-control', required: 'required',
+                       'data-validate' => 'validate(required)' %>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="control-label col-sm-2">Start Time</label>
+    <div class="col-sm-10">
+      <div class="form-inline">
+        <div class="form-group inline-validated">
+          <%= text_field_tag 'event[date]', start_time&.strftime('%Y-%m-%d'),
+                             id: 'EventDate', size: 10, maxlength: 10, placeholder: 'yyyy-mm-dd',
+                             class: 'form-control date-picker', 'data-format' => 'YYYY-MM-DD',
+                             'data-validate' => 'validate(date, required)' %>
+        </div>
+        <div class="form-group inline-validated">
+          <%= text_field_tag 'event[time]', start_time&.strftime('%H:%M'),
+                             id: 'EventTime', size: 5, maxlength: 5, placeholder: 'hh:mm',
+                             class: 'form-control time-picker', 'data-format' => 'HH:mm',
+                             'data-validate' => 'validate(required, time)' %>
+        </div>
+        <span class="inline-validated-help"> (24 hour format)</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="control-label col-sm-2">End Time</label>
+    <div class="col-sm-10">
+      <div class="form-inline">
+        <div class="form-group inline-validated">
+          <%= text_field_tag 'event[finish_date]', finish_time&.strftime('%Y-%m-%d'),
+                             id: 'EventFinishDate', size: 10, maxlength: 10, placeholder: 'yyyy-mm-dd',
+                             class: 'form-control date-picker', 'data-format' => 'YYYY-MM-DD',
+                             'data-validate' => 'validate(date, date_after(EventDate, EventTime, EventFinishDate, EventFinishTime))' %>
+        </div>
+        <div class="form-group inline-validated">
+          <%= text_field_tag 'event[finish_time]', finish_time&.strftime('%H:%M'),
+                             id: 'EventFinishTime', size: 5, maxlength: 5, placeholder: 'hh:mm',
+                             class: 'form-control time-picker', 'data-format' => 'HH:mm',
+                             'data-validate' => 'validate(time, requires(EventFinishDate, finish date))' %>
+        </div>
+        <span class="inline-validated-help"> (optional)</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="control-label col-sm-2">Registration Deadline</label>
+    <div class="col-sm-10">
+      <div class="form-inline">
+        <div class="form-group inline-validated">
+          <%= text_field_tag 'event[deadline_date]', deadline_time&.strftime('%Y-%m-%d'),
+                             id: 'EventDeadlineDate', size: 10, maxlength: 10, placeholder: 'yyyy-mm-dd',
+                             class: 'form-control date-picker', 'data-format' => 'YYYY-MM-DD',
+                             'data-validate' => 'validate(date, date_before(EventDate, EventTime, EventDeadlineDate, EventDeadlineTime))' %>
+        </div>
+        <div class="form-group inline-validated">
+          <%= text_field_tag 'event[deadline_time]', deadline_time&.strftime('%H:%M'),
+                             id: 'EventDeadlineTime', size: 5, maxlength: 5, placeholder: 'hh:mm',
+                             class: 'form-control time-picker', 'data-format' => 'HH:mm',
+                             'data-validate' => 'validate(time, requires(EventDeadlineDate, deadline date))' %>
+        </div>
+        <span class="inline-validated-help"> (optional)</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="control-label col-sm-2" for="EventEventClassificationId">Event Classification</label>
+    <div class="col-sm-10">
+      <%= f.select :event_classification_id,
+                   @event_classifications.map { |classification| ["#{classification.name} (#{classification.description})", classification.id] },
+                   { include_blank: 'Choose classification' },
+                   id: 'EventEventClassificationId', class: 'form-control', required: 'required',
+                   'data-validate' => 'validate(required)' %>
+    </div>
+  </div>
+
+  <% url_fields = [
+       { name: 'Redirect URL', field: :custom_url,
+         placeholder: 'Only use if all info is on external website',
+         help: 'If you want to use a third party website for the event, enter the URL for the event page here. NOTE: People accessing your event may be automatically redirected to the other website, depending on where on WhyJustRun they come from.' },
+       { name: 'Registration URL', field: :registration_url,
+         help: 'If you want to use a third party registration system like Zone4, enter the URL to the registration page here.' },
+       { name: 'Results URL', field: :results_url,
+         help: 'If you post results on a third party website like WinSplits, enter the URL to the results page here after the event.' },
+       { name: 'RouteGadget URL', field: :routegadget_url,
+         help: 'If you have posted a RouteGadget for the event, enter the URL to the RouteGadget page here after the event.' },
+       { name: 'Facebook URL', field: :facebook_url,
+         help: 'If you have a Facebook Event, add the URL here.' },
+       { name: 'Attackpoint URL', field: :attackpoint_url,
+         help: 'If you have an Attackpoint Event, add the URL here.' }
+     ] %>
+  <% url_fields.each do |url_field| %>
+    <div class="form-group">
+      <label class="control-label col-sm-2"><%= url_field[:name] %>
+        <span data-toggle="tooltip" data-container="body" class="wjr-help-tooltip" title="<%= url_field[:help] %>">
+          <span class="glyphicon glyphicon-question-sign"></span>
+        </span>
+      </label>
+      <div class="col-sm-10">
+        <%= f.url_field url_field[:field], size: 80, class: 'form-control',
+                        placeholder: url_field[:placeholder],
+                        'data-validate' => 'validate(url_or_empty)' %>
+      </div>
+    </div>
+  <% end %>
+
+  <fieldset class="form-group">
+    <label for="EventDescription" class="control-label col-sm-2">Description</label>
+    <div class="col-sm-10">
+      <%= f.text_area :description, id: 'EventDescription', class: 'form-control wjr-wysiwyg', rows: 12 %>
+    </div>
+  </fieldset>
+
+  <div class="form-group">
+    <label class="control-label col-sm-2" for="EventSeriesId">Series</label>
+    <div class="col-sm-10">
+      <%= f.collection_select :series_id, @series_options, :id, :name,
+                              { include_blank: 'Choose the event series' },
+                              id: 'EventSeriesId', class: 'form-control' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label col-sm-2" for="EventMapId">Map</label>
+    <div class="col-sm-10">
+      <%= f.collection_select :map_id, @maps, :id, :name,
+                              { include_blank: 'Choose the event map' },
+                              id: 'EventMapId', class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="edit-event-organizers" data-organizer-json-element="#EventOrganizers" data-organizer-input="#organizers">
+    <%= f.hidden_field :organizers, value: @organizers_json, id: 'EventOrganizers',
+                       data: { bind: 'value: ko.toJSON(organizers)' } %>
+    <script type="text/html" id="organizerTemplate">
+      <tr>
+        <td data-bind="text: name || 'Anonymous'"></td>
+        <td>
+          <select class="thin-control" data-bind="options: availableRoles, value: role, optionsText: 'name'">
+          </select>
+        </td>
+        <td>
+          <button type="submit" class="btn btn-xs btn-danger pull-right" data-bind="click: remove"><span class="glyphicon glyphicon-trash"></span></button>
+        </td>
+      </tr>
+    </script>
+    <fieldset class="form-group">
+      <label for="organizers" class="col-sm-2 control-label">Event Organizers</label>
+      <div class="col-sm-10">
+        <input class="form-control" placeholder="Add an organizer" type="text" id="organizers" />
+        <br/><br/>
+
+        <table class="table table-striped table-condensed" data-bind="visible: organizers().length > 0">
+          <thead><tr><th>Name</th><th>Role</th><th></th></tr></thead>
+          <tbody data-bind="template: {name:'organizerTemplate', foreach: organizers}"></tbody>
+        </table>
+      </div>
+    </fieldset>
+  </div>
+
+  <div class="edit-event-courses" data-course-json-element="#EventCourses">
+    <%= f.hidden_field :courses, value: @courses_json, id: 'EventCourses',
+                       data: { bind: 'value: ko.toJSON(courses)' } %>
+    <script type="text/html" id="courseTemplate">
+      <tr>
+        <td class="col-sm-2"><input type="text" class="form-control input-sm" data-validate="validate(required)" data-bind="value: name, uniqueName: true" required /></td>
+        <td class="col-sm-1"><input class="form-control input-sm" type="number" data-bind="value: distance" /></td>
+        <td class="col-sm-1"><input class="form-control input-sm" type="number" data-bind="value: climb" /></td>
+        <td class="col-sm-1">
+          <select class="form-control input-sm" data-bind="value: rankBy">
+            <option value="time">Time</option>
+            <option value="points">Score-O Points</option>
+          </select>
+        </td>
+        <td><input type="text" class="form-control input-sm" data-bind="value: description" /></td>
+        <td>
+          <button type="submit" class="btn btn-sm btn-danger pull-right" data-bind="click: remove"><span class="glyphicon glyphicon-trash"></span></button>
+        </td>
+      </tr>
+    </script>
+    <fieldset class="form-group">
+      <label class="col-sm-2 control-label">Courses</label>
+      <div class="col-sm-10">
+        <button type="submit" class="btn btn-success" data-bind="click: addNewCourse">
+          <span class="glyphicon glyphicon-plus"></span> Course
+        </button>
+        <br/><br/>
+        <table class="table table-striped table-condensed" data-bind="visible: courses().length > 0">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Dist. (m)</th>
+              <th>Climb (m)</th>
+              <th>Rank by</th>
+              <th>Description</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody data-bind="template: {name:'courseTemplate', foreach: courses}"></tbody>
+        </table>
+      </div>
+    </fieldset>
+  </div>
+
+  <div class="form-group">
+    <label class="control-label col-sm-2" for="EventNumberOfParticipants">Number of Participants</label>
+    <div class="col-sm-10">
+      <div class="form-inline">
+        <div class="form-group">
+          <%= f.number_field :number_of_participants, id: 'EventNumberOfParticipants',
+                             min: 0, max: 4294967295, class: 'form-control' %>
+        </div>
+        (Optional: used for insurance purposes, overrides participant count from event results)
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="control-label col-sm-2" for="EventIsRanked">Ranked Event?</label>
+    <div class="col-sm-10">
+      <div class="checkbox">
+        <%= f.check_box :is_ranked, id: 'EventIsRanked' %>
+      </div>
+    </div>
+  </div>
+
+  <fieldset class="form-group">
+    <label class="control-label col-sm-2">Meeting location</label>
+    <div class="col-sm-10">
+      <%= f.hidden_field :lat, value: @event.lat || current_club.lat, id: 'EventLat' %>
+      <%= f.hidden_field :lng, value: @event.lng || current_club.lng, id: 'EventLng' %>
+      <div class="draggable-marker-map"
+           data-lat-element="#EventLat"
+           data-lng-element="#EventLng"
+           data-zoom="10"
+           style="height: 400px; width: 100%">
+      </div>
+      <p class="help-block">Drag the marker to the meeting location</p>
+    </div>
+  </fieldset>
+
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <%= f.submit 'Save', class: 'btn btn-primary' %>
+    </div>
+  </div>
+<% end %>

@@ -12,14 +12,62 @@ class Event < ApplicationRecord
   reverse_geocoded_by :lat, :lng
 
   belongs_to :club
-  belongs_to :map
-  belongs_to :series
-  belongs_to :event_classification
-  has_many :organizers
-  has_many :courses
+  belongs_to :map, optional: true
+  belongs_to :series, optional: true
+  belongs_to :event_classification, optional: true
+  has_many :organizers, dependent: :destroy
+  has_many :courses, dependent: :destroy
   has_one :live_result
+  has_one :result_list, dependent: :destroy
+
+  # Lenient URL check matching the legacy validation: scheme optional,
+  # hostname with a TLD, optional port and path.
+  URL_FORMAT = %r{\A(?:https?://)?(?:[\w-]+\.)+[a-z]{2,}(?::\d+)?(?:/\S*)?\z}i
+
+  validates :name, presence: true
+  validates :lat, :lng, numericality: { allow_nil: true }
+  validates :custom_url, :registration_url, :results_url, :routegadget_url,
+            format: { with: URL_FORMAT }, allow_blank: true
+
+  # The legacy app nulled empty redirect URLs so blank strings never bypass
+  # the custom_url.present? redirect checks.
+  normalizes :custom_url, with: ->(url) { url.presence }
 
   scope :list_includes, -> { includes(:series, :club, :event_classification, :courses) }
+
+  # Events starting within the next three months, soonest first.
+  scope :upcoming, lambda {
+    now = Time.current
+    where('events.date >= ? AND events.date < ?', now, now + 3.months).order(date: :asc)
+  }
+
+  # Events that started within the last three months and are no longer
+  # ongoing (a NULL finish_date means the event has no explicit end, so it is
+  # past as soon as it starts). Most recent first.
+  scope :past, lambda {
+    now = Time.current
+    where('events.date <= ? AND events.date > ?', now, now - 3.months)
+      .where('events.finish_date IS NULL OR events.finish_date < ?', now)
+      .order(date: :desc)
+  }
+
+  # Events that have started but whose explicit finish date is still ahead.
+  scope :ongoing, lambda {
+    now = Time.current
+    where('events.date <= ? AND events.finish_date IS NOT NULL AND events.finish_date >= ?', now, now)
+      .order(date: :desc)
+  }
+
+  # Filters by series; a zero or negative id means events without a series.
+  scope :for_series, lambda { |series_id|
+    if series_id.nil?
+      all
+    elsif series_id.to_i.positive?
+      where(series_id: series_id)
+    else
+      where(series_id: nil)
+    end
+  }
 
   def self.arel_ungeotagged_significant_expr(club)
       local_clubs = club.nearbys(Event::LOCAL_DISTANCE).map { |club| club.id }
@@ -159,10 +207,9 @@ class Event < ApplicationRecord
   end
 
   def to_ics
-    Time.zone = "UTC"
     event = Icalendar::Event.new
-    event.dtstart = date
-    event.dtend = finish_date
+    event.dtstart = date.utc
+    event.dtend = finish_date.utc
     event.summary = name
     event.description = strip_tags(description)
     if has_location
@@ -216,7 +263,6 @@ class Event < ApplicationRecord
   end
 
   def to_fullcalendar(prefix_acronym, for_club)
-    Time.zone = "UTC"
     out = {}
     out[:id] = id
     out[:title] = prefix_acronym ? (club.acronym + ' - ' + name) : name
@@ -265,5 +311,21 @@ class Event < ApplicationRecord
 
   def has_organizer?(user)
     Organizer.where(user_id: user.id, event_id: self.id).exists?
+  end
+
+  def completed?
+    date <= Time.current
+  end
+
+  def registration_open?
+    if registration_deadline.present?
+      registration_deadline > Time.current
+    else
+      !completed?
+    end
+  end
+
+  def has_results?
+    results_posted || results_url.present? || routegadget_url.present? || result_list&.visible? || false
   end
 end

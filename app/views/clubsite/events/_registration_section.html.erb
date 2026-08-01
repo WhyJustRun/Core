@@ -1,0 +1,29 @@
+<%# locals: event, can_edit %>
+<% result_list = event.result_list %>
+<% if result_list.present? && result_list.status == ResultList::LIVE_STATUS && can_edit %>
+  <h2>Live Results</h2>
+  <%= render 'live_results_visibility_button', event: event, result_list: result_list %>
+<% end %>
+
+<% if @completed %>
+  <%= render 'course_maps', event: event %>
+<% elsif event.registration_url.present? %>
+  <header>
+    <h2>Registration</h2>
+  </header>
+  <div class="btn-group">
+    <a href="<%= event.registration_url %>" class="btn btn-large btn-success">
+      Register at <%= URI.parse(event.registration_url).host rescue event.registration_url %>
+    </a>
+  </div>
+<% elsif event.courses.any? %>
+  <header>
+    <h2>Course Registration</h2>
+    <% if event.registration_deadline.present? %>
+      <h4 class="reg-deadline-header">
+        <%= @registration_open ? "Deadline #{short_date_with_time(event.registration_deadline)}" : 'Registration is Closed' %>
+      </h4>
+    <% end %>
+  </header>
+  <%= render 'course_registration', event: event %>
+<% end %>

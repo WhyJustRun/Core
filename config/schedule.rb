@@ -7,7 +7,3 @@ set :environment, ENV["RAILS_ENV"]
 
 job_type :rake, "cd :path && :environment_variable=:environment :bundle_command rake :task :output"
 
-every 1.day do
-  rake "sessions:trim"
-end
-

@@ -1,11 +1,17 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+cluba_trail_guide:
+  name: Trail Guide
+  section: Resources
+  content: <p>Club A trails and how to find them.</p>
+  club: cluba
 
-# This model initially had no columns defined.  If you add columns to the
-# model remove the '{}' from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
-#
-one: {}
-# column: value
-#
-two: {}
-#  column: value
+cluba_membership_info:
+  name: Membership Info
+  section: Resources
+  content: <p>How to join Club A.</p>
+  club: cluba
+
+clubb_handbook:
+  name: Club B Handbook
+  section: Resources
+  content: <p>The Club B handbook.</p>
+  club: clubb

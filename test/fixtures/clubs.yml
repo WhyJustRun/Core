@@ -1,11 +1,38 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+cluba:
+  name: Club A Orienteering
+  acronym: CLUBA
+  lat: 49.2827
+  lng: -123.1207
+  country: Canada
+  timezone: America/Vancouver
+  visible: true
+  domain: cluba.test
+  domain_protocol: https
+  club_category: club
+  layout: default
 
-# This model initially had no columns defined.  If you add columns to the
-# model remove the '{}' from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
-#
-one: {}
-# column: value
-#
-two: {}
-#  column: value
+clubb:
+  name: Club B Orienteering
+  acronym: CLUBB
+  lat: 43.6532
+  lng: -79.3832
+  country: Canada
+  timezone: America/Toronto
+  visible: true
+  domain: clubb.test
+  domain_protocol: https
+  redirect_domain: old.clubb.test
+  club_category: club
+  layout: other
+
+federation:
+  name: National Orienteering Federation
+  acronym: NOF
+  lat: 45.4215
+  lng: -75.6972
+  country: Canada
+  timezone: America/Toronto
+  visible: false
+  domain: federation.test
+  domain_protocol: https
+  club_category: national_federation

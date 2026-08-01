@@ -1,0 +1,6 @@
+/*
+ * Styles for the printable layout. Mirrors printable.ctp, which loaded only
+ * printable.css (no bootstrap or whyjustrun styles).
+ *
+ *= require clubsite/printable
+ */
