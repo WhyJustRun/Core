@@ -196,4 +196,34 @@ class ClubsitePagesTest < ActionDispatch::IntegrationTest
     end
     assert_response :redirect
   end
+
+  # --- Stored XSS is stripped from rendered rich text ---
+
+  test 'content block script content is sanitized when rendered' do
+    block = content_blocks(:cluba_general_information)
+    block.update_column(:content, '<p>hello</p><script>alert(1)</script>')
+    get '/'
+    assert_response :success
+    assert_no_match %r{<script>alert\(1\)</script>}, response.body
+    assert_select "div#content-block-#{block.id}", html: %r{hello}
+  end
+
+  test 'editing a content block returns sanitized html' do
+    sign_in users(:executive)
+    block = content_blocks(:cluba_general_information)
+    post '/contentBlocks/edit',
+         params: { id: "content-block-#{block.id}", value: '<p>ok</p><script>alert(1)</script>' }
+    assert_response :success
+    assert_no_match %r{<script>}, response.body
+    assert_match %r{<p>ok</p>}, response.body
+  end
+
+  test 'dynamic page script content is sanitized when rendered' do
+    page = pages(:cluba_trail_guide)
+    page.update_column(:content, '<p>safe</p><script>alert(1)</script>')
+    get "/pages/#{page.id}"
+    assert_response :success
+    assert_no_match %r{<script>alert\(1\)</script>}, response.body
+    assert_select "div#page-resource-#{page.id}", html: %r{safe}
+  end
 end

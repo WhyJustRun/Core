@@ -13,9 +13,20 @@ module ClubsHelper
               }
               series = event.series
               map = event.map
-	      csv << [event.id, event.date, event.name, (series != nil) ? series.name : nil, event.number_of_participants, event.club.name, organizers.join(", "), map ? map.name : nil]
+	      csv << [event.id, event.date, csv_safe(event.name), csv_safe(series&.name), event.number_of_participants, csv_safe(event.club.name), csv_safe(organizers.join(", ")), csv_safe(map&.name)]
 	    end
 	  end
+	end
+
+	private
+
+	# Neutralizes spreadsheet formula injection: a cell whose first character
+	# is one of = + - @ (or a leading tab/CR) is treated as a formula by Excel
+	# and Sheets, so prefix those values with an apostrophe.
+	def csv_safe(value)
+	  str = value.to_s
+	  str = "'" + str if str.match?(/\A[=+\-@\t\r]/)
+	  str
 	end
 
 end

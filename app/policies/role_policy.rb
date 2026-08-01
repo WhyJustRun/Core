@@ -1,4 +1,6 @@
-# Roles are shared between clubs, so the record is always the current club.
+# Roles are shared across every club (they populate every club's event
+# organizer editor), so editing them is a cross-club operation and requires a
+# global (club-independent) privilege. Listing stays open.
 class RolePolicy
   attr_reader :user, :club
 
@@ -14,7 +16,7 @@ class RolePolicy
   end
 
   def edit?
-    user.present? && user.has_privilege?(Settings.privileges.role.edit, club)
+    user.present? && user.has_global_privilege?(Settings.privileges.role.edit)
   end
 
   def update?

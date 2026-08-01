@@ -129,6 +129,51 @@ class ClubsiteUsersAdminTest < ActionDispatch::IntegrationTest
     assert_redirected_to '/'
   end
 
+  test 'a club webmaster cannot merge a global admin into another account' do
+    sign_in users(:webmaster)
+    assert_no_difference -> { User.count } do
+      post "/users/merge/#{users(:member).id}/#{users(:global_admin).id}"
+    end
+    assert User.exists?(users(:global_admin).id)
+  end
+
+  test 'even a club administrator cannot merge a global admin (no cross-club privilege theft)' do
+    # The club admin passes can_merge_any_user?, so only the global-admin guard
+    # stops the merge -- this is the CRITICAL escalation path.
+    sign_in users(:admin)
+    assert_no_difference -> { User.count } do
+      post "/users/merge/#{users(:admin).id}/#{users(:global_admin).id}"
+    end
+    assert User.exists?(users(:global_admin).id)
+    assert_equal 0, users(:admin).global_privilege_level
+  end
+
+  test 'a club webmaster cannot merge accounts unrelated to their club' do
+    sign_in users(:webmaster)
+    target = User.create_fake('Unrelated One')
+    source = User.create_fake('Unrelated Two')
+    target.update_columns(club_id: clubs(:clubb).id)
+    source.update_columns(club_id: clubs(:clubb).id)
+
+    assert_no_difference -> { User.count } do
+      post "/users/merge/#{target.id}/#{source.id}"
+    end
+    assert User.exists?(source.id)
+  end
+
+  test 'a global admin may merge accounts unrelated to any single club' do
+    sign_in users(:global_admin)
+    target = User.create_fake('Unrelated One')
+    source = User.create_fake('Unrelated Two')
+    target.update_columns(club_id: clubs(:clubb).id)
+    source.update_columns(club_id: clubs(:clubb).id)
+
+    assert_difference -> { User.count }, -1 do
+      post "/users/merge/#{target.id}/#{source.id}"
+    end
+    assert_not User.exists?(source.id)
+  end
+
   # --- Show duplicates ---
 
   test 'showDuplicates requires the merge privilege' do

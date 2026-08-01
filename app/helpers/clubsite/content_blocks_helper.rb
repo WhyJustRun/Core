@@ -12,8 +12,10 @@ module Clubsite
       safe_join(blocks.map do |block|
         parts = []
         parts << start_wrapper.html_safe if start_wrapper
-        # Content is admin-authored HTML.
-        parts << content_tag(:div, block.content.to_s.html_safe,
+        # Content is admin-authored HTML; sanitize it so a content-block editor
+        # can't plant script that runs in a visitor's (or higher-privileged
+        # admin's) browser. sanitize keeps ordinary rich-text formatting.
+        parts << content_tag(:div, sanitize(block.content.to_s),
                              id: "content-block-#{block.id}", class: css_class)
         parts << end_wrapper.html_safe if end_wrapper
         safe_join(parts)

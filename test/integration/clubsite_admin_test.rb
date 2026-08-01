@@ -144,8 +144,8 @@ class ClubsiteAdminTest < ActionDispatch::IntegrationTest
     assert_equal expected, response.parsed_body.sort_by { |role| role['id'] }
   end
 
-  test 'role edit renders for the admin' do
-    sign_in users(:admin)
+  test 'role edit renders for a global admin' do
+    sign_in users(:global_admin)
     get "/roles/edit/#{roles(:organizer).id}"
     assert_response :success
     assert_select 'input#role_name[value=?]', 'Organizer'
@@ -157,8 +157,16 @@ class ClubsiteAdminTest < ActionDispatch::IntegrationTest
     assert_redirected_to '/'
   end
 
-  test 'role edit without an id adds a new role' do
+  # Roles are shared across every club, so a per-club administrator (level 100
+  # at their own club, but not a global admin) may not edit them.
+  test 'role edit redirects a per-club administrator' do
     sign_in users(:admin)
+    get '/roles/edit'
+    assert_redirected_to '/'
+  end
+
+  test 'role edit without an id adds a new role for a global admin' do
+    sign_in users(:global_admin)
     assert_difference -> { Role.count }, 1 do
       post '/roles/edit', params: { role: { name: 'Controller', description: 'Controls the course' } }
     end
@@ -166,10 +174,18 @@ class ClubsiteAdminTest < ActionDispatch::IntegrationTest
     assert Role.exists?(name: 'Controller')
   end
 
+  test 'a per-club administrator cannot add a role' do
+    sign_in users(:admin)
+    assert_no_difference -> { Role.count } do
+      post '/roles/edit', params: { role: { name: 'Controller', description: 'Controls the course' } }
+    end
+    assert_redirected_to '/'
+  end
+
   # --- Map standards -------------------------------------------------------
 
-  test 'map standards index renders for the admin' do
-    sign_in users(:admin)
+  test 'map standards index renders for a global admin' do
+    sign_in users(:global_admin)
     get '/mapStandards'
     assert_response :success
     assert_select 'h1', 'Map Standards'
@@ -181,8 +197,16 @@ class ClubsiteAdminTest < ActionDispatch::IntegrationTest
     assert_redirected_to '/'
   end
 
-  test 'map standard add, update and delete' do
+  # Map standards are shared across every club, so a per-club administrator may
+  # not manage them.
+  test 'map standards index redirects a per-club administrator' do
     sign_in users(:admin)
+    get '/mapStandards'
+    assert_redirected_to '/'
+  end
+
+  test 'map standard add, update and delete by a global admin' do
+    sign_in users(:global_admin)
     assert_difference -> { MapStandard.count }, 1 do
       post '/mapStandards/edit', params: { map_standard: {
         name: 'ISOM 2017', color: 'rgba(0,0,0,1)', description: 'Orienteering maps'
@@ -203,6 +227,14 @@ class ClubsiteAdminTest < ActionDispatch::IntegrationTest
 
   test 'map standard delete redirects the webmaster' do
     sign_in users(:webmaster)
+    assert_no_difference -> { MapStandard.count } do
+      post '/mapStandards/delete/1'
+    end
+    assert_redirected_to '/'
+  end
+
+  test 'a per-club administrator cannot delete a map standard' do
+    sign_in users(:admin)
     assert_no_difference -> { MapStandard.count } do
       post '/mapStandards/delete/1'
     end

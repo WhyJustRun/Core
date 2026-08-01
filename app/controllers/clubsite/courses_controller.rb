@@ -37,12 +37,15 @@ module Clubsite
     end
 
     # Removes a user's registration row for this course only. You can always
-    # unregister yourself; you can unregister someone else only if any of
-    # their existing registrations (on any course) was made by you.
+    # unregister yourself; you can unregister someone else only if their
+    # registration *on this course* was made by you. Scoping the relationship
+    # to this course stops a registration made on one course from being used to
+    # unregister that person from unrelated courses on other clubs' sites.
     def unregister
       course = find_course(params[:course_id])
       user_id = target_user_id
-      unless user_id == current_user.id || Result.exists?(registrant_id: current_user.id, user_id: user_id)
+      unless user_id == current_user.id ||
+             Result.exists?(course_id: course.id, user_id: user_id, registrant_id: current_user.id)
         raise Pundit::NotAuthorizedError
       end
 

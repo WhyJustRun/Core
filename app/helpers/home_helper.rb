@@ -12,12 +12,11 @@ module HomeHelper
   end
 
   def formatted_clubs_list(clubs)
-    list = []
-    clubs.each { |c|
-      str = '<a href="' + c.url + '"><strong>' + c.acronym + ' (' + c.location + ')</strong></a>'
-      list << str.html_safe
-    }
-
-    list.to_sentence.html_safe
+    # Build the links with link_to/content_tag so the club-supplied acronym and
+    # location are HTML-escaped -- a club admin must not be able to inject
+    # markup onto the shared apex homepage.
+    clubs.map { |club|
+      link_to(club.url) { content_tag(:strong, "#{club.acronym} (#{club.location})") }
+    }.to_sentence.html_safe
   end
 end

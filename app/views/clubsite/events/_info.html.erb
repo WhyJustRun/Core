@@ -33,7 +33,7 @@
 
 <% if !event.completed? && event.series&.information.present? %>
   <h2 class="series-<%= event.series_id %>"><%= event.series.name %></h2>
-  <%= raw event.series.information %>
+  <%= sanitize event.series.information %>
   <hr class="divider" />
 <% end %>
 

@@ -8,7 +8,10 @@ class ClubsiteFormMethodsTest < ActionDispatch::IntegrationTest
 
   setup do
     host! 'cluba.test'
-    sign_in users(:admin)
+    # A global admin satisfies both the club-scoped checks (via privilege_level,
+    # which includes global groups) and the global-only map standard / role
+    # gates, so it can exercise every edit route here.
+    sign_in users(:global_admin)
   end
 
   test "map edit form submits via PATCH" do

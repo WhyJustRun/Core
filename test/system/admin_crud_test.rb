@@ -64,7 +64,7 @@ class AdminCrudTest < ApplicationSystemTestCase
   test "editing a map standard" do
     map_standard = MapStandard.create!(name: 'ISOM', color: 'rgba(0,0,0,1)')
 
-    sign_in_to_club users(:admin)
+    sign_in_to_club users(:global_admin)
     visit_club '/mapStandards/'
     assert_selector 'h1', text: 'Map Standards'
 
@@ -89,7 +89,7 @@ class AdminCrudTest < ApplicationSystemTestCase
   test "editing a role" do
     role = roles(:course_planner)
 
-    sign_in_to_club users(:admin)
+    sign_in_to_club users(:global_admin)
     visit_club '/roles/'
     assert_selector 'h1', text: 'Roles'
 

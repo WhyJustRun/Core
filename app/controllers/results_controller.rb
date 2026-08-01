@@ -4,7 +4,7 @@ class ResultsController < ApplicationController
   before_action :authenticate_user!, :only => [:update_live_result_list, :process_result_list]
   # Result list uploads come from external tools authenticating over HTTP Basic,
   # which cannot supply a CSRF token.
-  skip_forgery_protection only: [:process_result_list, :update_live_result_list, :update_result_list]
+  skip_forgery_protection only: [:process_result_list, :update_live_result_list]
 
   def check_event_id id
     unless Event.exists? id
@@ -33,39 +33,6 @@ class ResultsController < ApplicationController
     end
   end
 
-  # TODO: This is the WIP replacement to process_result_list...
-  # Request body is the XML to store
-  # URL parameters
-  def update_result_list
-    # event_id = params[:id]
-    # resolutions = JSON.parse(param[:resolutions])
-    # data = params[:file].read
-    event_id = 1404
-    resolutions = []
-    data = File.read('/tmp.xml')
-
-    check_event_id event_id
-    data = ResultList.resolve_result_list_user_conflicts(resolutions, data)
-
-    result_list = ResultList.find_or_initialize_by event_id: event_id, status: ResultList::FINAL_STATUS
-    authorize result_list
-    result_list.user_id = current_user.id
-    result_list.data = data
-    result_list.upload_time = Time.now
-
-    # Check if there are any remaining unresolved users
-    remaining_conflicts = ResultList.result_list_user_conflicts event_id, data
-    if remaining_conflicts.length > 0
-      # Reply with remaining conflicts.
-    elsif result_list.save
-      result_list.sync_result_list
-    else
-      # TODO handle validation error
-    end
-
-    render :plain => remaining_conflicts.to_yaml
-  end
-
   def result_list
     supported = ['2.0.3', '3.0']
     unless supported.include? params[:iof_version] then
@@ -85,7 +52,6 @@ class ResultsController < ApplicationController
     end
   end
 
-  # TODO: this should have been replaced by update_result_list a long time ago.
   def process_result_list
     user = current_user
     event = Event.find(params[:id])

@@ -204,6 +204,26 @@ class User < ApplicationRecord
     end
   end
 
+  # Highest privilege level the user holds in global (club-independent) groups,
+  # i.e. groups with no club_id. Global privileges apply across every club and
+  # are the platform-wide admin roles.
+  def global_privilege_level
+    Privilege.joins(:user_group)
+             .where(user_id: id, groups: { club_id: nil })
+             .maximum('groups.access_level') || 0
+  end
+
+  # True when the user holds a global (cross-club) privilege at or above the
+  # given level.
+  def has_global_privilege?(desired_privilege)
+    global_privilege_level >= desired_privilege
+  end
+
+  # True when the user holds any global (cross-club) privilege.
+  def global_admin?
+    global_privilege_level.positive?
+  end
+
   # True when the user holds a membership with the club for the given year
   def member_of?(club, year)
     Membership.exists?(user_id: id, club_id: club.id, year: year)

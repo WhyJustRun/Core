@@ -17,5 +17,5 @@
 </header>
 
 <div id="page-resource-<%= @page.id %>" class="page-resource <%= 'wjr-editable' if can_edit %>">
-  <%= raw @page.content %>
+  <%= sanitize @page.content %>
 </div>
