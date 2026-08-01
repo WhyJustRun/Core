@@ -48,6 +48,7 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   ].freeze
 
   teardown do
+    save_failure_page unless passed?
     raise_on_console_errors if passed?
   end
 
@@ -94,6 +95,18 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   end
 
   private
+
+  # Companion to the automatic failure screenshot: the final URL and page HTML
+  # make redirect-flow failures diagnosable from CI artifacts.
+  def save_failure_page
+    dir = Rails.root.join('tmp/screenshots')
+    FileUtils.mkdir_p(dir)
+    slug = "failures_#{method_name.parameterize(separator: '_')}"
+    File.write(dir.join("#{slug}.url.txt"), "#{current_url}\n")
+    File.write(dir.join("#{slug}.html"), page.html)
+  rescue StandardError => e
+    warn "Could not save failure page: #{e.message}"
+  end
 
   def raise_on_console_errors
     logs = page.driver.browser.logs.get(:browser)

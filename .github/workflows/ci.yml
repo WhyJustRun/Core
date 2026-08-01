@@ -116,6 +116,14 @@ jobs:
       - name: Run system tests
         run: bundle exec rails test:system
 
+      - name: Upload failure screenshots and pages
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: system-test-failures
+          path: tmp/screenshots/
+          if-no-files-found: ignore
+
   brakeman:
     runs-on: ubuntu-latest
     steps:
