@@ -264,6 +264,7 @@ GEM
     responders (3.2.0)
       actionpack (>= 7.0)
       railties (>= 7.0)
+    rexml (3.4.4)
     ruby-vips (2.3.0)
       ffi (~> 1.12)
       logger
@@ -279,9 +280,10 @@ GEM
       sprockets-rails
       tilt
     securerandom (0.4.1)
-    selenium-webdriver (4.51.0)
+    selenium-webdriver (4.46.0)
       base64 (~> 0.2)
       logger (~> 1.4)
+      rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 4.0)
       websocket (~> 1.0)
     sprockets (4.2.1)
@@ -345,7 +347,7 @@ DEPENDENCIES
   rails (~> 7.1)
   recaptcha (~> 5.17.0)
   sass-rails (~> 6.0.0)
-  selenium-webdriver
+  selenium-webdriver (~> 4.46.0)
   tzinfo-data
   uglifier (~> 4.2.0)
   whenever (~> 1.0.0)
