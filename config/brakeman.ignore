@@ -1,7 +1,7 @@
 {
   "ignored_warnings": [
     {
-      "fingerprint": "5d41c99952d21e80fdb86aeae06ea42039c714d2ac801571a150f4c89f548bd9",
+      "fingerprint": "9bab8892fbf47db94d33b7d58d98c4dc58bb7b0c46b7b94d5cb1643a65a3cf40",
       "note": "Intentional cross-domain redirect: sends the signed-in user to their club's own domain for the clubsite session handoff. The target host always comes from the clubs table, not from user input."
     },
     {
