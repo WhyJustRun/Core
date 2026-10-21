@@ -30,6 +30,17 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
 
   Capybara.always_include_port = true
 
+  # Chrome 155 can briefly hand back an element reference that was detached
+  # while a navigation completed. Capybara only retries errors it knows are
+  # stale-element errors, so teach it this one; real failures still surface
+  # once the wait time runs out.
+  module RetryDetachedNode
+    def invalid_element_errors
+      @invalid_element_errors_with_detached ||= super + [::Selenium::WebDriver::Error::UnknownError]
+    end
+  end
+  Capybara::Selenium::Driver.prepend(RetryDetachedNode)
+
   # Bootstrap's fade animations move elements while Capybara computes click
   # coordinates, so clicks can land on the backdrop and dismiss modals
   # instead of hitting their buttons.
