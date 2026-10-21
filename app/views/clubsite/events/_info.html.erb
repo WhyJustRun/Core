@@ -1,0 +1,43 @@
+<%# locals: event %>
+<% social_text = 'Check out this event on' %>
+<% if event.facebook_url.present? %>
+  <a href="<%= event.facebook_url %>" class="btn btn-default social-event-button">
+    <img width="20px" src="/img/social/facebook-logo.png" srcset="/img/social/facebook-logo.png 1x, /img/social/facebook-logo@2x.png 2x" />
+    <span class="social-event-text"><%= social_text %> Facebook</span>
+  </a>
+<% end %>
+<% if event.attackpoint_url.present? %>
+  <a href="<%= event.attackpoint_url %>" class="btn btn-default social-event-button">
+    <img width="20px" src="/img/social/attackpoint-logo.png" srcset="/img/social/attackpoint-logo.png 1x, /img/social/attackpoint-logo@2x.png 2x" />
+    <span class="social-event-text"><%= social_text %> Attackpoint</span>
+  </a>
+<% end %>
+<% if event.facebook_url.present? || event.attackpoint_url.present? %>
+  <br/>
+<% end %>
+
+<% if event.organizers.any? %>
+  <p><b><%= event.organizers.length > 1 ? 'Organizers' : 'Organizer' %></b>: <%= render 'organizers_list', organizers: event.organizers %></p>
+<% end %>
+
+<% if event.map.present? %>
+  <p><b>Map</b>: <%= link_to event.map.name, "/maps/view/#{event.map_id}" %></p>
+<% end %>
+
+<% if event.description.present? %>
+  <%= sanitize event.description %>
+<% else %>
+  Check back soon for more information.
+<% end %>
+<hr class="divider" />
+
+<% if !event.completed? && event.series&.information.present? %>
+  <h2 class="series-<%= event.series_id %>"><%= event.series.name %></h2>
+  <%= sanitize event.series.information %>
+  <hr class="divider" />
+<% end %>
+
+<% if event.lat.present? %>
+  <h2>Location</h2>
+  <iframe width="100%" height="400" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?q=<%= event.lat %>%2C<%= event.lng %>&key=<%= Settings.googleMapsApiKey %>"></iframe>
+<% end %>

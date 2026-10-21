@@ -1,0 +1,72 @@
+<% content_for :title, 'Officials' %>
+<div class="row">
+  <div class="col-sm-4">
+    <div class="page-header">
+      <h1>List of officials</h1>
+    </div>
+    Clubs are strongly encouraged to track Officials' certification levels. This information is useful in many ways, including tracking numbers of qualified officials, recording pre-requisites for official certification, and identifying qualified officials for major events.
+  </div>
+  <div class="col-sm-8">
+    <h3>Add official</h3>
+    <%= form_with scope: :official, url: '/officials/add', html: { class: 'form-inline' } do |f| %>
+      <%= f.hidden_field :user_id, id: 'OfficialUserId' %>
+      <div class="form-group">
+        <input class="form-control simple-person-picker"
+               placeholder="Name" type="text" id="UserName"
+               autocomplete="off"
+               data-user-id-target="#OfficialUserId"
+               data-maintain-input="true"
+               data-allow-fake="false" />
+      </div>
+      <div class="form-group">
+        <%= f.collection_select :official_classification_id, @official_classifications, :id, :name, {}, class: 'form-control' %>
+      </div>
+      <div class="form-group">
+        <%= f.text_field :date, class: 'form-control', placeholder: 'Date (YYYY-MM-DD)' %>
+      </div>
+      <button type="submit" class="btn btn-success">
+        <span class="glyphicon glyphicon-plus"></span>
+      </button>
+    <% end %>
+
+    <h3>Current officials</h3>
+    <table class="table table-striped table-bordered table-condensed">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Classification/Date certified</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @officials.each do |official| %>
+          <tr>
+            <td><%= official.user.name %></td>
+            <td>
+              <%= form_with scope: :official, url: "/officials/edit/#{official.id}", html: { class: 'form-inline' } do |f| %>
+                <%= f.hidden_field :user_id, value: official.user_id %>
+                <div class="form-group">
+                  <%= f.collection_select :official_classification_id, @official_classifications, :id, :name,
+                                          { selected: official.official_classification_id },
+                                          class: 'form-control input-sm' %>
+                </div>
+                <div class="form-group">
+                  <%= f.text_field :date, value: official.date&.strftime('%Y-%m-%d'),
+                                   class: 'form-control input-sm', placeholder: 'Date (YYYY-MM-DD)' %>
+                </div>
+                <%= f.submit 'Update', class: 'btn btn-default btn-sm' %>
+              <% end %>
+            </td>
+            <td>
+              <%= form_with url: "/officials/delete/#{official.id}" do %>
+                <button type="submit" class="btn btn-sm btn-danger">
+                  <span class="glyphicon glyphicon-trash"></span>
+                </button>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,2 +1,0 @@
-class MapStandardsController < ApplicationController
-end

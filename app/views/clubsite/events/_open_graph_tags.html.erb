@@ -1,0 +1,18 @@
+<%# locals: event %>
+<%
+  dynamic_text = "Orienteering event taking place: #{formatted_event_date(event)}."
+  finish_time = event.read_attribute(:finish_date)
+
+  og_tag('og:site_name', 'WhyJustRun')
+  og_tag('og:type', 'event')
+  og_tag('og:url', current_club.clubsite_url("/events/view/#{event.id}"))
+  og_tag('og:description', "#{dynamic_text} Orienteering is an exciting sport for all ages and fitness levels that involves reading a detailed map and using a compass to find checkpoints.")
+  og_tag('og:title', event.name)
+  og_tag('og:image', current_club.clubsite_url('/img/orienteering_symbol.png'))
+  og_tag('event:start_time', event.date.iso8601)
+  og_tag('event:end_time', finish_time.iso8601) if finish_time
+  if event.lat.present?
+    og_tag('event:location:latitude', event.lat)
+    og_tag('event:location:longitude', event.lng)
+  end
+%>

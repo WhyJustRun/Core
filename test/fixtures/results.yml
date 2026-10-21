@@ -1,11 +1,12 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+member_long:
+  user: member
+  course: race_long
+  status: ok
+  time_seconds: 3600
+  registrant: member
 
-# This model initially had no columns defined.  If you add columns to the
-# model remove the '{}' from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
-#
-one: {}
-# column: value
-#
-two: {}
-#  column: value
+organizer_long:
+  user: organizer
+  course: race_long
+  status: did_not_finish
+  registrant: member

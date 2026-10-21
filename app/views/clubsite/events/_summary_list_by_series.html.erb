@@ -1,0 +1,34 @@
+<% ongoing = current_club.events.list_includes.ongoing.to_a %>
+<% if ongoing.any? %>
+  <h3>Ongoing</h3>
+  <%= render 'clubsite/events/box_list', events: ongoing %>
+<% end %>
+
+<% current_series = current_club.series.where(is_current: true) %>
+<%
+  upcoming = {}
+  current_series.each do |series|
+    upcoming[series.name] = current_club.events.list_includes.upcoming.for_series(series.id).limit(2).to_a
+  end
+  upcoming['Other'] = current_club.events.list_includes.upcoming.for_series(0).limit(2).to_a
+%>
+<h3>Upcoming</h3>
+<% upcoming.each do |title, events| %>
+  <% next if events.empty? %>
+  <h4><%= title %></h4>
+  <%= render 'clubsite/events/box_list', events: events %>
+<% end %>
+
+<%
+  past = {}
+  current_series.each do |series|
+    past[series.name] = current_club.events.list_includes.past.for_series(series.id).limit(1).to_a
+  end
+  past['Other'] = current_club.events.list_includes.past.for_series(0).limit(1).to_a
+%>
+<h3>Past</h3>
+<% past.each do |title, events| %>
+  <% next if events.empty? %>
+  <h4><%= title %></h4>
+  <%= render 'clubsite/events/box_list', events: events %>
+<% end %>

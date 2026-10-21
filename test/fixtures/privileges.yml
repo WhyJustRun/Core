@@ -1,11 +1,15 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+admin_cluba:
+  user: admin
+  user_group: cluba_administrator
 
-# This model initially had no columns defined.  If you add columns to the
-# model remove the '{}' from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
-#
-one: {}
-# column: value
-#
-two: {}
-#  column: value
+webmaster_cluba:
+  user: webmaster
+  user_group: cluba_webmaster
+
+executive_cluba:
+  user: executive
+  user_group: cluba_executive
+
+global_admin_global:
+  user: global_admin
+  user_group: global_administrator

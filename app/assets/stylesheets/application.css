@@ -3,5 +3,22 @@
  * and any sub-directories. You're free to add application-wide styles to this file and they'll appear at
  * the top of the compiled file, but it's generally better to create a new file per style scope.
  *= require_self
- *= require_tree . 
+ *= require bootstrap_and_overrides
+ *= require clubs
+ *= require content_blocks
+ *= require courses
+ *= require events
+ *= require groups
+ *= require home
+ *= require map_standards
+ *= require maps
+ *= require memberships
+ *= require nav
+ *= require organizers
+ *= require pages
+ *= require privileges
+ *= require results
+ *= require roles
+ *= require series
+ *= require users
 */

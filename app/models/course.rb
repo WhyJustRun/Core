@@ -1,6 +1,10 @@
 class Course < ApplicationRecord
   has_many :results
   belongs_to :event
+
+  # Courses aren't club-scoped directly; they belong to a club through their event
+  scope :for_club, ->(club) { joins(:event).where(events: { club_id: club.id }) }
+
   def sorted_results
     if is_score_o then
         results.to_a.sort! { |a,b|

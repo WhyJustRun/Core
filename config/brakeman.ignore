@@ -1,0 +1,22 @@
+{
+  "ignored_warnings": [
+    {
+      "fingerprint": "5d41c99952d21e80fdb86aeae06ea42039c714d2ac801571a150f4c89f548bd9",
+      "note": "Intentional cross-domain redirect: sends the signed-in user to their club's own domain for the clubsite session handoff. The target host always comes from the clubs table, not from user input."
+    },
+    {
+      "fingerprint": "ec2fa90ab59aba7a6890bfdc5c76cf7e4b1b241b6dcd1f3a604735709a94af2e",
+      "note": "Short links exist to redirect to admin-configured external destinations stored in the short_links table."
+    },
+    {
+      "fingerprint": "6f385d255ed0c43e612d0bb77992a41e96ac6c9186d2510ca2616f5ac694982d",
+      "note": "MediaStore builds the path from the configured data folder, the club id, and an Integer-cast record id; no user-controlled path components."
+    },
+    {
+      "fingerprint": "d84924377155b41e094acae7404ec2e521629d86f97b0ff628e3d1b263f8101c",
+      "note": "Rails 7.2 end-of-life is a known issue; the framework upgrade is tracked as follow-up work to the clubsite consolidation."
+    }
+  ],
+  "updated": "2026-10-21 00:00:00 +0000",
+  "brakeman_version": "7.1.1"
+}

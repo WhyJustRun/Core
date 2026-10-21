@@ -1,0 +1,9 @@
+<%# locals: event %>
+<% { results_url: 'Results at ', routegadget_url: 'RouteGadget at ' }.each do |url_key, title_prefix| %>
+  <% url = event.public_send(url_key) %>
+  <% next if url.blank? %>
+  <div class="btn-group">
+    <a href="<%= url %>" class="btn btn-primary"><%= title_prefix %><%= URI.parse(url).host rescue url %></a>
+  </div>
+  <br/><br/>
+<% end %>

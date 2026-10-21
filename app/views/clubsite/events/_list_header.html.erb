@@ -1,0 +1,24 @@
+<%# locals: type ('calendar' or 'list') %>
+<div class="page-header">
+  <div class="pull-right">
+    <%= render 'clubsite/events/add_link' %>
+    <% if user_signed_in? && current_user.has_privilege?(Settings.privileges.event.planning, current_club) %>
+      <a href="/events/planner" class="btn btn-default">
+        <span class="glyphicon glyphicon-briefcase"></span>
+        Event Planner
+      </a>
+    <% end %>
+    <% if type == 'calendar' %>
+      <a href="/events/listing" class="btn btn-primary">
+        <span class="glyphicon glyphicon-list"></span>
+        List
+      </a>
+    <% elsif type == 'list' %>
+      <a href="/events/index" class="btn btn-primary">
+        <span class="glyphicon glyphicon-calendar"></span>
+        Calendar
+      </a>
+    <% end %>
+  </div>
+  <h1>Events</h1>
+</div>

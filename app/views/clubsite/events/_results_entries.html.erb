@@ -1,0 +1,44 @@
+<%# locals: course, results. The list of registrations for a course. %>
+<% if results.present? %>
+  <table class="table table-striped table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th width="100%"><%= results.length == 1 ? 'Entries' : "Entries (#{results.length})" %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% user_id = current_user&.id %>
+      <% results.each do |result| %>
+        <% own_entry = user_id.present? && (result.registrant_id == user_id || result.user_id == user_id) %>
+        <% modal_id = own_entry ? "change-comment-modal-#{result.id}" : nil %>
+        <tr>
+          <td>
+            <%= link_to result.user.name, profile_url(result.user) %>
+            <span class="pull-right">
+              <div class="btn-toolbar">
+                <% if own_entry %>
+                  <div class="btn-group">
+                    <button data-toggle="modal" data-target="#<%= modal_id %>" class="btn btn-xs btn-default"><%= result.registrant_comment.blank? ? 'Add' : 'Edit' %> Comment</button>
+                  </div>
+                  <div class="btn-group">
+                    <%= button_to "/courses/unregister/#{course.id}/#{result.user_id}", class: 'btn btn-xs btn-danger' do %>
+                      <span class="glyphicon glyphicon-minus"></span> Unregister
+                    <% end %>
+                  </div>
+                <% end %>
+                <% if result.registrant_comment.present? %>
+                  <div class="btn-group">
+                    <button class="btn btn-xs btn-default" data-container="body" data-placement="auto" data-toggle="tooltip" title="<%= result.registrant_comment %>"><span class="glyphicon glyphicon-comment"></span></button>
+                  </div>
+                <% end %>
+              </div>
+            </span>
+            <% if modal_id %>
+              <%= render 'change_comment_modal', result: result, modal_id: modal_id %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

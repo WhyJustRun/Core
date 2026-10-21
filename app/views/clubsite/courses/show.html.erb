@@ -1,0 +1,66 @@
+<% content_for :title, @course.name %>
+<% event = @course.event %>
+<div class="page-header">
+  <h1><%= @course.name %> <small>Course information</small></h1>
+</div>
+<div class="row">
+  <div class="col-sm-5">
+    <h3>Details</h3>
+    <table class="table table-striped table-bordered table-condensed">
+      <tr><th>Event</th><td><%= link_to event.name, clubsite_event_path(id: event.id) %></td></tr>
+      <tr><th>Date</th><td><%= event.local_date.strftime('%b %-d, %Y') %></td></tr>
+      <% if @course.distance.present? %>
+        <tr><th>Distance</th><td><%= number_with_delimiter(@course.distance) %> m</td></tr>
+      <% end %>
+      <% if @course.climb.present? %>
+        <tr><th>Climb</th><td><%= number_with_delimiter(@course.climb) %> m</td></tr>
+      <% end %>
+      <% if @course.is_score_o %>
+        <tr><th>Format</th><td>Score-O</td></tr>
+      <% end %>
+    </table>
+    <% if @course.description.present? %>
+      <h3>Description</h3>
+      <%= sanitize @course.description %>
+      <hr/>
+    <% end %>
+    <% if media_exists?('Course', @course.id) %>
+      <h3>Course map</h3>
+      <%= media_linked_image('Course', @course.id, '600x600', {}, class: 'fitting-image') %>
+    <% end %>
+  </div>
+  <div class="col-sm-7">
+    <h3>Results</h3>
+    <% results = @course.sorted_results %>
+    <% if results.any? %>
+      <table class="table table-striped table-bordered table-condensed">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <% if @course.is_score_o %>
+              <th>Points</th>
+            <% end %>
+            <th>Time</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% results.each_with_index do |result, index| %>
+            <tr>
+              <td><%= index + 1 if result.status == :ok %></td>
+              <td><%= result.user ? link_to(result.user.name, profile_url(result.user)) : '' %></td>
+              <% if @course.is_score_o %>
+                <td><%= result.score_points %></td>
+              <% end %>
+              <td><%= result.time&.strftime('%-H:%M:%S') %></td>
+              <td><%= result.readable_status %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <p>No results for this course.</p>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,53 @@
+<% content_for :title, "#{@event.name} Entries" %>
+<h2><%= @event.name %> on <%= formatted_event_date(@event) %></h2>
+<% if @event.courses.any? %>
+  <% @event.courses.each do |course| %>
+    <% results = @sorted_results[course.id] %>
+    <h3>Course: <%= course.name %> (<%= results.length %> participants)</h3>
+    <table>
+      <thead>
+        <tr>
+          <th width="1px">&nbsp;</th>
+          <th width="1px">Name</th>
+          <th>Member</th>
+          <th width="1px" style="white-space:nowrap">SI number</th>
+          <th>Comment</th>
+          <th>X</th>
+          <th width="25%">Start time</th>
+          <th width="25%">Finish time</th>
+          <th width="25%">Total time</th>
+        </tr>
+      </thead>
+      <% counter = 0 %>
+      <% results.each do |result| %>
+        <% counter += 1 %>
+        <tr>
+          <td><%= counter %></td>
+          <td><nobr><%= result.user.name %></nobr></td>
+          <td><%= '✓' if result.user.member_of?(current_club, Date.current.year) %></td>
+          <td><%= result.user.si_number %></td>
+          <td style="font-size:x-small"><%= result.registrant_comment %></td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr>
+      <% end %>
+      <% Clubsite::EventsController::NUM_BLANK_ENTRIES.times do |i| %>
+        <tr>
+          <td><%= counter + i + 1 %></td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr>
+      <% end %>
+    </table>
+  <% end %>
+<% else %>
+  No courses defined
+<% end %>

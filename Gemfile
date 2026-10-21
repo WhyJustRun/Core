@@ -1,7 +1,5 @@
 source 'http://rubygems.org'
 
-gem 'bundle'
-
 gem 'rails', '~> 7.1'
 gem 'mysql2', '~> 0.5.3'
 
@@ -9,14 +7,12 @@ gem 'mysql2', '~> 0.5.3'
 gem 'puma', '~> 6.4'
 
 # MySQL Session store
-gem "activerecord-session_store", "~> 2.1.0"
 
 # Asset pipeline
 gem 'sass-rails', '~> 6.0.0'
 gem "coffee-script", "~> 2.4.1"
 gem "coffee-rails", "~> 5.0.0"
 gem "uglifier", "~> 4.2.0"
-gem "webpacker", ">= 5.4.4"
 gem 'tzinfo-data'
 
 # Authentication
@@ -56,5 +52,17 @@ gem "exception_notification", "~> 4.5"
 # Authorization
 gem "pundit", "~> 2.3.2"
 
+# Image thumbnail generation (requires ImageMagick)
+gem 'image_processing', '~> 1.13'
+
 # Geo
 gem 'haversine', '~> 0.3.2'
+
+group :development, :test do
+  gem 'brakeman', require: false
+end
+
+group :test do
+  gem 'capybara'
+  gem 'selenium-webdriver'
+end

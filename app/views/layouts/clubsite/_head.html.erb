@@ -1,0 +1,16 @@
+<meta charset="utf-8">
+<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<%# Empty: the core APIs are same-origin now that club sites are served by this app %>
+<meta name="wjr.core.domain" content="">
+<meta name="wjr.clubsite.club.id" content="<%= current_club.id %>">
+<meta name="wjr.google-maps-key" content="<%= Settings.googleMapsApiKey %>">
+<%= csrf_meta_tags %>
+<%= stylesheet_link_tag 'clubsite', media: 'all' %>
+<%= render 'layouts/clubsite/series_css' %>
+<% if club_resources['style'].present? %>
+  <%# Custom club CSS uploaded through the admin interface; must load after the bundle so it wins %>
+  <%= stylesheet_link_tag club_resources['style'] %>
+<% end %>
+<%= yield :open_graph %>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">

@@ -1,0 +1,8 @@
+<%# locals: year, month (1-12), day %>
+<div class="wjr-calendar"
+     data-calendar-year="<%= year %>"
+     data-calendar-month="<%= month.to_i - 1 %>"
+     data-calendar-day="<%= day %>">
+</div>
+<% ical_url = core_url("/club/#{current_club.id}/events.ics").sub(%r{\Ahttps?://}, 'webcal://') %>
+iCal feed: <a href="<%= ical_url %>"><%= ical_url %></a> - you can use this to get club events in your Google Calendar, Calendar app, Outlook, etc.

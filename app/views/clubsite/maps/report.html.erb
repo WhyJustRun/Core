@@ -1,0 +1,36 @@
+<div class="page-header">
+  <h1>List of maps</h1>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-condensed">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Name</th>
+        <th>Map standard</th>
+        <th>Created</th>
+        <th>Modified</th>
+        <th>Scale</th>
+        <th>Latitude</th>
+        <th>Longitude</th>
+        <th>Thumbnail</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @maps.each_with_index do |map, index| %>
+        <tr>
+          <td><%= index + 1 %></td>
+          <td><%= link_to map.name, clubsite_map_path(id: map.id) %></td>
+          <td><%= map.map_standard&.name %></td>
+          <td><%= map.created&.strftime('%Y-%m-%d') %></td>
+          <td><%= map.modified&.strftime('%Y-%m-%d') %></td>
+          <td><%= "1:#{number_with_delimiter(map.scale)}" if map.scale.present? && map.scale.nonzero? %></td>
+          <td><%= format('%.3f', map.lat.to_f) %></td>
+          <td><%= format('%.3f', map.lng.to_f) %></td>
+          <td><%= media_image('Map', map.id, '60x60') if media_exists?('Map', map.id, '60x60') %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

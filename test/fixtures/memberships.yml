@@ -1,11 +1,17 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+cluba_member_current:
+  user: member
+  year: 2026
+  created: 2026-01-05 10:00:00
+  club: cluba
 
-# This model initially had no columns defined.  If you add columns to the
-# model remove the '{}' from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
-#
-one: {}
-# column: value
-#
-two: {}
-#  column: value
+cluba_member_previous:
+  user: member
+  year: 2025
+  created: 2025-01-08 09:30:00
+  club: cluba
+
+clubb_global_admin:
+  user: global_admin
+  year: 2026
+  created: 2026-01-02 12:00:00
+  club: clubb

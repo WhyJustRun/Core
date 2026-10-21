@@ -1,0 +1,51 @@
+<% content_for :title, 'Edit Series' %>
+<header class="page-header">
+  <h1>Edit Series</h1>
+</header>
+
+<% edit_url = @series.persisted? ? "/series/edit/#{@series.id}" : '/series/edit' %>
+<%= form_with model: @series, url: edit_url, html: { class: 'form-horizontal' } do |f| %>
+  <div class="form-group">
+    <label class="control-label col-sm-2">Acronym</label>
+    <div class="col-sm-10">
+      <%= f.text_field :acronym, class: 'form-control' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label col-sm-2">Name</label>
+    <div class="col-sm-10">
+      <%= f.text_field :name, class: 'form-control' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label col-sm-2">Color</label>
+    <div class="col-sm-10">
+      <div class="input-group color-picker">
+        <%= f.text_field :color, value: @series.color.presence || 'rgba(255,0,0,1)', class: 'form-control' %>
+        <span class="input-group-addon"><i></i></span>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label col-sm-2">Information</label>
+    <div class="col-sm-10">
+      <%= f.text_area :information, class: 'wjr-wysiwyg' %>
+      <div class="help-block">
+        <p>Information specific to the series is shown on event pages.</p>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label col-sm-2">Is Current</label>
+    <div class="col-sm-10">
+      <div class="checkbox">
+        <%= f.check_box :is_current %>
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <%= f.submit 'Save', class: 'btn btn-primary' %>
+    </div>
+  </div>
+<% end %>

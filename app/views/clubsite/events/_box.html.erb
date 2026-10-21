@@ -1,0 +1,20 @@
+<%# locals: location, date, link, style (series id or nil), map_id %>
+<% has_picture = map_id.present? && media_exists?('Map', map_id, '60x60') %>
+<div class="event-box <%= 'has-picture' if has_picture %>">
+  <a href="<%= link %>">
+    <div class="event-box-inner">
+      <% if has_picture %>
+        <div class="event-box-icon hidden-sm">
+          <%= media_image('Map', map_id, '60x60') %>
+        </div>
+      <% end %>
+      <div class="event-box-left">
+        <div class="location series-<%= style %>">
+          <%= location %>
+        </div>
+
+        <div class="date date-text"><%= date %></div>
+      </div>
+    </div>
+  </a>
+</div>

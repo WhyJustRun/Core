@@ -1,0 +1,23 @@
+/* Need this for the floating menu bar */
+body {
+    padding-top: 60px; 
+}
+@media (max-width: 979px) {
+    body {
+        padding-top: 0px; 
+  }
+}
+
+#content {
+    padding-left: 20px;
+    padding-bottom: 15px;
+    min-height: 0%;
+    padding-top: 0;
+    background-color: #fff;
+}
+
+.page-header {
+    border-bottom: 1px solid #AAA;
+    margin: 0px;
+}
+

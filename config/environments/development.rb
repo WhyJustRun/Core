@@ -78,7 +78,11 @@ Rails.application.configure do
     IPAddr.new("0.0.0.0/0"),        # All IPv4 addresses.
     IPAddr.new("::/0"),             # All IPv6 addresses.
     "localhost",                    # The localhost reserved domain.
+    ".localhost",                   # Development club domains, e.g. demo.localhost:3000
     "host.docker.internal:3000",
     ENV["RAILS_DEVELOPMENT_HOSTS"]  # Additional comma-separated hosts for development.
   ]
+
+  # Club sites tell crawlers to stay away outside production
+  config.x.clubsite_robots_hidden = true
 end

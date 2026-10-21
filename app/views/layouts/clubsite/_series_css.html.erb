@@ -1,0 +1,9 @@
+<% cache ['series_css', current_club], expires_in: 1.hour do %>
+  <style type="text/css">
+    <% current_club.series.where.not(color: [nil, '']).each do |series| %>
+      .series-<%= series.id %> {
+        color: <%= series.color %>;
+      }
+    <% end %>
+  </style>
+<% end %>

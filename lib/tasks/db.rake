@@ -11,8 +11,8 @@ namespace :db do
       country: "CAN",
       timezone: "America/Vancouver",
       visible: 1,
-      url: 'http://localhost:3001',
-      domain: "localhost:3001",
+      url: 'http://demo.localhost:3000',
+      domain: "demo.localhost:3000",
       domain_protocol: 'http',
       club_category: ClubCategory.find_by(name: 'Club'),
       layout: "default",
@@ -37,5 +37,24 @@ namespace :db do
     Privilege.create!(user: admin, user_group: admin_group)
     Privilege.create!(user: webmaster, user_group: webmaster_group)
     Privilege.create!(user: executive, user_group: executive_group)
+
+    # A second club served by the legacy PHP Clubsite dev setup (localhost:3001),
+    # useful for comparing the two implementations side by side.
+    Club.create!(
+      name: "Legacy Orienteering Club",
+      acronym: "LOC",
+      location: "The Cloud",
+      lat: 49,
+      lng: -123,
+      country: "CAN",
+      timezone: "America/Vancouver",
+      visible: 1,
+      url: 'http://localhost:3001',
+      domain: "localhost:3001",
+      domain_protocol: 'http',
+      club_category: ClubCategory.find_by(name: 'Club'),
+      layout: "default",
+      use_map_urls: 1
+    )
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_31_185542) do
+ActiveRecord::Schema[7.2].define(version: 2026_07_31_120001) do
   create_table "club_categories", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.string "name"
   end
@@ -58,7 +58,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_31_185542) do
     t.index ["event_id"], name: "event_id"
   end
 
-  create_table "cross_app_sessions", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
+  create_table "cross_app_sessions", id: :integer, charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "cross_app_session_id", null: false
     t.datetime "created_at", precision: nil, null: false
@@ -233,15 +233,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_31_185542) do
     t.boolean "is_current", default: true
     t.integer "club_id"
     t.index ["club_id"], name: "club_id"
-  end
-
-  create_table "sessions", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
-    t.string "session_id", null: false
-    t.text "data"
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
-    t.index ["session_id"], name: "index_sessions_on_session_id"
-    t.index ["updated_at"], name: "index_sessions_on_updated_at"
   end
 
   create_table "short_links", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|

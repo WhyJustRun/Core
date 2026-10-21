@@ -1,0 +1,30 @@
+<% content_for :title, @event.name %>
+<% if @event.custom_url.blank? %>
+  <%= render 'open_graph_tags', event: @event %>
+  <%= render 'header', event: @event, can_edit: @can_edit %>
+
+  <div class="row">
+    <% if !@has_results %>
+      <%# Pre-event template %>
+      <div class="col-sm-8">
+        <%= render 'info', event: @event %>
+      </div>
+
+      <div class="col-sm-4">
+        <%= render 'registration_section', event: @event, can_edit: @can_edit %>
+      </div>
+    <% else %>
+      <%# Post-event template %>
+      <div class="col-sm-6">
+        <%= render 'results_section', event: @event, can_edit: @can_edit %>
+      </div>
+      <div class="col-sm-6">
+        <%= render 'info', event: @event %>
+      </div>
+    <% end %>
+  </div>
+
+  <%= render 'clubsite/shared/flickr_photos', event_id: @event.id %>
+<% else %>
+  <%= render 'redirect_view', event: @event, can_edit: @can_edit %>
+<% end %>

@@ -1,0 +1,106 @@
+<% content_for :title, 'Edit Club Information' %>
+<header class="page-header">
+  <h1>Edit Club Information</h1>
+</header>
+<%= form_with model: @club, url: '/clubs/edit', html: { class: 'form-horizontal', 'data-validate' => 'ketchup' } do |f| %>
+  <div class="form-group">
+    <label class="col-sm-2 control-label">Name</label>
+    <div class="col-sm-10">
+      <%= f.text_field :name, class: 'form-control', 'data-validate' => 'validate(required)', required: 'required' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-2 control-label">Acronym</label>
+    <div class="col-sm-10">
+      <%= f.text_field :acronym, class: 'form-control', 'data-validate' => 'validate(required)', required: 'required' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-2 control-label">Location</label>
+    <div class="col-sm-10">
+      <%= f.text_field :location, class: 'form-control', 'data-validate' => 'validate(required)', required: 'required' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-2 control-label">Description</label>
+    <div class="col-sm-10">
+      <%= f.text_area :description, class: 'form-control' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-2 control-label">Website URL</label>
+    <div class="col-sm-10">
+      <%= f.text_field :url, class: 'form-control', 'data-validate' => 'validate(required)', required: 'required' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-2 control-label">Facebook Page URL</label>
+    <div class="col-sm-10">
+      <%= f.text_field :facebook_page_url, class: 'form-control' %>
+      <span class="help-block">Used on the home page for the Facebook Like Button</span>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-2 control-label">Juicer Feed URL</label>
+    <div class="col-sm-10">
+      <%= f.text_field :juicer_feed_url, class: 'form-control', placeholder: 'https://www.juicer.io/feeds/orienteeringcanada' %>
+      <span class="help-block">Used on the home page for the News feed. You can set up/customize your feed by <a href="https://www.juicer.io/">creating an account at juicer.io</a>.</span>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-2 control-label">Page Layout</label>
+    <div class="col-sm-10">
+      <%= f.select :layout,
+                   [['Active Club Layout', 'default'],
+                    ['Active Club Layout - Past/Upcoming Events By Series', 'series'],
+                    ['Inactive Club Layout', 'other']],
+                   {}, class: 'form-control' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-2 control-label">Timezone</label>
+    <div class="col-sm-10">
+      <%= f.select :timezone, options_for_select(@timezones, @club.timezone), {}, class: 'form-control' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-2 control-label">Parent Organization</label>
+    <div class="col-sm-10">
+      <%= f.select :parent_id, options_from_collection_for_select(@clubs, :id, :name, @club.parent_id),
+                   { include_blank: 'Choose the parent organisation of the club' }, class: 'form-control' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-2 control-label">Type</label>
+    <div class="col-sm-10">
+      <%= f.collection_select :club_category_id, @club_categories, :id, :name, {}, class: 'form-control' %>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="col-sm-2 control-label">Visible</label>
+    <div class="col-sm-10">
+      <div class="checkbox">
+        <%= f.check_box :visible %>
+      </div>
+    </div>
+  </div>
+  <fieldset class="form-group">
+    <label class="col-sm-2 control-label">Location</label>
+    <div class="col-sm-10">
+      <%= f.hidden_field :lat, id: 'ClubLat' %>
+      <%= f.hidden_field :lng, id: 'ClubLng' %>
+      <div class="draggable-marker-map"
+           data-lat-element="#ClubLat"
+           data-lng-element="#ClubLng"
+           data-zoom="10"
+           style="height: 400px; width: 100%">
+      </div>
+      <p class="help-block">Drag the marker to the approximate location of the club</p>
+    </div>
+  </fieldset>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <%= f.submit 'Save', class: 'btn btn-primary' %>
+    </div>
+  </div>
+<% end %>

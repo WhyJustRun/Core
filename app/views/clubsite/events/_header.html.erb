@@ -1,0 +1,52 @@
+<%# locals: event, can_edit %>
+<header class="page-header">
+  <div itemscope itemtype="http://schema.org/Place">
+    <meta itemprop="name" content="<%= event.name %>" />
+    <div itemprop="geo" itemscope itemtype="http://schema.org/GeoCoordinates">
+      <meta itemprop="latitude" content="<%= event.lat %>" />
+      <meta itemprop="longitude" content="<%= event.lng %>" />
+    </div>
+  </div>
+  <div class="pull-right btn-toolbar">
+    <div class="btn-group">
+      <a class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#">
+        <span class="glyphicon glyphicon-download-alt"></span> Export
+        <span class="caret"></span>
+      </a>
+      <ul class="dropdown-menu">
+        <% if can_edit %>
+          <li><a href="/events/printableEntries/<%= event.id %>">Printable List</a></li>
+        <% end %>
+        <li><a href="<%= core_url("/iof/2.0.3/events/#{event.id}/start_list.xml") %>">Start List (IOF XML 2)</a></li>
+        <li><a href="<%= core_url("/iof/2.0.3/events/#{event.id}/result_list.xml") %>">Result List (IOF XML 2)</a></li>
+        <li><a href="<%= core_url("/iof/3.0/events/#{event.id}/result_list.xml") %>">Result List (IOF XML 3)</a></li>
+        <li><a href="<%= core_url("/iof/3.0/events/#{event.id}/entry_list.xml") %>">Entry List (IOF XML 3)</a></li>
+      </ul>
+    </div>
+    <% if can_edit %>
+      <div class="btn-group">
+        <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+          <span class="glyphicon glyphicon-cog"></span> Edit
+          <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+          <li><a href="/events/edit/<%= event.id %>">Event</a></li>
+          <li><a href="/events/edit/<%= event.id %>">Courses</a></li>
+          <li><a href="/events/editResults/<%= event.id %>">Registrations/Results</a></li>
+          <li><a href="/events/uploadMaps/<%= event.id %>">Course Maps</a></li>
+        </ul>
+      </div>
+
+      <div class="btn-group">
+        <%= button_to "/events/delete/#{event.id}", class: 'btn btn-danger',
+                      form: { onsubmit: 'return confirm("Delete this event (including any defined organizers, courses and results)?");' } do %>
+          <span class="glyphicon glyphicon-trash"></span>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
+  <h1 class="series-<%= event.series_id %> event-header"><%= event.name %> <small class="series-<%= event.series_id %> event-header"><%= event.series&.name %></small></h1>
+
+  <h2 class="event-header"><%= formatted_event_date(event) %></h2>
+</header>

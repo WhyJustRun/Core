@@ -1,0 +1,28 @@
+<div class="page-header">
+  <div class="pull-right">
+    <div class="btn-toolbar">
+      <div class="btn-group"><a href="/maps/report" class="btn btn-info"><span class="glyphicon glyphicon-list"></span> Maps</a></div>
+      <% if @edit %>
+        <div class="btn-group"><a href="/maps/edit" class="btn btn-success"><span class="glyphicon-plus"></span> Map</a></div>
+      <% end %>
+    </div>
+  </div>
+
+  <h1>Maps</h1>
+</div>
+<div class="row">
+  <div class="col-sm-4">
+    <%= render_content_blocks 'general_maps_information', nil, '<hr class="divider" />' %>
+  </div>
+  <div class="col-sm-8">
+    <div class="multi-marker-map"
+         data-lat="<%= current_club.lat %>"
+         data-lng="<%= current_club.lng %>"
+         data-zoom="10"
+         data-fetch-url="/api/maps.json"
+         data-fetch-entity="maps"
+         data-fetch-markerimages="/img/maps-markercluster/m"
+         style="height: 400px; width: 100%">
+    </div>
+  </div>
+</div>
