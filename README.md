@@ -1,8 +1,6 @@
 # WhyJustRun Core
 
-Source code for [whyjustrun.ca](https://whyjustrun.ca). Provides primarily authentication, IOF XML APIs, and cross-club pages.
-
-See also [WhyJustRun Clubsite](https://github.com/WhyJustRun/Clubsite), which provides a web app for clubs.
+Source code for [whyjustrun.ca](https://whyjustrun.ca) and club websites.
 
 ## Usage
 
