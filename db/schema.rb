@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_07_31_120001) do
+ActiveRecord::Schema[7.2].define(version: 2026_10_21_210000) do
   create_table "club_categories", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|
     t.string "name"
   end
@@ -56,15 +56,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_07_31_120001) do
     t.text "map_url", size: :tiny
     t.boolean "is_score_o", default: false, null: false
     t.index ["event_id"], name: "event_id"
-  end
-
-  create_table "cross_app_sessions", id: :integer, charset: "utf8mb3", collation: "utf8mb3_general_ci", force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.string "cross_app_session_id", null: false
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
-    t.index ["cross_app_session_id"], name: "index_cross_app_sessions_on_cross_app_session_id", unique: true
-    t.index ["user_id"], name: "index_cross_app_sessions_on_user_id"
   end
 
   create_table "event_classifications", id: :integer, charset: "utf8mb3", collation: "utf8mb3_unicode_ci", force: :cascade do |t|

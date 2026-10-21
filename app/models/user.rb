@@ -10,7 +10,6 @@ class User < ApplicationRecord
   has_many :officials
   has_many :privileges
   has_many :resources
-  has_many :cross_app_sessions
   has_many :memberships
   belongs_to :club
 

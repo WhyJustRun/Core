@@ -2,11 +2,6 @@
 # Many of these configuration options can be set straight in your model.
 Devise.setup do |config|
 
-  Warden::Manager.before_logout do |user, auth, opts|
-    id = auth.env['rack.session'][:cross_app_session_id]
-    CrossAppSession.delete_with_id(id) unless id.nil?
-  end
-
   config.secret_key = Settings.deviseSecretKey
 
   # ==> Mailer Configuration
@@ -229,8 +224,6 @@ Devise.setup do |config|
   # change the failure app, you can configure them inside the config.warden block.
 
   config.warden do |manager|
-    manager.strategies.add(:cross_app_session, Devise::Strategies::CrossAppSession)
-    manager.default_strategies(scope: :user).unshift :cross_app_session
   end
 
   # ==> Mountable engine configurations
