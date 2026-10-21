@@ -1,29 +1,38 @@
+# Fixture users can sign in through the browser with password123. Keeping the
+# hash in the fixture makes the password visible to the test server without
+# relying on an uncommitted update from the test process.
 admin:
   name: Alice Admin
   email: admin@example.com
+  encrypted_password: $2a$12$1.I3ddOe.mC8EEKlg06/YuX0ckSnxNupXAmX3lJANv5TKHFOWKn/a
   club: cluba
 
 webmaster:
   name: Wendy Webmaster
   email: webmaster@example.com
+  encrypted_password: $2a$12$1.I3ddOe.mC8EEKlg06/YuX0ckSnxNupXAmX3lJANv5TKHFOWKn/a
   club: cluba
 
 executive:
   name: Evan Executive
   email: executive@example.com
+  encrypted_password: $2a$12$1.I3ddOe.mC8EEKlg06/YuX0ckSnxNupXAmX3lJANv5TKHFOWKn/a
   club: cluba
 
 member:
   name: Mary Member
   email: member@example.com
+  encrypted_password: $2a$12$1.I3ddOe.mC8EEKlg06/YuX0ckSnxNupXAmX3lJANv5TKHFOWKn/a
   club: cluba
 
 organizer:
   name: Oscar Organizer
   email: organizer@example.com
+  encrypted_password: $2a$12$1.I3ddOe.mC8EEKlg06/YuX0ckSnxNupXAmX3lJANv5TKHFOWKn/a
   club: cluba
 
 global_admin:
   name: Gary Global
   email: global@example.com
+  encrypted_password: $2a$12$1.I3ddOe.mC8EEKlg06/YuX0ckSnxNupXAmX3lJANv5TKHFOWKn/a
   club: clubb

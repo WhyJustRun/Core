@@ -23,7 +23,11 @@
             <td>
               <% if last_event %>
                 <a href="/events/view/<%= last_event.id %>" target="_blank">
-                  <%= time_ago_in_words(last_event.date) %> ago
+                  <% if last_event.date > Time.current %>
+                    in <%= time_ago_in_words(last_event.date) %>
+                  <% else %>
+                    <%= time_ago_in_words(last_event.date) %> ago
+                  <% end %>
                 </a>
               <% else %>
                 Never used

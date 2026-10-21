@@ -4,6 +4,11 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   CHROMIUM_BIN = '/usr/bin/chromium-browser'.freeze
   CHROMEDRIVER = '/usr/bin/chromedriver'.freeze
 
+  # The container environment sets WJR_HOST to localhost:3000 for the
+  # development server. System tests run on Capybara's port instead, so keep
+  # the configured host name but drop the development port.
+  Settings.host = Settings.host.split(':').first if Settings.host.include?(':')
+
   # Use the system chromedriver when present (the Docker image installs a
   # matching chromium + chromedriver pair); otherwise Selenium Manager picks
   # one, which hangs inside the container.
@@ -40,6 +45,13 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
     # The browser can only reach the test server over plain http, so the SSO
     # redirects onto club domains must not use the fixtures' https protocol.
     Club.where(domain_protocol: 'https').update_all(domain_protocol: 'http')
+
+    # Mail links must point at Capybara's test server, not the development
+    # port from WJR_HOST.
+    [Rails.application.routes.default_url_options, ActionMailer::Base.default_url_options].each do |options|
+      options[:host] = Settings.host
+      options[:port] = Capybara.server_port
+    end
   end
 
   # Browser console errors almost always mean broken JS wiring; fail loudly.
@@ -76,7 +88,9 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   end
 
   def sign_in_through_browser(user, password: 'password123')
-    user.update!(password: password, password_confirmation: password)
+    # Fixture users already carry the password123 hash. Updating it here would
+    # run inside the test transaction and would not be visible to the Capybara
+    # server's database connection.
     visit_apex '/users/sign_in'
     # The page carries a second user[email] field (forgot password)
     within "form[action='/users/sign_in']" do

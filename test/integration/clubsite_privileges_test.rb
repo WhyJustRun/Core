@@ -46,6 +46,41 @@ class ClubsitePrivilegesTest < ActionDispatch::IntegrationTest
     assert_redirected_to '/'
   end
 
+  test 'the webmaster can change an existing privilege group inline' do
+    sign_in users(:webmaster)
+    privilege = privileges(:executive_cluba)
+    post "/privileges/update/#{privilege.id}",
+         params: { privilege: { group_id: groups(:cluba_webmaster).id } }
+    assert_redirected_to '/privileges/'
+    assert_equal groups(:cluba_webmaster), privilege.reload.user_group
+  end
+
+  test 'the webmaster cannot promote a privilege above their level' do
+    sign_in users(:webmaster)
+    privilege = privileges(:executive_cluba)
+    post "/privileges/update/#{privilege.id}",
+         params: { privilege: { group_id: groups(:cluba_administrator).id } }
+    assert_redirected_to '/'
+    assert_equal groups(:cluba_executive), privilege.reload.user_group
+  end
+
+  test 'the webmaster can grant to a user from another club' do
+    sign_in users(:webmaster)
+    assert_difference -> { Privilege.count }, 1 do
+      post '/privileges/add',
+           params: { privilege: { user_id: users(:global_admin).id, group_id: groups(:cluba_executive).id } }
+    end
+    assert_redirected_to '/privileges/'
+    assert Privilege.exists?(user_id: users(:global_admin).id, group_id: groups(:cluba_executive).id)
+  end
+
+  test 'the update form renders in the current privileges table' do
+    sign_in users(:webmaster)
+    get '/privileges'
+    assert_response :success
+    assert_select "form[action='/privileges/update/#{privileges(:executive_cluba).id}'] select[name='privilege[group_id]']"
+  end
+
   test 'the webmaster can grant the executive group' do
     sign_in users(:webmaster)
     assert_difference -> { Privilege.count }, 1 do

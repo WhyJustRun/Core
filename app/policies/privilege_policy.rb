@@ -15,6 +15,10 @@ class PrivilegePolicy
     edit_privileges?
   end
 
+  def update?
+    edit_privileges?
+  end
+
   def destroy?
     edit_privileges?
   end

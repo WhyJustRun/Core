@@ -29,6 +29,14 @@ class ClubsiteEventEditorTest < ActionDispatch::IntegrationTest
     assert_equal true, courses.find { |course| course['name'] == 'Score Course' }['isScoreO']
   end
 
+  test "edit form leaves the computed participant count blank" do
+    sign_in users(:executive)
+    get "/events/edit/#{events(:cluba_race).id}"
+    input = css_select('input#EventNumberOfParticipants').first
+    assert_not_nil input
+    assert_empty input['value'].to_s
+  end
+
   test "edit form redirects a plain member" do
     sign_in users(:member)
     get "/events/edit/#{events(:cluba_race).id}"
@@ -205,9 +213,23 @@ class ClubsiteEventEditorTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test "planner labels future map use as in the future" do
+    travel_to Time.utc(2025, 7, 1, 12) do
+      Event.create!(club: clubs(:cluba), name: 'Future Race',
+                    event_classification_id: event_classifications(:club).id,
+                    map: maps(:cluba_forest), date: Time.utc(2025, 7, 3, 17))
+      sign_in users(:executive)
+      get '/events/planner'
+      assert_response :success
+      assert_select 'td', text: 'in 2 days'
+      assert_select 'td', text: '2 days ago', count: 0
+    end
+  end
+
   # --- Printable entries ---
 
-  test "printableEntries renders the printable layout with per-course entries" do
+  test "printableEntries renders for the event organizer" do
+    sign_in users(:organizer)
     get "/events/printableEntries/#{events(:cluba_race).id}"
     assert_response :success
     assert_match 'clubsite_printable', response.body
@@ -219,6 +241,38 @@ class ClubsiteEventEditorTest < ActionDispatch::IntegrationTest
       get "/events/printableEntries/#{events(:cluba_race).id}"
     end
     assert_select 'td', text: '✓'
+  end
+
+  test "printableEntries requires an event organizer or event editor" do
+    event = events(:cluba_race)
+
+    get "/events/printableEntries/#{event.id}"
+    assert_response :redirect
+    assert_redirected_to '/'
+
+    sign_in users(:member)
+    get "/events/printableEntries/#{event.id}"
+    assert_response :redirect
+    assert_redirected_to '/'
+
+    sign_in users(:executive)
+    get "/events/printableEntries/#{event.id}"
+    assert_response :success
+  end
+
+  test "printable list link is only shown to event organizers and editors" do
+    event = events(:cluba_race)
+
+    get "/events/view/#{event.id}"
+    assert_select "a[href='/events/printableEntries/#{event.id}']", count: 0
+
+    sign_in users(:member)
+    get "/events/view/#{event.id}"
+    assert_select "a[href='/events/printableEntries/#{event.id}']", count: 0
+
+    sign_in users(:organizer)
+    get "/events/view/#{event.id}"
+    assert_select "a[href='/events/printableEntries/#{event.id}']", count: 1
   end
 
   # --- Upload maps ---

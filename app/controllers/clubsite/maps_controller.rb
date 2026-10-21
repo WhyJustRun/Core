@@ -110,6 +110,20 @@ module Clubsite
       end
     end
 
+    def generate_banner
+      map = current_club.maps.find(params[:id])
+      authorize map, :edit?
+
+      store = map_media_store
+      if store.exists?(map.id)
+        store.create_cropped_thumbnail(map.id, '60x60')
+        flash[:success] = 'The banner has been regenerated.'
+      else
+        flash[:danger] = 'Upload a map image before generating a banner.'
+      end
+      redirect_to "/maps/edit/#{map.id}"
+    end
+
     def destroy
       map = current_club.maps.find(params[:id])
       authorize map
@@ -117,16 +131,6 @@ module Clubsite
       map_media_store.delete(map.id)
       flash[:success] = 'The map was deleted.'
       redirect_to '/maps/'
-    end
-
-    # Posted by the draggable marker on the edit form when the marker is
-    # dropped. The legacy action had no privilege check; it now requires the
-    # same maps.edit privilege as the rest of the editor.
-    def update_location
-      map = current_club.maps.find(params[:id])
-      authorize map
-      map.update!(lat: params[:lat], lng: params[:lng])
-      head :ok
     end
 
     private

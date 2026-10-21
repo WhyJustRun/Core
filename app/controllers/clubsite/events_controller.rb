@@ -129,6 +129,7 @@ module Clubsite
     # Printable per-course entry list for use at the registration desk
     def printable_entries
       @event = current_club.events.includes(courses: { results: :user }).find(params[:id])
+      authorize @event, :update?
       @sorted_results = @event.courses.index_by(&:id)
                               .transform_values { |course| course.results.sort_by { |result| result.user.name } }
       render layout: 'clubsite/printable'
@@ -267,7 +268,7 @@ module Clubsite
       params.require(:event).permit(
         :name, :event_classification_id, :series_id, :map_id, :description,
         :custom_url, :registration_url, :results_url, :routegadget_url,
-        :facebook_url, :attackpoint_url, :number_of_participants, :is_ranked,
+        :facebook_url, :attackpoint_url, :number_of_participants,
         :lat, :lng
       )
     end

@@ -54,8 +54,9 @@
     <fieldset class="form-group">
       <label class="control-label col-sm-2">Banner image</label>
       <div class="col-sm-10">
+        <%= link_to 'Generate', "/maps/generateBanner/#{@map.id}", class: 'btn btn-primary' %><br/><br/>
         <%= media_image('Map', @map.id, '60x60', width: '60px') %>
-        <p class="help-block">The banner is regenerated from a random crop of the map image on every upload.</p>
+        <p class="help-block">The banner is generated from a random crop of the map image. Use Generate to choose a new crop.</p>
       </div>
     </fieldset>
   <% end %>
@@ -67,7 +68,6 @@
       <div class="draggable-marker-map"
            data-lat-element="#MapLat"
            data-lng-element="#MapLng"
-           <% if @map.persisted? %>data-update-url="/maps/update/<%= @map.id %>"<% end %>
            data-zoom="10"
            style="height: 400px; width: 100%">
       </div>

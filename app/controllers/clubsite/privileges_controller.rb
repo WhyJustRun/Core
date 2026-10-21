@@ -12,9 +12,6 @@ module Clubsite
                              .where(groups: { id: @groups.select(:id) })
                              .includes(:user, :user_group)
                              .order('groups.access_level DESC, users.name')
-      # A plain club-member select for now; the person-picker autocomplete
-      # arrives with the users JSON endpoint in the registration port.
-      @users = current_club.users.merge(User.find_all_real).order(:name)
     end
 
     def create
@@ -35,12 +32,31 @@ module Clubsite
       redirect_to '/privileges/'
     end
 
+    def update
+      authorize current_club, policy_class: PrivilegePolicy
+
+      privilege = scoped_privileges.find(params[:id])
+      raise Pundit::NotAuthorizedError if privilege.user_group.access_level > acting_level
+
+      group = Group.where(club_id: current_club.id).find(privilege_params[:group_id])
+      raise Pundit::NotAuthorizedError if group.access_level > acting_level
+
+      if Privilege.where(user_id: privilege.user_id, group_id: group.id)
+                  .where.not(id: privilege.id)
+                  .exists?
+        flash[:notice] = "#{privilege.user.name} already has the #{group.name} privilege."
+      elsif privilege.update(user_group: group)
+        flash[:success] = 'The privilege has been updated.'
+      else
+        flash[:danger] = 'The privilege could not be updated.'
+      end
+      redirect_to '/privileges/'
+    end
+
     def destroy
       authorize current_club, policy_class: PrivilegePolicy
 
-      privilege = Privilege.joins(:user_group)
-                           .where(groups: { club_id: current_club.id })
-                           .find(params[:id])
+      privilege = scoped_privileges.find(params[:id])
       raise Pundit::NotAuthorizedError if privilege.user_group.access_level > acting_level
 
       privilege.destroy
@@ -62,6 +78,10 @@ module Clubsite
       Group.where(club_id: current_club.id)
            .up_to_level(acting_level)
            .order(access_level: :desc)
+    end
+
+    def scoped_privileges
+      Privilege.joins(:user_group).where(groups: { club_id: current_club.id })
     end
   end
 end

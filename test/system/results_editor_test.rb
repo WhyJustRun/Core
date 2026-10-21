@@ -1,6 +1,19 @@
 require 'application_system_test_case'
 
 class ResultsEditorTest < ApplicationSystemTestCase
+  test "the editor lists competitors alphabetically by name" do
+    event = events(:cluba_race)
+    Result.create!(user: users(:admin), course: courses(:race_long),
+                   status: :ok, time_seconds: 1000)
+    sign_in_to_club users(:executive)
+    visit_club "/events/editResults/#{event.id}"
+
+    assert_selector 'td', text: 'Alice Admin'
+    rows = find('td', text: 'Alice Admin').ancestor('table').all('tbody tr')
+    assert_equal ['Alice Admin', 'Mary Member', 'Oscar Organizer'],
+                 rows.map { |row| row.all('td').first.text }
+  end
+
   test "entering results and adding a new person persists on save" do
     event = events(:cluba_race)
     sign_in_to_club users(:executive)

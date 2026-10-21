@@ -36,6 +36,41 @@ class ClubsiteEventsTest < ActionDispatch::IntegrationTest
     assert_select 'script#event-box-template'
   end
 
+  test "home renders the summary lists, highlights and add action" do
+    travel_to Time.utc(2025, 6, 10, 12) do
+      sign_in users(:executive)
+      get '/'
+      assert_response :success
+      assert_select 'h3', text: 'Upcoming'
+      assert_select 'h3', text: 'Highlights'
+      assert_select 'a[href="/events/edit"]', count: 1
+      assert_select 'button', text: /Older/, count: 0
+      assert_select '.event-list[data-event-list-url*="club_events=significant"]'
+    end
+  end
+
+  test "series home groups the summary boxes by series" do
+    clubs(:cluba).update!(layout: 'series')
+    travel_to Time.utc(2025, 6, 10, 12) do
+      get '/'
+      assert_response :success
+      assert_select 'h3', text: 'Upcoming'
+      assert_select 'h4', text: 'Wednesday Evening Series'
+      assert_select 'h4', text: 'Other'
+      assert_select 'button', text: /Older/, count: 0
+    end
+  end
+
+  test "other-layout home renders the upcoming box list" do
+    host! 'clubb.test'
+    get '/'
+    assert_response :success
+    assert_select 'h1', text: 'Orienteering Canada Database'
+    assert_select 'h3', text: 'Upcoming events'
+    assert_select 'button', text: /Older/, count: 0
+    assert_select '.event-list', count: 0
+  end
+
   test "show renders courses and registrations in the club's local time" do
     event = events(:cluba_race)
     travel_to Time.utc(2025, 6, 1, 12) do

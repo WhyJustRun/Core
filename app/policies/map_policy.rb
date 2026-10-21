@@ -17,10 +17,6 @@ class MapPolicy
     edit?
   end
 
-  def update_location?
-    edit?
-  end
-
   def destroy?
     unless @user
       return false

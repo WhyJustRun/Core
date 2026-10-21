@@ -66,11 +66,10 @@ WJR.map = (function ($, _) {
   map.DraggableMarkerMap = function () {
     this.initialize = function (element) {
       loadGoogleMaps().then(function () {
-        var latElement, lngElement, zoom, googleMap, options, center, marker, updateUrl;
+        var latElement, lngElement, zoom, googleMap, options, center, marker;
         latElement = $(element.getAttribute('data-lat-element'));
         lngElement = $(element.getAttribute('data-lng-element'));
         zoom = +(element.getAttribute('data-zoom'));
-        updateUrl = element.getAttribute('data-update-url');
 
         center = new google.maps.LatLng(latElement.val(), lngElement.val());
         options = {
@@ -89,11 +88,6 @@ WJR.map = (function ($, _) {
           var position = marker.getPosition();
           latElement.val(position.lat());
           lngElement.val(position.lng());
-          if (updateUrl) {
-            // Persist immediately; the CSRF header comes from the global
-            // $.ajaxSetup in wjr/wjr.js.
-            $.post(updateUrl + '/' + position.lat() + '/' + position.lng());
-          }
         });
 
         marker.setMap(googleMap);

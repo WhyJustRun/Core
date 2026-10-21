@@ -34,16 +34,21 @@ class ClubAdminTest < ApplicationSystemTestCase
     assert_selector 'dt', text: 'Executive'
     assert_no_selector 'dt', text: 'Administrator'
 
-    select 'Mary Member', from: 'privilege[user_id]'
-    select 'Executive', from: 'privilege[group_id]'
-    click_button 'Add'
+    within "form[action='/privileges/add']" do
+      fill_in 'PrivilegeUserName', with: 'Mary'
+    end
+    find('ul.typeahead li a', text: 'Mary Member').click
+    within "form[action='/privileges/add']" do
+      select 'Executive', from: 'privilege[group_id]'
+      click_button 'Add'
+    end
 
     assert_text 'The privilege has been added.'
     row = find('tr', text: 'Mary Member')
     row.assert_text 'Executive'
     assert Privilege.exists?(user: users(:member), user_group: groups(:cluba_executive))
 
-    find('tr', text: 'Mary Member').find('button').click
+    row.find("form[action^='/privileges/delete/'] button").click
     assert_text 'The privilege has been deleted.'
     assert_no_selector 'tr', text: 'Mary Member'
     assert_not Privilege.exists?(user: users(:member), user_group: groups(:cluba_executive))

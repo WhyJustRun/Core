@@ -46,17 +46,19 @@ class MapEditorTest < ApplicationSystemTestCase
     assert_equal 'Forest Map West', map.reload.name
   end
 
-  test "the draggable marker update endpoint persists the new location" do
+  test "marker changes persist only when the form is saved" do
     map = maps(:cluba_forest)
     sign_in_to_club users(:executive)
     visit_club "/maps/edit/#{map.id}"
 
-    # Google Maps never loads in tests, so simulate the marker drop by posting
-    # what map.js posts, from the page context (exercises the CSRF wiring).
-    page.execute_script("jQuery.post('/maps/update/#{map.id}/49.5/-123.45')")
-    wait_for_condition(message: 'map location was not updated') do
-      map.reload.lat.to_f.round(2) == 49.5
-    end
+    # Simulate the marker's hidden-field updates. Google Maps does not load in
+    # tests, but the form submission path is the behavior under test.
+    page.execute_script("jQuery('#MapLat').val('49.5'); jQuery('#MapLng').val('-123.45')")
+    assert_in_delta 49.31, map.reload.lat.to_f
+
+    click_button 'Save'
+    assert_text 'The map has been updated.'
+    assert_in_delta 49.5, map.reload.lat.to_f
     assert_in_delta(-123.45, map.lng.to_f)
   end
 end

@@ -9,7 +9,7 @@ class EventEditorTest < ApplicationSystemTestCase
     fill_in 'EventName', with: 'Browser Test Meet'
     # The date picker fills in today's date on focus, so select-all and
     # overtype instead of a plain fill_in (which the maxlength would block)
-    find('#EventDate').send_keys [:control, 'a'], '2026-09-10'
+    find('#EventDate').send_keys [:control, 'a'], '2027-09-10'
     fill_in 'EventTime', with: '18:30'
     find('#EventEventClassificationId').find(:option, text: /\ALocal/).select_option
     select 'Wednesday Evening Series', from: 'EventSeriesId'
@@ -54,7 +54,7 @@ class EventEditorTest < ApplicationSystemTestCase
     event = Event.find_by(name: 'Browser Test Meet')
     assert_not_nil event
     # 18:30 in the club's timezone (America/Vancouver)
-    assert_equal Time.utc(2026, 9, 11, 1, 30), event.date
+    assert_equal Time.utc(2027, 9, 11, 1, 30), event.date
     assert_equal maps(:cluba_forest).id, event.map_id
     assert_equal series(:cluba_wednesday).id, event.series_id
     assert_equal 4, event.event_classification_id

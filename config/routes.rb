@@ -67,8 +67,7 @@ Rails.application.routes.draw do
       get 'maps/edit(/:id)', to: 'maps#edit'
       match 'maps/edit(/:id)', to: 'maps#save', via: [:post, :patch]
       post 'maps/delete/:id', to: 'maps#destroy'
-      post 'maps/update/:id/:lat/:lng', to: 'maps#update_location',
-           constraints: { lat: /-?[\d.]+/, lng: /-?[\d.]+/ }
+      get 'maps/generateBanner/:id', to: 'maps#generate_banner'
 
       # Courses
       get 'courses/view/:id', to: 'courses#show', as: :clubsite_course
@@ -131,6 +130,7 @@ Rails.application.routes.draw do
 
       get 'privileges(/index)', to: 'privileges#index'
       post 'privileges/add', to: 'privileges#create'
+      post 'privileges/update/:id', to: 'privileges#update'
       post 'privileges/delete/:id', to: 'privileges#destroy'
 
       get 'resources(/index)', to: 'resources#index'

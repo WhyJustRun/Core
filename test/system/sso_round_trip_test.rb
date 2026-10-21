@@ -3,7 +3,6 @@ require 'application_system_test_case'
 class SsoRoundTripTest < ApplicationSystemTestCase
   test "the club sign-in link goes through the apex form and returns signed in" do
     user = users(:member)
-    user.update!(password: 'password123', password_confirmation: 'password123')
 
     visit_club '/'
     click_link 'Sign in/Sign up'

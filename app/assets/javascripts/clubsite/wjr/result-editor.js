@@ -149,7 +149,12 @@ WJR['result-editor'] = (function ($, _, ko, utils, forms) {
         viewModel.event(new Event(data.id, data.name, data.date));
         var courses = data.courses;
         _.each(courses, function (course) {
-          var results = course.results,
+          // Keep the editor scannable in the legacy name-sorted order. The
+          // result rows still carry their ids, so the order is presentation
+          // only and does not affect which row is saved.
+          var results = course.results.slice().sort(function (a, b) {
+              return a.user.name.localeCompare(b.user.name);
+            }),
             importedResults = [];
 
           _.each(results, function (result) {
