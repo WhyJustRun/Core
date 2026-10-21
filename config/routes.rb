@@ -146,6 +146,15 @@ Rails.application.routes.draw do
       get 'pages/:page', to: 'pages#show', as: :clubsite_page
       get 'Pages/:page', to: 'pages#show'
 
+      # The CakePHP site accepted any capitalisation of the first path segment
+      # (/Events/view/12), so old links and bookmarks still use it.
+      get '*legacy_path', constraints: { legacy_path: %r{[^/]*[A-Z][^/]*(/.*)?} }, format: false,
+          to: redirect(status: 301) { |params, request|
+            first, rest = params[:legacy_path].split('/', 2)
+            path = ['/' + first.downcase, rest].compact.join('/')
+            request.query_string.present? ? "#{path}?#{request.query_string}" : path
+          }
+
       match '*unmatched', to: 'errors#not_found', via: :all, format: false
     end
   end
