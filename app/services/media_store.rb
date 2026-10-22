@@ -1,3 +1,5 @@
+require 'mini_magick'
+
 # Uploaded media for club records (map images, course maps, event results
 # files), stored on the shared data volume as
 #   <dataFolder>/<club_id>/<dir>/<id>.<ext>

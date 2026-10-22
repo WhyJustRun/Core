@@ -54,4 +54,14 @@ class ClubsiteTenancyTest < ActionDispatch::IntegrationTest
     get "/iof/3.0/clubs/#{clubs(:cluba).id}/event_list.xml"
     assert_response :success
   end
+
+  test "non-HTML requests to template-backed pages answer 406 instead of raising" do
+    %w[cluba.test clubb.test].each do |host|
+      host! host
+      %w[/ /pages/contact /pages/resources /pages/export].each do |path|
+        get path, headers: { 'Accept' => 'application/json' }
+        assert_response :not_acceptable, "#{host}#{path} should answer 406 to JSON"
+      end
+    end
+  end
 end

@@ -12,8 +12,18 @@ module Clubsite
     helper_method :current_club, :club_resources
 
     rescue_from Pundit::NotAuthorizedError, with: :not_authorized
+    rescue_from ActionView::MissingTemplate, with: :template_not_available
 
     private
+
+    # The club site only has HTML (plus a few explicit formats). Scanners ask
+    # for JSON or XML; answer 406 for those, but still raise for HTML, where a
+    # missing template is a real bug.
+    def template_not_available(error)
+      raise error if request.format.html?
+
+      head :not_acceptable
+    end
 
     def set_current_club
       # Match with the port first so development domains like
