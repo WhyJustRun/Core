@@ -2,27 +2,24 @@ class ApplicationController < ActionController::Base
   include Pundit::Authorization
   protect_from_forgery with: :exception
 
-  before_action :clear_redirect_club_if_necessary
+  before_action :clear_sso_state_if_necessary
   before_action :configure_permitted_parameters, if: :devise_controller?
   after_action :store_location
   after_action :set_access_control_headers
 
+  # Answers CORS preflight requests. The Access-Control-* headers themselves
+  # are added by set_access_control_headers.
   def cors
-    # Cache the OPTIONS response for 1 day
-    headers['Access-Control-Max-Age'] = '86400'
-    render text: nil
+    head :no_content
   end
 
   protected
 
-  def clear_redirect_club_if_necessary
-    # if the user gets distracted while logging in and does something else and then goes back later to log in, we don't want to redirect them to the source club in that case
-    unless request.fullpath =~ /\/users/
-      session.delete(:redirect_club_id)
-      unless request.fullpath.start_with?('/sso')
-        session.delete(:sso_return_host)
-        session.delete(:sso_return_path)
-      end
+  def clear_sso_state_if_necessary
+    # if the user gets distracted while logging in and does something else and then goes back later to log in, we don't want to send them back to the club site they came from
+    unless request.fullpath =~ /\/users/ || request.fullpath.start_with?('/sso')
+      session.delete(:sso_return_host)
+      session.delete(:sso_return_path)
     end
   end
 
@@ -46,25 +43,44 @@ class ApplicationController < ActionController::Base
       return "/sso/authorize?#{query}"
     end
 
-    redirect_club_id = session[:redirect_club_id]
-    unless redirect_club_id.nil? then
-      club = Club.find_by_id(redirect_club_id)
-      session[:redirect_club_id] = nil
-      clubsite_path(club)
-    else
-      session[:previous_url] || root_path
-    end
+    session[:previous_url] || root_path
   end
 
 
-  def set_access_control_headers
-    headers['Access-Control-Allow-Origin'] = '*'
-    headers['Access-Control-Expose-Headers'] = 'ETag'
-    headers['Access-Control-Allow-Headers'] = '*,x-requested-with,Content-Type,If-Modified-Since,If-None-Match,Accept'
-    headers['Access-Control-Request-Method'] = 'GET, POST, PATCH, PUT, DELETE, OPTIONS, HEAD'
-    headers['Access-Control-Allow-Credentials'] = 'true'
+  CORS_ALLOWED_HEADERS = 'x-requested-with, Content-Type, If-Modified-Since, If-None-Match, Accept'.freeze
 
-    head(:ok) if request.request_method == "OPTIONS"
+  # Cross-origin requests are only allowed from this app's own origins: the
+  # apex domain and the club domains. Anything else gets no CORS headers, so
+  # browsers refuse to expose the response to other sites.
+  def set_access_control_headers
+    headers['Vary'] = [headers['Vary'], 'Origin'].compact_blank.join(', ')
+
+    origin = request.headers['Origin']
+    return unless origin.present? && allowed_cors_origin?(origin)
+
+    headers['Access-Control-Allow-Origin'] = origin
+    headers['Access-Control-Allow-Credentials'] = 'true'
+    headers['Access-Control-Expose-Headers'] = 'ETag'
+    return unless request.options?
+
+    headers['Access-Control-Allow-Methods'] = 'GET, POST, PATCH, PUT, DELETE, OPTIONS, HEAD'
+    headers['Access-Control-Allow-Headers'] = CORS_ALLOWED_HEADERS
+    # Cache the preflight response for 1 day
+    headers['Access-Control-Max-Age'] = '86400'
+  end
+
+  def allowed_cors_origin?(origin)
+    uri = URI.parse(origin)
+    host = uri.host
+    return false if host.blank?
+
+    with_port = uri.port && ![80, 443].include?(uri.port) ? "#{host}:#{uri.port}" : host
+    apex = Settings.host.to_s
+    return true if [host, with_port].include?(apex) || host == apex.split(':').first
+
+    Club.where(domain: [host, with_port]).or(Club.where(redirect_domain: [host, with_port])).exists?
+  rescue URI::InvalidURIError
+    false
   end
 
   def not_found(message)

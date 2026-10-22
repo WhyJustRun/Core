@@ -31,26 +31,4 @@ class UsersController < ApplicationController
     @message = message
     render :action => 'show'
   end
-
-  def sign_in_clubsite
-    if user_signed_in?
-      club = Club.find_by_id(params[:redirect_club_id])
-      redirect_to(clubsite_url(club))
-      session[:redirect_club_id] = nil
-    else
-      session[:redirect_club_id] = params[:redirect_club_id]
-      options = {}
-      options[:notice] = params[:flash_message] unless params[:flash_message].nil?
-      redirect_to(new_user_session_path, options)
-    end
-  end
-
-  def sign_out_clubsite
-    if user_signed_in?
-      sign_out
-    end
-
-    club = Club.find_by_id(params[:redirect_club_id])
-    redirect_to("//" + club.domain + "/users/logoutComplete", allow_other_host: true)
-  end
 end

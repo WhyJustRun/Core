@@ -93,7 +93,6 @@ Rails.application.routes.draw do
       get 'users/login', to: 'sessions#new'
       get 'users/logout', to: 'sessions#destroy'
       get 'users/logoutComplete', to: 'sessions#logout_complete'
-      get 'users/localLogin', to: 'sessions#new'
       get 'sso/consume', to: 'sessions#consume'
       get 'users/register', to: redirect { |_params, _request| "#{Settings.coreURL.chomp('/')}/users/sign_up" }, status: 301
       get 'users/view/:id', to: redirect { |params, _request| "#{Settings.coreURL.chomp('/')}/users/#{params[:id]}" }, status: 301
@@ -176,14 +175,10 @@ Rails.application.routes.draw do
   get 'about/orienteering', to: 'home#about_orienteering'
   get 'events/calendar', to: 'events#calendar'
   get 'clubs/map', to: 'clubs#map'
-  get 'users/sign_in_clubsite', to: 'users#sign_in_clubsite'
-  get 'users/sign_out_clubsite', to: 'users#sign_out_clubsite'
   # must be an integer
   user_id_constraint = { :user_id => /\b\d+\b/ }
   get 'users/:user_id', to: 'users#show', :constraints => user_id_constraint, :as => :user
   put 'users/:user_id', to: 'users#send_message', :constraints => user_id_constraint
-
-  get 'clubsite/:club_id', to: 'clubs#show_clubsite', as: :clubsite
 
   get ':name', to: 'short_links#show'
 end

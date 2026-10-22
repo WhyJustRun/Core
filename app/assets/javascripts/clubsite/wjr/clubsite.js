@@ -139,12 +139,6 @@ WJR.clubsite = (function ($, _, moment, forms, editable) {
     });
 
     editable.initialize();
-
-    // Event editing form
-    // Fix for CakePHP form security - exclude the knockout inputs
-    $("#EventEditForm").submit(function () {
-      $(this).find('[name ^= "ko_unique"]').attr("name", null);
-    });
   };
 
   return Clubsite;

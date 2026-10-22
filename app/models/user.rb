@@ -46,14 +46,6 @@ class User < ApplicationRecord
     ::Digest::SHA512.hexdigest(Settings.passwordSalt + password)
   end
 
-  def self.new_with_session(params, session)
-    super.tap do |user|
-      if club_id = session[:redirect_club_id]
-        user.club_id = club_id if user.club_id.blank?
-      end
-    end
-  end
-
   # Users that actually have a WJR account (aren't fake)
   def self.find_all_real
     User.where('users.email IS NOT NULL')

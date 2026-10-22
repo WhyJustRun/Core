@@ -18,4 +18,19 @@ class ClubsiteLegacyUrlsTest < ActionDispatch::IntegrationTest
     get '/nonexistent/Path'
     assert_response :not_found
   end
+
+  test "club sites serve a favicon and an apple touch icon" do
+    %w[/favicon.ico /apple-touch-icon.png].each do |path|
+      get path
+      assert_response :success, "#{path} should be served"
+    end
+  end
+
+  test "retired CakePHP sign-in handoff URLs are gone" do
+    get '/users/localLogin'
+    assert_response :not_found
+    host! Settings.host
+    get '/users/sign_in_clubsite'
+    assert_response :not_found
+  end
 end
