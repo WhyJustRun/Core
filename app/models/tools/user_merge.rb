@@ -10,6 +10,10 @@ module Tools
     FILLABLE_FIELDS = %w[year_of_birth club_id si_number email referred_from].freeze
 
     def self.merge(target, source)
+      if target.deleted_placeholder? || source.deleted_placeholder?
+        raise ArgumentError, 'cannot merge the deleted user placeholder'
+      end
+
       User.transaction do
         Membership.where(user_id: source.id).update_all(user_id: target.id)
         Organizer.where(user_id: source.id).update_all(user_id: target.id)

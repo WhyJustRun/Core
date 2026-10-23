@@ -1,0 +1,41 @@
+<% content_for :title, 'Admin | WhyJustRun' %>
+<div class="page-header">
+  <h1>Admin</h1>
+</div>
+
+<p class="text-muted"><%= number_with_delimiter(@user_count) %> registered users.</p>
+
+<h2>Users</h2>
+<p>Find an account to handle a data deletion request.</p>
+<%= form_with url: admin_root_path, method: :get, class: 'form-inline', local: true do %>
+  <div class="form-group">
+    <%= text_field_tag :q, @query, class: 'form-control', placeholder: 'Name, email or user ID', autofocus: true, size: 40 %>
+  </div>
+  <%= submit_tag 'Search', name: nil, class: 'btn btn-primary' %>
+<% end %>
+
+<% if @query.present? %>
+  <% if @users.empty? %>
+    <p style="margin-top: 15px;">No users match &ldquo;<%= @query %>&rdquo;.</p>
+  <% else %>
+    <table class="table table-striped" style="margin-top: 15px;">
+      <thead>
+        <tr><th>ID</th><th>Name</th><th>Email</th><th>Club</th><th></th></tr>
+      </thead>
+      <tbody>
+        <% @users.each do |user| %>
+          <tr>
+            <td><%= user.id %></td>
+            <td><%= user.name %></td>
+            <td><%= user.email || '(no account)' %></td>
+            <td><%= user.club&.acronym %></td>
+            <td><%= link_to 'Review', admin_user_path(user), class: 'btn btn-default btn-xs' %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <% if @users.size >= Admin::DashboardController::MAX_RESULTS %>
+      <p class="text-muted">Showing the first <%= Admin::DashboardController::MAX_RESULTS %> matches. Narrow the search to see others.</p>
+    <% end %>
+  <% end %>
+<% end %>

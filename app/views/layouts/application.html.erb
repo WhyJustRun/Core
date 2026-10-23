@@ -30,6 +30,7 @@
             <li><%= link_to "Events", events_calendar_path  %></li>
             <% if user_signed_in? then %>
               <li><%= link_to "My Profile", user_path(current_user.id) %>
+              <% if current_user.has_global_privilege?(100) %><li><%= link_to "Admin", admin_root_path %></li><% end %>
               <li><%= link_to "Sign out", destroy_user_session_path, :method => :delete %>
             <% else %>
               <li><%= link_to "Sign in", new_user_session_path %></li>

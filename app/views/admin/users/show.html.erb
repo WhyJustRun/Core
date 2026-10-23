@@ -1,0 +1,38 @@
+<% content_for :title, "#{@user.name} | Admin | WhyJustRun" %>
+<p><%= link_to '← Admin', admin_root_path %></p>
+<div class="page-header">
+  <h1><%= @user.name %> <small>ID <%= @user.id %></small></h1>
+</div>
+
+<dl class="dl-horizontal">
+  <dt>Email</dt><dd><%= @user.email || '(no account)' %></dd>
+  <dt>Club</dt><dd><%= @user.club&.name || '—' %></dd>
+  <dt>Last sign in</dt><dd><%= @user.last_sign_in_at ? l(@user.last_sign_in_at, format: :long) : 'never' %></dd>
+</dl>
+
+<h2>Delete this account</h2>
+<p>Deleting an account is permanent. It will:</p>
+<ul>
+  <li>Keep this person&rsquo;s results, re-assigned to a user named &ldquo;<%= User::DELETED_USER_NAME %>&rdquo;, and clear the comment they wrote on those results.</li>
+  <li>Remove their memberships, organizer and official roles, and privileges.</li>
+  <li>Delete the account itself, including their email and sign-in details.</li>
+</ul>
+<p>Uploaded result files, event descriptions, official comments and backups may also contain personal information. Review these separately when handling a deletion request.</p>
+
+<table class="table table-condensed" style="max-width: 400px;">
+  <% @counts.each do |label, count| %>
+    <tr><td><%= label %></td><td><%= count %></td></tr>
+  <% end %>
+</table>
+
+<% if @blocker %>
+  <div class="alert alert-warning"><%= @blocker %></div>
+<% else %>
+  <%= form_with url: admin_user_path(@user), method: :delete, local: true, class: 'form-inline' do %>
+    <div class="form-group">
+      <label for="confirm">Type the user ID (<strong><%= @user.id %></strong>) to confirm:</label>
+      <%= text_field_tag :confirm, nil, class: 'form-control', autocomplete: 'off', size: 12 %>
+    </div>
+    <%= submit_tag 'Delete account', class: 'btn btn-danger' %>
+  <% end %>
+<% end %>

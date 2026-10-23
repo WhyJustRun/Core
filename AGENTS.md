@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-WhyJustRun Core is a Ruby on Rails application serving [whyjustrun.ca](https://whyjustrun.ca) (authentication, IOF XML APIs, cross-club pages) and every club's website. Club domains are resolved from the Host header into a `Clubsite::` controller namespace (`app/controllers/clubsite/base_controller.rb`); requests on club domains run in the club's timezone and club-scoped data is always accessed through `current_club` associations. The legacy [WhyJustRun Clubsite](https://github.com/WhyJustRun/Clubsite) (CakePHP) has been decommissioned; club sites are served only by this app. Some URL shapes (for example `/Events/view/:id`, `users/localLogin`) are kept for old links.
+WhyJustRun Core is a Ruby on Rails application serving [whyjustrun.ca](https://whyjustrun.ca) (authentication, IOF XML APIs, cross-club pages) and every club's website. Club domains are resolved from the Host header into a `Clubsite::` controller namespace (`app/controllers/clubsite/base_controller.rb`); requests on club domains run in the club's timezone and club-scoped data is always accessed through `current_club` associations. The legacy [WhyJustRun Clubsite](https://github.com/WhyJustRun/Clubsite) (CakePHP) has been decommissioned; club sites are served only by this app. Capitalised URL redirects (for example `/Events/view/:id`) are kept for old links; legacy cross-app sign-in routes have been removed.
 
 ## Development Commands
 

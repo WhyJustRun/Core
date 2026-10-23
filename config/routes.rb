@@ -147,7 +147,10 @@ Rails.application.routes.draw do
 
       # The CakePHP site accepted any capitalisation of the first path segment
       # (/Events/view/12), so old links and bookmarks still use it.
-      get '*legacy_path', constraints: { legacy_path: %r{[^/]*[A-Z][^/]*(/.*)?} }, format: false,
+      # Keep malformed scanner paths (such as "/Events/<A href=") out of
+      # redirect_to: URI rejects their raw angle brackets when building a
+      # Location header. Valid legacy URLs only need URI-safe path characters.
+      get '*legacy_path', constraints: { legacy_path: %r{[-A-Za-z0-9._~/]*[A-Z][-A-Za-z0-9._~/]*} }, format: false,
           to: redirect(status: 301) { |params, request|
             first, rest = params[:legacy_path].split('/', 2)
             path = ['/' + first.downcase, rest].compact.join('/')
@@ -179,6 +182,11 @@ Rails.application.routes.draw do
   user_id_constraint = { :user_id => /\b\d+\b/ }
   get 'users/:user_id', to: 'users#show', :constraints => user_id_constraint, :as => :user
   put 'users/:user_id', to: 'users#send_message', :constraints => user_id_constraint
+
+  namespace :admin do
+    root to: 'dashboard#show'
+    resources :users, only: [:show, :destroy]
+  end
 
   get ':name', to: 'short_links#show'
 end

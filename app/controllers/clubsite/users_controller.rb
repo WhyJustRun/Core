@@ -78,6 +78,7 @@ module Clubsite
       target = User.find_by(id: target_id)
       source = User.find_by(id: source_id)
       return false if target.nil? || source.nil?
+      return false if target.deleted_placeholder? || source.deleted_placeholder?
       return false unless can_merge?(target) && can_merge?(source)
 
       Tools::UserMerge.merge(target, source)

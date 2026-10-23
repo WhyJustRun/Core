@@ -46,6 +46,20 @@ class User < ApplicationRecord
     ::Digest::SHA512.hexdigest(Settings.passwordSalt + password)
   end
 
+  # Stand-in owner for results whose person asked to have their account
+  # deleted. It has no email or password, so it can never sign in, and it is
+  # excluded from find_all_real like the other result-only users.
+  DELETED_USER_NAME = '(deleted)'.freeze
+
+  def self.deleted_placeholder
+    find_by(name: DELETED_USER_NAME, email: nil) ||
+      new(name: DELETED_USER_NAME, encrypted_password: '', locked_at: Time.current).tap { |user| user.save!(validate: false) }
+  end
+
+  def deleted_placeholder?
+    name == DELETED_USER_NAME && email.nil?
+  end
+
   # Users that actually have a WJR account (aren't fake)
   def self.find_all_real
     User.where('users.email IS NOT NULL')
@@ -54,6 +68,7 @@ class User < ApplicationRecord
   # Substring name search for the person-picker autocomplete
   def self.search_by_name(term)
     where('users.name LIKE ?', "%#{sanitize_sql_like(term.to_s)}%")
+      .where.not(id: where(name: DELETED_USER_NAME, email: nil).select(:id))
   end
 
   # Creates a name-only account with no email or password (a "fake" user),

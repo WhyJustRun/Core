@@ -1,5 +1,6 @@
 class Group < ApplicationRecord
-  belongs_to :club
+  # A group without a club grants platform-wide privileges.
+  belongs_to :club, optional: true
   has_many :privileges
 
   # Groups that a user with the given privilege level is allowed to see and

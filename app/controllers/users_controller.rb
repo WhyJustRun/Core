@@ -12,7 +12,9 @@ class UsersController < ApplicationController
   def show
     @message ||= ""
     includes = { results: { course: { event: :club } }, organizers: { event: [:club], role: nil } };
-    @user = User.includes(includes).find_by_id(params[:user_id]) || not_found("Couldn't find that user");
+    @user = User.includes(includes).find_by_id(params[:user_id])
+    # The placeholder owns every deleted person's results, so it has no profile
+    return not_found("Couldn't find that user") if @user.nil? || @user.deleted_placeholder?
   end
 
   def send_message
