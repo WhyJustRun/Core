@@ -49,24 +49,47 @@ class ApplicationController < ActionController::Base
 
   CORS_ALLOWED_HEADERS = 'x-requested-with, Content-Type, If-Modified-Since, If-None-Match, Accept'.freeze
 
-  # Cross-origin requests are only allowed from this app's own origins: the
-  # apex domain and the club domains. Anything else gets no CORS headers, so
-  # browsers refuse to expose the response to other sites.
+  # Two tiers of cross-origin access:
+  # - Allow-listed origins (the apex and the club domains) may make credentialed
+  #   requests to anything.
+  # - Routes declared with `public_get` in routes.rb are public, read-only APIs.
+  #   On the apex domain any website may fetch them, without credentials.
+  # Everything else gets no CORS headers, so browsers refuse to expose the
+  # response to other sites.
   def set_access_control_headers
     headers['Vary'] = [headers['Vary'], 'Origin'].compact_blank.join(', ')
 
     origin = request.headers['Origin']
-    return unless origin.present? && allowed_cors_origin?(origin)
+    if origin.present? && allowed_cors_origin?(origin)
+      headers['Access-Control-Allow-Origin'] = origin
+      headers['Access-Control-Allow-Credentials'] = 'true'
+      headers['Access-Control-Expose-Headers'] = 'ETag'
+      set_cors_preflight_headers('GET, POST, PATCH, PUT, DELETE, OPTIONS, HEAD')
+    elsif public_cors_request?
+      headers['Access-Control-Allow-Origin'] = '*'
+      headers['Access-Control-Expose-Headers'] = 'ETag'
+      set_cors_preflight_headers('GET, HEAD, OPTIONS')
+    end
+  end
 
-    headers['Access-Control-Allow-Origin'] = origin
-    headers['Access-Control-Allow-Credentials'] = 'true'
-    headers['Access-Control-Expose-Headers'] = 'ETag'
+  def set_cors_preflight_headers(methods)
     return unless request.options?
 
-    headers['Access-Control-Allow-Methods'] = 'GET, POST, PATCH, PUT, DELETE, OPTIONS, HEAD'
+    headers['Access-Control-Allow-Methods'] = methods
     headers['Access-Control-Allow-Headers'] = CORS_ALLOWED_HEADERS
     # Cache the preflight response for 1 day
     headers['Access-Control-Max-Age'] = '86400'
+  end
+
+  # The route is flagged public (see `public_get` in routes.rb) and the request
+  # is on the apex domain; club domains never get the wildcard.
+  def public_cors_request?
+    request.path_parameters[:public_cors] && [request.host, request.host_with_port].include?(Settings.host.to_s)
+  end
+
+  def apex_host?(*hosts)
+    apex = Settings.host.to_s
+    hosts.include?(apex) || hosts.any? { |h| h == apex.split(':').first }
   end
 
   def allowed_cors_origin?(origin)
@@ -75,8 +98,7 @@ class ApplicationController < ActionController::Base
     return false if host.blank?
 
     with_port = uri.port && ![80, 443].include?(uri.port) ? "#{host}:#{uri.port}" : host
-    apex = Settings.host.to_s
-    return true if [host, with_port].include?(apex) || host == apex.split(':').first
+    return true if apex_host?(host, with_port)
 
     Club.where(domain: [host, with_port]).or(Club.where(redirect_domain: [host, with_port])).exists?
   rescue URI::InvalidURIError

@@ -3,28 +3,37 @@ Rails.application.routes.draw do
   # Shared API routes, reachable on the apex domain and on club domains.
   # ---------------------------------------------------------------------------
 
+  # Public, read-only API endpoint: any website may fetch it cross-origin
+  # (without credentials) when requested on the apex domain. The matching
+  # OPTIONS route lets preflights see the same flag, which the catch-all
+  # OPTIONS route below can't. See ApplicationController#set_access_control_headers.
+  public_get = lambda do |path, **options|
+    get path, **options, defaults: { public_cors: true }
+    match path, **options.except(:to), to: 'application#cors', via: :options, defaults: { public_cors: true }
+  end
+
   # :iof_version => /[^\/]*/ is needed to allow dots in the IOF XML version #
   version_constraint = { :iof_version => /[^\/]*/ }
-  get 'iof/:iof_version/events/:id/start_list', to: 'events#start_list', :constraints => version_constraint
-  get 'iof/:iof_version/organization_list', to: 'clubs#index', :constraints => version_constraint
-  get 'iof/:iof_version/competitor_list', to: 'users#competitor_list', :constraints => version_constraint
-  get 'iof/:iof_version/events/:id/entry_list', to: 'events#entry_list', :constraints => version_constraint
+  public_get.call 'iof/:iof_version/events/:id/start_list', to: 'events#start_list', :constraints => version_constraint
+  public_get.call 'iof/:iof_version/organization_list', to: 'clubs#index', :constraints => version_constraint
+  public_get.call 'iof/:iof_version/competitor_list', to: 'users#competitor_list', :constraints => version_constraint
+  public_get.call 'iof/:iof_version/events/:id/entry_list', to: 'events#entry_list', :constraints => version_constraint
 
   get 'iof/:iof_version/users/event_list/limit/:limit', to: 'events#event_list_for_user', :constraints => version_constraint
   get 'iof/:iof_version/users/event_list', to: 'events#event_list_for_user', :constraints => version_constraint
 
-  get 'iof/:iof_version/clubs/:club_id/event_list', to: 'events#index', :constraints => version_constraint
+  public_get.call 'iof/:iof_version/clubs/:club_id/event_list', to: 'events#index', :constraints => version_constraint
 
-  get 'iof/:iof_version/events/:id/result_list', to: 'results#result_list', :constraints => version_constraint
+  public_get.call 'iof/:iof_version/events/:id/result_list', to: 'results#result_list', :constraints => version_constraint
   post 'iof/:iof_version/events/:id/result_list', to: 'results#process_result_list', :constraints => version_constraint
   post 'iof/:iof_version/events/:id/live_result_list', to: 'results#update_live_result_list', :constraints => version_constraint
-  get 'iof/:iof_version/events/:id/live_result_list', to: 'results#live_result_list', :constraints => version_constraint
+  public_get.call 'iof/:iof_version/events/:id/live_result_list', to: 'results#live_result_list', :constraints => version_constraint
 
-  get 'events', to: 'events#index', format: true
-  get 'club/:club_id/events', to: 'events#index', format: true
-  get 'club/:club_id/participation_report', to: 'clubs#participant_counts'
+  public_get.call 'events', to: 'events#index', format: true
+  public_get.call 'club/:club_id/events', to: 'events#index', format: true
+  public_get.call 'club/:club_id/participation_report', to: 'clubs#participant_counts'
 
-  get 'api/maps', to: 'maps#index'
+  public_get.call 'api/maps', to: 'maps#index'
 
   post 'api/redactor/uploadImage', to: 'redactor#upload_image'
   post 'api/redactor/uploadFile', to: 'redactor#upload_file'

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-WhyJustRun Core is a Ruby on Rails application serving [whyjustrun.ca](https://whyjustrun.ca) (authentication, IOF XML APIs, cross-club pages) and every club's website. Club domains are resolved from the Host header into a `Clubsite::` controller namespace (`app/controllers/clubsite/base_controller.rb`); requests on club domains run in the club's timezone and club-scoped data is always accessed through `current_club` associations. The legacy [WhyJustRun Clubsite](https://github.com/WhyJustRun/Clubsite) (CakePHP) has been decommissioned; club sites are served only by this app. Capitalised URL redirects (for example `/Events/view/:id`) are kept for old links; legacy cross-app sign-in routes have been removed.
+WhyJustRun Core is a Ruby on Rails application serving [whyjustrun.ca](https://whyjustrun.ca) (authentication, IOF XML APIs, cross-club pages) and every club's website. Club domains are resolved from the Host header into a `Clubsite::` controller namespace (`app/controllers/clubsite/base_controller.rb`); requests on club domains run in the club's timezone and club-scoped data is always accessed through `current_club` associations. Club sites are served only by this app (`Clubsite::` is the code name for the club website controllers). The legacy CakePHP club site has been decommissioned. Capitalised URL redirects (for example `/Events/view/:id`) are kept for old links; legacy cross-app sign-in routes have been removed.
 
 ## Development Commands
 
@@ -42,6 +42,7 @@ Test users (password: "password"): admin@example.com, webmaster@example.com, exe
 - **Authorization**: Pundit policies in `app/policies/`
 - **IOF XML API**: Routes under `iof/:iof_version/` serving orienteering federation XML format, parsed with Nokogiri/Nori
 - **Club-domain sign-in**: Single sign-on between the apex domain and club domains uses short-lived signed tokens (`SsoToken`, `SsoController`, `Clubsite::SessionsController`)
+- **CORS**: `ApplicationController#set_access_control_headers` allows credentialed cross-origin requests only from the apex and club domains. Public read-only API endpoints opt in with `public_get` in `config/routes.rb` and get a credential-less `Access-Control-Allow-Origin: *` on the apex domain only; everything else gets no CORS headers
 - **Privilege system**: Role-based access with numeric levels (0-100) defined in `config/settings.yml`
 - **Cron jobs**: Managed by the `whenever` gem
 - **Frontend**: Bootstrap with CoffeeScript, Sprockets asset pipeline, jQuery, Leaflet for maps

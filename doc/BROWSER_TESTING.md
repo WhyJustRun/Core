@@ -75,9 +75,6 @@ Each of these exercises JS that the integration suite cannot reach.
 
 ## Not automated — manual checklist
 
-- **Visual fidelity vs the PHP site**: run both apps against the same dev
-  database (`localhost:3001` PHP club vs the Rails club) and compare the main
-  pages side by side. Automation can't judge "looks right".
 - **Redactor**: licensed, not in the repo. With a copy in `public/redactor/`,
   manually verify rich-text editing on event description + pages, and image
   upload through the editor. (Automatable later if a licensed copy is
