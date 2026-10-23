@@ -5,7 +5,13 @@ module Clubsite
   class BaseController < ApplicationController
     LAYOUTS = %w[default other].freeze
 
+    # Club sites are embedded in iframes on clubs' own websites, so framing is
+    # allowed for read-only pages. Forms and sign-in keep Rails' default
+    # X-Frame-Options: SAMEORIGIN.
+    UNFRAMABLE_ACTIONS = %w[edit edit_results upload_maps].freeze
+
     before_action :set_current_club
+    after_action :allow_framing
     around_action :use_club_time_zone
     layout :club_layout
 
@@ -15,6 +21,12 @@ module Clubsite
     rescue_from ActionView::MissingTemplate, with: :template_not_available
 
     private
+
+    def allow_framing
+      return unless request.get? && UNFRAMABLE_ACTIONS.exclude?(action_name) && !is_a?(SessionsController)
+
+      response.headers.delete('X-Frame-Options')
+    end
 
     # The club site only has HTML (plus a few explicit formats). Scanners ask
     # for JSON or XML; answer 406 for those, but still raise for HTML, where a

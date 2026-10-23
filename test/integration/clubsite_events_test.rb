@@ -169,4 +169,26 @@ class ClubsiteEventsTest < ActionDispatch::IntegrationTest
     assert_select '.simple-marker-map[data-lat=?]', event.lat.to_s
     assert_select 'nav', count: 0
   end
+
+  test "read-only pages may be framed by other sites" do
+    get '/events/index'
+    assert_nil response.headers['X-Frame-Options']
+
+    get "/events/view/#{events(:cluba_race).id}"
+    assert_nil response.headers['X-Frame-Options']
+  end
+
+  test "sign-in and edit pages keep the default frame protection" do
+    get '/users/login'
+    assert_equal 'SAMEORIGIN', response.headers['X-Frame-Options']
+
+    get '/events/edit'
+    assert_equal 'SAMEORIGIN', response.headers['X-Frame-Options']
+  end
+
+  test "the apex domain keeps the default frame protection" do
+    host! Settings.host
+    get '/clubs/map'
+    assert_equal 'SAMEORIGIN', response.headers['X-Frame-Options']
+  end
 end
