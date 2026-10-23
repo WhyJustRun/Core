@@ -150,7 +150,7 @@ Rails.application.routes.draw do
       # Keep malformed scanner paths (such as "/Events/<A href=") out of
       # redirect_to: URI rejects their raw angle brackets when building a
       # Location header. Valid legacy URLs only need URI-safe path characters.
-      get '*legacy_path', constraints: { legacy_path: %r{[-A-Za-z0-9._~/]*[A-Z][-A-Za-z0-9._~/]*} }, format: false,
+      get '*legacy_path', constraints: { legacy_path: %r{[-A-Za-z0-9._~]*[A-Z][-A-Za-z0-9._~]*(/[-A-Za-z0-9._~/]*)?} }, format: false,
           to: redirect(status: 301) { |params, request|
             first, rest = params[:legacy_path].split('/', 2)
             path = ['/' + first.downcase, rest].compact.join('/')
