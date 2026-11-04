@@ -46,6 +46,9 @@ gem "geocoder", "~> 1.8.3"
 # JSON Builder
 gem 'jbuilder', '~> 2.12.0'
 
+# json 3 removed keywords still used by Rails 7.x and ExecJS 2.9.
+gem 'json', '< 3'
+
 # Logging (email)
 gem "exception_notification", "~> 5.0"
 
@@ -54,6 +57,9 @@ gem "pundit", "~> 2.3.2"
 
 # Image thumbnail generation (requires ImageMagick)
 gem 'image_processing', '~> 1.13'
+
+# image_processing 2.x makes MiniMagick a soft dependency.
+gem 'mini_magick'
 
 # Geo
 gem 'haversine', '~> 0.3.2'
