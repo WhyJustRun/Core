@@ -1,1 +1,7 @@
 * @tnipen @russellporter
+
+# Dependency-only changes (Dependabot opens these) are auto-merged when CI
+# passes, so don't auto-request code-owner reviews for them.
+/Gemfile
+/Gemfile.lock
+/.github/workflows/
