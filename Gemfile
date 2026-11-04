@@ -56,7 +56,7 @@ gem "exception_notification", "~> 5.0"
 gem "pundit", "~> 2.3.2"
 
 # Image thumbnail generation (requires ImageMagick)
-gem 'image_processing', '~> 1.13'
+gem 'image_processing', '~> 2.2'
 
 # image_processing 2.x makes MiniMagick a soft dependency.
 gem 'mini_magick'
