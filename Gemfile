@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
 
 gem 'rails', '~> 8.1'
-gem 'mysql2', '~> 0.5.3'
+gem 'mysql2', '~> 0.5.7'
 
 # Use the Puma web server
 gem 'puma', '~> 8.0'
@@ -12,39 +12,39 @@ gem 'puma', '~> 8.0'
 gem 'sass-rails', '~> 6.0.0'
 gem "coffee-script", "~> 2.4.1"
 gem "coffee-rails", "~> 5.0.0"
-gem "uglifier", "~> 4.2.0"
+gem "uglifier", "~> 4.2.1"
 gem 'tzinfo-data'
 
 # Authentication
 gem 'bcrypt', '~> 3.1.22'
 gem 'devise', '~> 5.0.3'
-gem "devise-encryptable", "~> 0.2.0"
+gem "devise-encryptable", "~> 0.3.0"
 
 # Maps
 gem "leaflet-rails", "~> 1.9.3"
 
 # Spam prevention
-gem "recaptcha", "~> 5.17.0", :require => "recaptcha/rails"
+gem "recaptcha", "~> 5.21.2", :require => "recaptcha/rails"
 
 # Jobs
-gem 'whenever', '~> 1.0.0'
+gem 'whenever', '~> 1.1.4'
 
 # Bootstrap
 gem 'bootstrap-sass', '~> 3.4.1'
 
-gem 'jquery-rails', '~> 4.6.0'
+gem 'jquery-rails', '~> 4.6.1'
 
 # XML Parsing
 gem 'nokogiri', '~> 1.19.1'
-gem 'nori', '~> 2.7.1'
+gem 'nori', '~> 2.9.1'
 
-gem "config", "~> 5.5.1"
+gem "config", "~> 5.6.1"
 
-gem 'icalendar', '~> 2.12.2'
-gem "geocoder", "~> 1.8.3"
+gem 'icalendar', '~> 2.13.0'
+gem "geocoder", "~> 1.8.6"
 
 # JSON Builder
-gem 'jbuilder', '~> 2.12.0'
+gem 'jbuilder', '~> 2.15.1'
 
 # json 3 removed keywords still used by Rails 7.x and ExecJS 2.9.
 gem 'json', '< 3'
@@ -53,7 +53,7 @@ gem 'json', '< 3'
 gem "exception_notification", "~> 5.0"
 
 # Authorization
-gem "pundit", "~> 2.3.2"
+gem "pundit", "~> 2.5.2"
 
 # Image thumbnail generation (requires ImageMagick)
 gem 'image_processing', '~> 2.2'
@@ -70,5 +70,5 @@ end
 
 group :test do
   gem 'capybara'
-  gem 'selenium-webdriver', '~> 4.46.0'
+  gem 'selenium-webdriver', '~> 4.52.0'
 end
