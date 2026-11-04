@@ -46,7 +46,10 @@ host: <%= ENV.fetch('WJR_HOST', 'whyjustrun.ca') %>
 # Absolute URL of the apex site, used for cross-domain links from club sites
 coreURL: <%= ENV.fetch('WJR_CORE_URL', 'https://whyjustrun.ca') %>
 
+# Maps Embed API key, used by the iframe embeds
 googleMapsApiKey: <%= ENV.fetch('WJR_GOOGLE_MAPS_API_KEY', '') %>
+# Maps JavaScript API key, used by the interactive maps
+googleMapsJsApiKey: <%= ENV.fetch('WJR_GOOGLE_MAPS_JS_API_KEY', '') %>
 flickrApiKey: <%= ENV.fetch('WJR_FLICKR_API_KEY', '') %>
 
 databaseName: <%= ENV.fetch('WJR_DATABASE_NAME') %>

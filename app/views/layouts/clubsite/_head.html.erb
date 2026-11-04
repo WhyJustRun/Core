@@ -3,7 +3,8 @@
 <%# Empty: the core APIs are same-origin now that club sites are served by this app %>
 <meta name="wjr.core.domain" content="">
 <meta name="wjr.clubsite.club.id" content="<%= current_club.id %>">
-<meta name="wjr.google-maps-key" content="<%= Settings.googleMapsApiKey %>">
+<%# Prefer a Maps JavaScript API key; fall back to the legacy shared key %>
+<meta name="wjr.google-maps-key" content="<%= Settings.googleMapsJsApiKey.presence || Settings.googleMapsApiKey %>">
 <%= csrf_meta_tags %>
 <%= stylesheet_link_tag 'clubsite', media: 'all' %>
 <%= render 'layouts/clubsite/series_css' %>
