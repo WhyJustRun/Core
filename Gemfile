@@ -4,7 +4,7 @@ gem 'rails', '~> 7.1'
 gem 'mysql2', '~> 0.5.3'
 
 # Use the Puma web server
-gem 'puma', '~> 7.2'
+gem 'puma', '~> 8.0'
 
 # MySQL Session store
 
