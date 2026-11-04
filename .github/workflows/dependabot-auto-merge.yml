@@ -2,14 +2,18 @@ name: Dependabot auto-merge
 
 on:
   pull_request_target:
+  workflow_run:
+    workflows: ["CI"]
+    types: [completed]
 
 permissions:
   contents: write
   pull-requests: write
 
 jobs:
-  auto-merge:
+  enable-auto-merge:
     if: >
+      github.event_name == 'pull_request_target' &&
       github.repository == 'WhyJustRun/Core' &&
       github.event.pull_request.user.login == 'dependabot[bot]'
     runs-on: ubuntu-latest
@@ -19,3 +23,44 @@ jobs:
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  merge-on-green:
+    if: >
+      github.event_name == 'workflow_run' &&
+      github.repository == 'WhyJustRun/Core' &&
+      github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Merge Dependabot PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          pr=$(gh api "repos/$REPO/commits/$HEAD_SHA/pulls" --jq '.[] | select(.state == "open") | .number' | head -n1)
+          if [ -z "$pr" ]; then
+            echo "No open pull request found for $HEAD_SHA"
+            exit 0
+          fi
+
+          author=$(gh api "repos/$REPO/pulls/$pr" --jq '.user.login')
+          if [ "$author" != "dependabot[bot]" ]; then
+            echo "PR #$pr is authored by $author; skipping"
+            exit 0
+          fi
+
+          state=$(gh pr view "$pr" --repo "$REPO" --json state --jq '.state')
+          if [ "$state" != "OPEN" ]; then
+            echo "PR #$pr is $state; skipping"
+            exit 0
+          fi
+
+          head=$(gh pr view "$pr" --repo "$REPO" --json headRefOid --jq '.headRefOid')
+          if [ "$head" != "$HEAD_SHA" ]; then
+            echo "PR #$pr head moved to $head; skipping stale CI result"
+            exit 0
+          fi
+
+          echo "Merging Dependabot PR #$pr"
+          gh pr merge "$pr" --repo "$REPO" --squash
