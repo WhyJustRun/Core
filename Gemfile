@@ -47,7 +47,7 @@ gem "geocoder", "~> 1.8.3"
 gem 'jbuilder', '~> 2.12.0'
 
 # Logging (email)
-gem "exception_notification", "~> 4.5"
+gem "exception_notification", "~> 5.0"
 
 # Authorization
 gem "pundit", "~> 2.3.2"
