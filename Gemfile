@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '~> 7.1'
+gem 'rails', '~> 8.1'
 gem 'mysql2', '~> 0.5.3'
 
 # Use the Puma web server
