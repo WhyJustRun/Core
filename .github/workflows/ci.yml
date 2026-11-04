@@ -48,7 +48,7 @@ jobs:
       WJR_DATA_URL: http://localhost/data/
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Install MySQL client headers
         run: sudo apt-get update && sudo apt-get install -y default-libmysqlclient-dev imagemagick ghostscript
@@ -101,7 +101,7 @@ jobs:
       WJR_DATA_URL: http://localhost/data/
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Install MySQL client headers
         run: sudo apt-get update && sudo apt-get install -y default-libmysqlclient-dev imagemagick ghostscript
@@ -127,7 +127,7 @@ jobs:
   brakeman:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Install MySQL client headers
         run: sudo apt-get update && sudo apt-get install -y default-libmysqlclient-dev
@@ -145,7 +145,7 @@ jobs:
     if: github.event_name == 'push'
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Build image
         run: docker build . --file Dockerfile --tag $IMAGE_NAME
