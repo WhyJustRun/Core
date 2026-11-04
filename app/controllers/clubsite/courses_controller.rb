@@ -75,11 +75,12 @@ module Clubsite
         return redirect_to "/events/view/#{course.event_id}"
       end
 
+      upload = params.dig(:course, :image)
       error =
-        if params[:file].blank?
+        if upload.blank?
           'No file selected!'
         else
-          MediaStore.new(current_club.id, 'Course').store(course.id, params[:file])
+          MediaStore.new(current_club.id, 'Course').store(course.id, upload)
         end
 
       if error

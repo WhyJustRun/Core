@@ -283,6 +283,11 @@ class ClubsiteEventEditorTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select "form[action=?]", "/courses/uploadMap/#{courses(:race_long).id}"
     assert_select "form[action=?]", "/courses/uploadMap/#{courses(:race_score).id}"
+    # The file input must post under the key the controller reads
+    # (CoursesController#upload_map uses params[:course][:image]).
+    assert_select "form[action=?][enctype='multipart/form-data']",
+                  "/courses/uploadMap/#{courses(:race_long).id}"
+    assert_select "input[type=file][name='course[image]']", count: 2
   end
 
   test "uploadMaps redirects a plain member" do

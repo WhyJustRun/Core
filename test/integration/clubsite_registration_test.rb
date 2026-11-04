@@ -147,7 +147,8 @@ class ClubsiteRegistrationTest < ActionDispatch::IntegrationTest
   test 'an organizer can upload a course map' do
     sign_in users(:organizer)
     course = courses(:race_long)
-    post "/courses/uploadMap/#{course.id}", params: { file: fixture_file_upload('logo.png', 'image/png') }
+    post "/courses/uploadMap/#{course.id}",
+         params: { course: { image: fixture_file_upload('logo.png', 'image/png') } }
     assert_redirected_to "/events/uploadMaps/#{course.event_id}"
     assert_equal 'Course map uploaded!', flash[:success]
     assert MediaStore.new(clubs(:cluba).id, 'Course').exists?(course.id)
@@ -156,7 +157,8 @@ class ClubsiteRegistrationTest < ActionDispatch::IntegrationTest
   test 'a disallowed file type flashes the store error and stores nothing' do
     sign_in users(:organizer)
     course = courses(:race_long)
-    post "/courses/uploadMap/#{course.id}", params: { file: fixture_file_upload('style.css', 'text/css') }
+    post "/courses/uploadMap/#{course.id}",
+         params: { course: { image: fixture_file_upload('style.css', 'text/css') } }
     assert_redirected_to "/events/uploadMaps/#{course.event_id}"
     assert_match(/not allowed/, flash[:alert])
     assert_not MediaStore.new(clubs(:cluba).id, 'Course').exists?(course.id)
@@ -173,7 +175,8 @@ class ClubsiteRegistrationTest < ActionDispatch::IntegrationTest
   test 'an unprivileged member cannot upload a course map' do
     sign_in users(:member)
     course = courses(:race_long)
-    post "/courses/uploadMap/#{course.id}", params: { file: fixture_file_upload('logo.png', 'image/png') }
+    post "/courses/uploadMap/#{course.id}",
+         params: { course: { image: fixture_file_upload('logo.png', 'image/png') } }
     assert_redirected_to "/events/view/#{course.event_id}"
     assert_not MediaStore.new(clubs(:cluba).id, 'Course').exists?(course.id)
   end
@@ -263,7 +266,7 @@ class ClubsiteRegistrationTest < ActionDispatch::IntegrationTest
 
     sign_in users(:admin)
     post "/courses/uploadMap/#{courses(:race_long).id}",
-         params: { file: fixture_file_upload('logo.png', 'image/png') }
+         params: { course: { image: fixture_file_upload('logo.png', 'image/png') } }
     assert_response :not_found
   end
 end
