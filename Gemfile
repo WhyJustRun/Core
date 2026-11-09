@@ -47,7 +47,7 @@ gem "geocoder", "~> 1.8.6"
 gem 'jbuilder', '~> 2.15.1'
 
 # json 3 removed keywords still used by Rails 7.x and ExecJS 2.9.
-gem 'json', '< 3'
+gem 'json', '< 4'
 
 # Logging (email)
 gem "exception_notification", "~> 5.0"
