@@ -93,8 +93,15 @@ Rails.application.configure do
   config.x.clubsite_robots_hidden = false
 end
 
+# FileStore writes entries via temp file + rename; concurrent writers to the same
+# key can race and raise ENOENT. The cache write is only an optimisation, so ignore it.
+cache_rename_race = ->(exception) {
+  root = exception.respond_to?(:cause) && exception.cause ? exception.cause : exception
+  root.is_a?(Errno::ENOENT) && root.message.include?("rb_file_s_rename") && root.message.include?("tmp/cache")
+}
+
 Rails.application.config.middleware.use ExceptionNotification::Rack,
-  ignore_if: ->(env, exception) { exception.is_a?(ActionController::InvalidAuthenticityToken) || exception.is_a?(ActionDispatch::Http::Parameters::ParseError) || exception.is_a?(ActionController::BadRequest) || exception.message =~ /invalid byte sequence in UTF-8/ || exception.message =~ /is not a valid MIME type/ || exception.message =~ /Invalid encoding for parameter/ },
+  ignore_if: ->(env, exception) { cache_rename_race.call(exception) || exception.is_a?(ActionController::InvalidAuthenticityToken) || exception.is_a?(ActionDispatch::Http::Parameters::ParseError) || exception.is_a?(ActionController::BadRequest) || exception.message =~ /invalid byte sequence in UTF-8/ || exception.message =~ /is not a valid MIME type/ || exception.message =~ /Invalid encoding for parameter/ },
   email: {
     email_prefix: "[WhyJustRun Core] ",
     sender_address: %{"WhyJustRun Core" <noreply@transactional.whyjustrun.ca>},
