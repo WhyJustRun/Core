@@ -11,7 +11,7 @@ env:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     services:
       db:
@@ -64,7 +64,7 @@ jobs:
         run: bundle exec rails test
 
   system-test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     services:
       db:
@@ -125,7 +125,7 @@ jobs:
           if-no-files-found: ignore
 
   brakeman:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
 
@@ -140,7 +140,7 @@ jobs:
         run: bundle exec brakeman --no-pager
 
   push:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [test, system-test, brakeman]
     if: github.event_name == 'push'
 
