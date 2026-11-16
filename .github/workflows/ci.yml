@@ -5,6 +5,10 @@ on:
     branches:
       - master
   pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 env:
   IMAGE_NAME: core
@@ -48,12 +52,12 @@ jobs:
       WJR_DATA_URL: http://localhost/data/
 
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
       - name: Install MySQL client headers
         run: sudo apt-get update && sudo apt-get install -y default-libmysqlclient-dev imagemagick ghostscript
 
-      - uses: ruby/setup-ruby@v1
+      - uses: ruby/setup-ruby@b3aaceaef7e0ee231b499e7b5f49c03fc1d32199 # v1
         with:
           bundler-cache: true
 
@@ -101,12 +105,12 @@ jobs:
       WJR_DATA_URL: http://localhost/data/
 
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
       - name: Install MySQL client headers
         run: sudo apt-get update && sudo apt-get install -y default-libmysqlclient-dev imagemagick ghostscript
 
-      - uses: ruby/setup-ruby@v1
+      - uses: ruby/setup-ruby@b3aaceaef7e0ee231b499e7b5f49c03fc1d32199 # v1
         with:
           bundler-cache: true
 
@@ -117,7 +121,7 @@ jobs:
         run: bundle exec rails test:system
 
       - name: Upload failure screenshots and pages
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         if: failure()
         with:
           name: system-test-failures
@@ -127,25 +131,37 @@ jobs:
   brakeman:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
       - name: Install MySQL client headers
         run: sudo apt-get update && sudo apt-get install -y default-libmysqlclient-dev
 
-      - uses: ruby/setup-ruby@v1
+      - uses: ruby/setup-ruby@b3aaceaef7e0ee231b499e7b5f49c03fc1d32199 # v1
         with:
           bundler-cache: true
 
       - name: Run Brakeman
         run: bundle exec brakeman --no-pager
 
+  audit:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - uses: ruby/setup-ruby@b3aaceaef7e0ee231b499e7b5f49c03fc1d32199 # v1
+        with:
+          bundler-cache: true
+
+      - name: Audit gems for known vulnerabilities
+        run: gem install bundler-audit --no-document && bundle-audit check --update
+
   push:
     runs-on: ubuntu-24.04
-    needs: [test, system-test, brakeman]
+    needs: [test, system-test, brakeman, audit]
     if: github.event_name == 'push'
 
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
       - name: Build image
         run: docker build . --file Dockerfile --tag $IMAGE_NAME
