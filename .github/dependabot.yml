@@ -8,6 +8,11 @@ updates:
       time: "06:00"
       timezone: "UTC"
     open-pull-requests-limit: 10
+    # Supply-chain protection: don't adopt releases until they've been public
+    # for a week (most malicious releases are yanked within days).
+    # Security updates ignore the cooldown.
+    cooldown:
+      default-days: 7
     groups:
       bundler-minor-and-patch:
         patterns:
@@ -24,6 +29,8 @@ updates:
       time: "06:00"
       timezone: "UTC"
     open-pull-requests-limit: 5
+    cooldown:
+      default-days: 7
     groups:
       github-actions-minor-and-patch:
         patterns:
@@ -31,3 +38,13 @@ updates:
         update-types:
           - "minor"
           - "patch"
+
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "UTC"
+    cooldown:
+      default-days: 7

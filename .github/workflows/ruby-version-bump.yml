@@ -1,0 +1,66 @@
+name: Ruby version bump
+
+# Dependabot can't update .ruby-version, so this keeps .ruby-version and the
+# Dockerfile on the latest patch release of the Ruby series already in use.
+# It opens a PR for human review (never auto-merged). A new minor/major series
+# is only reported in the job summary, since that needs a deliberate upgrade.
+
+on:
+  schedule:
+    - cron: "0 7 * * 1" # Mondays 07:00 UTC, after Dependabot's 06:00 run
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+  actions: write
+
+jobs:
+  bump:
+    if: github.repository == 'WhyJustRun/Core'
+    runs-on: ubuntu-24.04
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Find latest Ruby patch release
+        id: ruby
+        run: |
+          current=$(tr -d '[:space:]' < .ruby-version)
+          series=${current%.*}
+          data=$(curl -fsS https://endoflife.date/api/ruby.json)
+          latest=$(jq -r --arg s "$series" '.[] | select(.cycle == $s) | .latest' <<<"$data")
+          newest_series=$(jq -r '.[0].cycle' <<<"$data")
+          if ! [[ "$latest" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Unexpected version '$latest'"; exit 1
+          fi
+          echo "current=$current" >> "$GITHUB_OUTPUT"
+          echo "latest=$latest" >> "$GITHUB_OUTPUT"
+          if [ "$newest_series" != "$series" ]; then
+            echo "::notice::Ruby $newest_series is available (this repo is on $series). Upgrade manually."
+            echo "Ruby $newest_series is available; repo is on $series." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Open PR
+        if: steps.ruby.outputs.current != steps.ruby.outputs.latest
+        env:
+          CURRENT: ${{ steps.ruby.outputs.current }}
+          LATEST: ${{ steps.ruby.outputs.latest }}
+        run: |
+          branch="ruby-version-bump/$LATEST"
+          if git ls-remote --exit-code --heads origin "$branch" >/dev/null; then
+            echo "Branch $branch already exists; skipping"; exit 0
+          fi
+          echo "$LATEST" > .ruby-version
+          sed -i "s/ruby:$CURRENT-/ruby:$LATEST-/" Dockerfile
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$branch"
+          git commit -am "build: bump Ruby from $CURRENT to $LATEST"
+          git push origin "$branch"
+          gh pr create --base master --head "$branch" \
+            --title "build: bump Ruby from $CURRENT to $LATEST" \
+            --body "Automated weekly Ruby patch bump. Review the release notes before merging: https://www.ruby-lang.org/en/downloads/releases/"
+          # PRs opened with GITHUB_TOKEN don't trigger CI, so dispatch it explicitly.
+          gh workflow run ci.yml --ref "$branch"
