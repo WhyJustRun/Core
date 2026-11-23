@@ -1,9 +1,13 @@
-FROM ruby:4.0.0-alpine AS dev
+FROM ruby:3.3.13-alpine AS dev
+# linux-headers and libffi-dev are for compiling the ffi gem; older Alpine releases
+# pulled them in as dependencies of the other packages.
 RUN apk add --no-cache \
         make \
         pkgconfig \
         build-base \
         autoconf \
+        linux-headers \
+        libffi-dev \
         libstdc++ \
         mariadb-dev \
         imagemagick \
