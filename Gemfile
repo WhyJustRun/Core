@@ -46,7 +46,8 @@ gem "geocoder", "~> 1.8.6"
 # JSON Builder
 gem 'jbuilder', '~> 2.15.1'
 
-# json 3 removed keywords still used by Rails 7.x and ExecJS 2.9.
+# json 3 removed the create_additions keyword, which sprockets 4.2 still passed (4.4 doesn't).
+# Before taking json 4, check that the production image boots (CI's image job).
 gem 'json', '< 4'
 
 # Logging (email)

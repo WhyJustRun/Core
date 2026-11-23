@@ -18,7 +18,14 @@ jobs:
       github.event.pull_request.user.login == 'dependabot[bot]'
     runs-on: ubuntu-latest
     steps:
+      - name: Fetch update metadata
+        id: metadata
+        uses: dependabot/fetch-metadata@25dd0e34f4fe68f24cc83900b1fe3fe149efef98 # v3.1.0
+
+      # Major updates can break the app in ways the tests miss (json 3 did), so they
+      # wait for a human review.
       - name: Enable auto-merge
+        if: steps.metadata.outputs.update-type != 'version-update:semver-major'
         run: gh pr merge --auto --squash "$PR_URL"
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
@@ -47,6 +54,12 @@ jobs:
           author=$(gh api "repos/$REPO/pulls/$pr" --jq '.user.login')
           if [ "$author" != "dependabot[bot]" ]; then
             echo "PR #$pr is authored by $author; skipping"
+            exit 0
+          fi
+
+          # Major updates wait for a human review (see enable-auto-merge).
+          if gh api "repos/$REPO/commits/$HEAD_SHA" --jq '.commit.message' | grep -q 'update-type: version-update:semver-major'; then
+            echo "PR #$pr is a major update; leaving it for review"
             exit 0
           fi
 

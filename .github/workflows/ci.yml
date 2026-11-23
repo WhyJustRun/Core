@@ -6,6 +6,11 @@ on:
       - master
   pull_request:
   workflow_dispatch:
+  # Weekly rebuild of the published image, before WhyJustRun's Tuesday 10:30 UTC
+  # redeploy. It picks up base-image fixes, and the Dependabot updates merged that
+  # week: merges made with GITHUB_TOKEN don't trigger the push event.
+  schedule:
+    - cron: "0 9 * * 2"
 
 permissions:
   contents: read
@@ -155,16 +160,84 @@ jobs:
       - name: Audit gems for known vulnerabilities
         run: gem install bundler-audit --no-document && bundle-audit check --update
 
-  push:
+  image:
     runs-on: ubuntu-24.04
-    needs: [test, system-test, brakeman, audit]
-    if: github.event_name == 'push'
+    env:
+      RAILS_ENV: production
+      SECRET_KEY_BASE: placeholder
+      WJR_DATABASE_NAME: placeholder
+      WJR_DATABASE_TEST_NAME: placeholder
+      WJR_DATABASE_HOST: placeholder
+      WJR_DATABASE_USERNAME: placeholder
+      WJR_DATABASE_PASSWORD: placeholder
+      WJR_PASSWORD_SALT: placeholder
+      WJR_SECRET_BASE: placeholder
+      WJR_SECRET_TOKEN: placeholder
+      WJR_DEVISE_SECRET_KEY: placeholder
+      WJR_RECAPTCHA_SITE_KEY: placeholder
+      WJR_RECAPTCHA_SECRET_KEY: placeholder
+      WJR_SMTP_ADDRESS: placeholder
+      WJR_SMTP_DOMAIN: placeholder
+      WJR_SMTP_USER_NAME: placeholder
+      WJR_SMTP_PASSWORD: placeholder
+      WJR_DATA_FOLDER: /tmp/whyjustrun-data/
+      WJR_DATA_URL: placeholder
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
       - name: Build image
         run: docker build . --file Dockerfile --tag $IMAGE_NAME
+
+      - name: Check that the app boots in production
+        # The test jobs run on the runner's Ruby without precompiled assets; this runs
+        # the image that gets deployed (its Ruby, its gems, its asset manifest).
+        run: |
+          env_args=()
+          for name in RAILS_ENV SECRET_KEY_BASE ${!WJR_*}; do env_args+=(-e "$name"); done
+          docker run --rm --entrypoint "" "${env_args[@]}" $IMAGE_NAME \
+            bundle exec rails runner 'puts "Booted Rails #{Rails.version} on Ruby #{RUBY_VERSION}"'
+
+  push:
+    runs-on: ubuntu-24.04
+    needs: [test, system-test, brakeman, audit, image]
+    # Only master is published (as `latest`), never a branch the CI was dispatched on.
+    if: github.ref == 'refs/heads/master' && github.event_name != 'pull_request'
+    env:
+      RAILS_ENV: production
+      SECRET_KEY_BASE: placeholder
+      WJR_DATABASE_NAME: placeholder
+      WJR_DATABASE_TEST_NAME: placeholder
+      WJR_DATABASE_HOST: placeholder
+      WJR_DATABASE_USERNAME: placeholder
+      WJR_DATABASE_PASSWORD: placeholder
+      WJR_PASSWORD_SALT: placeholder
+      WJR_SECRET_BASE: placeholder
+      WJR_SECRET_TOKEN: placeholder
+      WJR_DEVISE_SECRET_KEY: placeholder
+      WJR_RECAPTCHA_SITE_KEY: placeholder
+      WJR_RECAPTCHA_SECRET_KEY: placeholder
+      WJR_SMTP_ADDRESS: placeholder
+      WJR_SMTP_DOMAIN: placeholder
+      WJR_SMTP_USER_NAME: placeholder
+      WJR_SMTP_PASSWORD: placeholder
+      WJR_DATA_FOLDER: /tmp/whyjustrun-data/
+      WJR_DATA_URL: placeholder
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Build image
+        run: docker build . --pull --file Dockerfile --tag $IMAGE_NAME
+
+      - name: Check that the app boots in production
+        # The test jobs run on the runner's Ruby without precompiled assets; this runs
+        # the image that gets deployed (its Ruby, its gems, its asset manifest).
+        run: |
+          env_args=()
+          for name in RAILS_ENV SECRET_KEY_BASE ${!WJR_*}; do env_args+=(-e "$name"); done
+          docker run --rm --entrypoint "" "${env_args[@]}" $IMAGE_NAME \
+            bundle exec rails runner 'puts "Booted Rails #{Rails.version} on Ruby #{RUBY_VERSION}"'
 
       - name: Log into GitHub Container Registry
         run: echo "${{ secrets.CR_PAT }}" | docker login https://ghcr.io -u ${{ secrets.CR_USER }} --password-stdin

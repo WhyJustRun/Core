@@ -48,3 +48,8 @@ updates:
       timezone: "UTC"
     cooldown:
       default-days: 7
+    ignore:
+      # Dependabot only changes the Dockerfile, but CI tests on .ruby-version, so a
+      # Ruby bump from here ships a Ruby that CI never ran. The Ruby version bump
+      # workflow updates both; a new Ruby series is a deliberate upgrade.
+      - dependency-name: "ruby"
