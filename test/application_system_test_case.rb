@@ -41,6 +41,26 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   end
   Capybara::Selenium::Driver.prepend(RetryDetachedNode)
 
+  # Capybara 3.40 resets the browser between tests by clearing storage for the origin
+  # "*", which Chrome 158 rejects ("* is not a valid URL"), so every test errored in
+  # its teardown (teamcapybara/capybara#2865). Clear the cookies of every origin
+  # instead, plus the other storage for the apex origin: the app keeps nothing in
+  # browser storage, only the session cookies. Remove once Capybara has a fix.
+  module ClearStorageWithoutWildcardOrigin
+    private
+
+    def execute_cdp(cmd, params = {})
+      return super unless cmd == 'Storage.clearDataForOrigin' && params[:origin] == '*'
+
+      super('Network.clearBrowserCookies')
+      other_types = params[:storageTypes].to_s.split(',') - ['cookies']
+      super(cmd, origin: Settings.coreURL, storageTypes: other_types.join(',')) if other_types.any?
+    end
+  end
+  if Gem.loaded_specs['capybara'].version <= Gem::Version.new('3.40.0')
+    Capybara::Selenium::Driver::ChromeDriver.prepend(ClearStorageWithoutWildcardOrigin)
+  end
+
   # Bootstrap's fade animations move elements while Capybara computes click
   # coordinates, so clicks can land on the backdrop and dismiss modals
   # instead of hitting their buttons.
