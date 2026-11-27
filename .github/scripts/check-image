@@ -1,0 +1,30 @@
+#!/bin/bash
+# Checks a production image the way WhyJustRun deploys it: it boots, loads the schema
+# into the job's MariaDB service (the version production runs) and migrates, and talks
+# to the database over TLS like it does in production. The test jobs use the runner's
+# Ruby and MySQL client library instead, so they miss problems with the image's.
+#
+# Usage: check-image IMAGE. Reads RAILS_ENV, the WJR_* settings and the rest from the
+# environment.
+set -euo pipefail
+
+image="$1"
+env_args=()
+for name in RAILS_ENV SECRET_KEY_BASE DISABLE_DATABASE_ENVIRONMENT_CHECK ${!WJR_*}; do
+    env_args+=(-e "$name")
+done
+
+rails() {
+    docker run --rm --network host --entrypoint "" "${env_args[@]}" "$image" bundle exec rails "$@"
+}
+
+rails db:schema:load
+rails db:migrate
+rails runner '
+  connection = ActiveRecord::Base.connection
+  cipher = connection.select_rows("SHOW SESSION STATUS LIKE '\''Ssl_cipher'\''").dig(0, 1)
+  abort "The database connection doesn'\''t use TLS" if cipher.blank?
+  puts "Booted Rails #{Rails.version} on Ruby #{RUBY_VERSION}, " \
+       "connected to MariaDB #{connection.select_value("SELECT VERSION()")} over TLS (#{cipher}), " \
+       "#{connection.tables.size} tables"
+'

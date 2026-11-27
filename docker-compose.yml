@@ -22,7 +22,7 @@ services:
     networks:
       - whyjustrun
   db:
-    image: mariadb:10.11
+    image: mariadb:12.3
     ports:
         - 3306:3306
     environment:

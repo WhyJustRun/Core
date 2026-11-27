@@ -24,7 +24,7 @@ jobs:
 
     services:
       db:
-        image: mariadb:10.11
+        image: mariadb:12.3
         env:
           MARIADB_ROOT_PASSWORD: root
           MARIADB_DATABASE: whyjustrun-test
@@ -77,7 +77,7 @@ jobs:
 
     services:
       db:
-        image: mariadb:10.11
+        image: mariadb:12.3
         env:
           MARIADB_ROOT_PASSWORD: root
           MARIADB_DATABASE: whyjustrun-test
@@ -162,14 +162,32 @@ jobs:
 
   image:
     runs-on: ubuntu-24.04
+    services:
+      db:
+        # Same MariaDB version as production (WhyJustRun/deploy's docker-compose.yml).
+        image: mariadb:12.3
+        env:
+          MARIADB_RANDOM_ROOT_PASSWORD: "1"
+          MARIADB_DATABASE: whyjustrun
+          MARIADB_USER: whyjustrun
+          MARIADB_PASSWORD: ci-only-password
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=10
+
     env:
       RAILS_ENV: production
+      DISABLE_DATABASE_ENVIRONMENT_CHECK: "1"
       SECRET_KEY_BASE: placeholder
-      WJR_DATABASE_NAME: placeholder
+      WJR_DATABASE_NAME: whyjustrun
       WJR_DATABASE_TEST_NAME: placeholder
-      WJR_DATABASE_HOST: placeholder
-      WJR_DATABASE_USERNAME: placeholder
-      WJR_DATABASE_PASSWORD: placeholder
+      WJR_DATABASE_HOST: 127.0.0.1
+      WJR_DATABASE_USERNAME: whyjustrun
+      WJR_DATABASE_PASSWORD: ci-only-password
       WJR_PASSWORD_SALT: placeholder
       WJR_SECRET_BASE: placeholder
       WJR_SECRET_TOKEN: placeholder
@@ -189,28 +207,40 @@ jobs:
       - name: Build image
         run: docker build . --file Dockerfile --tag $IMAGE_NAME
 
-      - name: Check that the app boots in production
-        # The test jobs run on the runner's Ruby without precompiled assets; this runs
-        # the image that gets deployed (its Ruby, its gems, its asset manifest).
-        run: |
-          env_args=()
-          for name in RAILS_ENV SECRET_KEY_BASE ${!WJR_*}; do env_args+=(-e "$name"); done
-          docker run --rm --entrypoint "" "${env_args[@]}" $IMAGE_NAME \
-            bundle exec rails runner 'puts "Booted Rails #{Rails.version} on Ruby #{RUBY_VERSION}"'
+      - name: Check the image against MariaDB
+        run: .github/scripts/check-image $IMAGE_NAME
 
   push:
     runs-on: ubuntu-24.04
     needs: [test, system-test, brakeman, audit, image]
     # Only master is published (as `latest`), never a branch the CI was dispatched on.
     if: github.ref == 'refs/heads/master' && github.event_name != 'pull_request'
+    services:
+      db:
+        # Same MariaDB version as production (WhyJustRun/deploy's docker-compose.yml).
+        image: mariadb:12.3
+        env:
+          MARIADB_RANDOM_ROOT_PASSWORD: "1"
+          MARIADB_DATABASE: whyjustrun
+          MARIADB_USER: whyjustrun
+          MARIADB_PASSWORD: ci-only-password
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=10
+
     env:
       RAILS_ENV: production
+      DISABLE_DATABASE_ENVIRONMENT_CHECK: "1"
       SECRET_KEY_BASE: placeholder
-      WJR_DATABASE_NAME: placeholder
+      WJR_DATABASE_NAME: whyjustrun
       WJR_DATABASE_TEST_NAME: placeholder
-      WJR_DATABASE_HOST: placeholder
-      WJR_DATABASE_USERNAME: placeholder
-      WJR_DATABASE_PASSWORD: placeholder
+      WJR_DATABASE_HOST: 127.0.0.1
+      WJR_DATABASE_USERNAME: whyjustrun
+      WJR_DATABASE_PASSWORD: ci-only-password
       WJR_PASSWORD_SALT: placeholder
       WJR_SECRET_BASE: placeholder
       WJR_SECRET_TOKEN: placeholder
@@ -230,14 +260,8 @@ jobs:
       - name: Build image
         run: docker build . --pull --file Dockerfile --tag $IMAGE_NAME
 
-      - name: Check that the app boots in production
-        # The test jobs run on the runner's Ruby without precompiled assets; this runs
-        # the image that gets deployed (its Ruby, its gems, its asset manifest).
-        run: |
-          env_args=()
-          for name in RAILS_ENV SECRET_KEY_BASE ${!WJR_*}; do env_args+=(-e "$name"); done
-          docker run --rm --entrypoint "" "${env_args[@]}" $IMAGE_NAME \
-            bundle exec rails runner 'puts "Booted Rails #{Rails.version} on Ruby #{RUBY_VERSION}"'
+      - name: Check the image against MariaDB
+        run: .github/scripts/check-image $IMAGE_NAME
 
       - name: Log into GitHub Container Registry
         run: echo "${{ secrets.CR_PAT }}" | docker login https://ghcr.io -u ${{ secrets.CR_USER }} --password-stdin

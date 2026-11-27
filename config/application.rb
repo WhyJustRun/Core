@@ -11,6 +11,11 @@ module WhyJustRun
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.1
 
+    # The 7.1 defaults process Active Storage variants with libvips, which the image
+    # doesn't have (Rails warns about that on every boot). The app resizes images with
+    # MiniMagick itself (Thumbnailer, MediaStore), so use it here too.
+    config.active_storage.variant_processor = :mini_magick
+
     # Rails 7.2 no longer reads secrets.yml automatically; load it explicitly.
     config.secrets = config_for(:secrets)
     config.secret_key_base = config.secrets[:secret_key_base]
